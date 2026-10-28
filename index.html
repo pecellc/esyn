@@ -14,541 +14,6 @@
     :root {
       --velvet-950: #0c0406;
       --velvet-900: #1a070c;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       --velvet-800: #2c0b13;
       --velvet-700: #45111b;
       --velvet-600: #6b1b27;
@@ -2578,6 +2043,17 @@
       display: none !important;
     }
 
+    .gallery-img.retry-flash,
+    .secret-frame img.retry-flash {
+      animation: retryFlash 0.5s ease;
+    }
+
+    @keyframes retryFlash {
+      50% {
+        opacity: 0.25;
+      }
+    }
+
     .secret-actions {
       display: flex;
       justify-content: center;
@@ -3465,7 +2941,7 @@
   </footer>
 
   <div class="mp" id="mp">
-    <audio id="bg-audio" loop preload="auto"></audio>
+    <audio id="bg-audio" loop preload="none"></audio>
     <div class="mp-main">
       <button class="mp-play" id="mp-play" aria-label="Play or pause">▶</button>
       <div class="mp-meta">
@@ -3559,6 +3035,36 @@
         const p = media.play();
         if (p && typeof p.catch === 'function') p.catch(() => { });
       } catch (e) { }
+    }
+
+    /* ===== IMAGE RETRY (foto nggak boleh ilang) ===== */
+    const imgRetryCount = new WeakMap();
+
+    function attachImgRetry(img, maxRetries = 4) {
+      if (!img || img.dataset.retryBound === '1') return;
+      img.dataset.retryBound = '1';
+      imgRetryCount.set(img, 0);
+
+      img.addEventListener('error', () => {
+        const n = imgRetryCount.get(img) || 0;
+        if (n >= maxRetries) {
+          // Coba sekali lagi pelan-pelan sebelum menyerah
+          setTimeout(() => {
+            if (img.naturalWidth === 0) img.classList.add('img-failed');
+          }, 4000);
+          return;
+        }
+        imgRetryCount.set(img, n + 1);
+        img.classList.remove('img-failed');
+        img.classList.add('retry-flash');
+        setTimeout(() => img.classList.remove('retry-flash'), 520);
+        // Cache-buster biar nggak ketimpa error yang sama
+        const sep = img.src.includes('?') ? '&' : '?';
+        const base = img.src.replace(/[?&]__r=\d+$/, '');
+        setTimeout(() => {
+          img.src = base + sep + '__r=' + Date.now();
+        }, 600 * (n + 1));
+      });
     }
 
     /* ===== ROUTER ===== */
@@ -3917,6 +3423,8 @@
         img.src = item.img;
         img.alt = item.title;
         img.loading = 'lazy';
+        img.decoding = 'async';
+        attachImgRetry(img);
 
         const overlay = document.createElement('div');
         overlay.className = 'gallery-overlay';
@@ -4114,6 +3622,18 @@
           v.muted = true;
           v.playsInline = true;
           v.preload = 'auto';
+          let vTries = 0;
+          v.addEventListener('error', () => {
+            if (vTries < 4) {
+              vTries++;
+              const sep = v.src.includes('?') ? '&' : '?';
+              const base = v.src.replace(/[?&]__r=\d+$/, '');
+              setTimeout(() => {
+                v.src = base + sep + '__r=' + Date.now();
+                v.play().catch(() => { });
+              }, 700 * vTries);
+            }
+          });
           frame.appendChild(ph);
           frame.appendChild(v);
           v.play().catch(() => { });
@@ -4122,7 +3642,8 @@
           img.src = it.src;
           img.alt = 'Photo ' + it.n;
           img.loading = 'lazy';
-          img.addEventListener('error', () => img.classList.add('img-failed'));
+          img.decoding = 'async';
+          attachImgRetry(img, 6);
           frame.appendChild(ph);
           frame.appendChild(img);
         }
@@ -4130,9 +3651,7 @@
       });
     }
 
-    $('secret-photo-1').addEventListener('error', function () {
-      this.classList.add('img-failed');
-    });
+    attachImgRetry($('secret-photo-1'), 6);
 
     /* ===== SPARKLES ===== */
     let sparkleTimer = null;
