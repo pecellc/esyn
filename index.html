@@ -1766,6 +1766,145 @@
       transform: none;
     }
 
+    /* ===== RATING CARD ===== */
+    .rating-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-l);
+      clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+      padding: 34px 30px;
+      text-align: center;
+      margin-top: 22px;
+    }
+
+    .rating-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 24px;
+      width: 56px;
+      height: 3px;
+      background: var(--grad-accent);
+    }
+
+    .rating-wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 5vw 70px;
+    }
+
+    .rating-card {
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    .rating-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .rating-sub {
+      font-size: 0.78rem;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--rose-soft);
+      margin-bottom: 20px;
+    }
+
+    .rating-stars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 2.5rem;
+      line-height: 1;
+      color: rgba(216, 180, 90, 0.22);
+      transition: transform 0.18s ease, color 0.18s ease, text-shadow 0.18s ease;
+      padding: 2px;
+    }
+
+    .star-btn:hover,
+    .star-btn.hover {
+      transform: scale(1.18);
+      color: rgba(216, 180, 90, 0.75);
+    }
+
+    .star-btn.on {
+      color: var(--gold);
+      text-shadow: 0 0 18px rgba(216, 180, 90, 0.55);
+    }
+
+    .star-btn:disabled {
+      cursor: default;
+      transform: none;
+    }
+
+    .rating-stars.locked .star-btn:hover,
+    .star-btn:disabled:hover {
+      transform: none;
+    }
+
+    .rating-status {
+      min-height: 1.2em;
+      font-size: 0.85rem;
+      color: var(--cream-dim);
+      margin-bottom: 18px;
+    }
+
+    .rating-overall {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .rating-avg {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .rating-count {
+      font-size: 0.72rem;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+      margin-top: 5px;
+    }
+
+    /* bintang overall isi sebagian (mis. 4,3 dari 5) */
+    .rating-bar {
+      position: relative;
+      display: inline-block;
+      font-size: 1.3rem;
+      line-height: 1;
+      color: rgba(216, 180, 90, 0.22);
+    }
+
+    .rating-bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      color: var(--gold);
+      width: 0;
+      transition: width 0.6s ease;
+    }
+
     .success-msg {
       display: none;
       text-align: center;
@@ -2894,6 +3033,34 @@
           </div>
         </div>
       </div>
+
+      <div class="rating-wrap">
+        <div class="rating-card">
+          <div class="rating-title">Rate This Site</div>
+          <div class="rating-sub">Tap the stars, it takes 2 seconds</div>
+
+          <div class="rating-stars" id="rating-stars" role="radiogroup" aria-label="Site rating">
+            <button type="button" class="star-btn" data-score="1" aria-label="1 star">&#9733;</button>
+            <button type="button" class="star-btn" data-score="2" aria-label="2 stars">&#9733;</button>
+            <button type="button" class="star-btn" data-score="3" aria-label="3 stars">&#9733;</button>
+            <button type="button" class="star-btn" data-score="4" aria-label="4 stars">&#9733;</button>
+            <button type="button" class="star-btn" data-score="5" aria-label="5 stars">&#9733;</button>
+          </div>
+
+          <div class="rating-status" id="rating-status">Loading rating...</div>
+
+          <div class="rating-overall">
+            <div class="rating-avg" id="rating-avg">-</div>
+            <div>
+              <div class="rating-bar">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="rating-bar-fill" id="rating-bar-fill">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              </div>
+              <div class="rating-count" id="rating-count">0 votes</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="view" data-view="zx7k9q">
@@ -3163,6 +3330,8 @@
 
       document.title = 'Excel';
       window.scrollTo(0, 0);
+
+      if (view === 'kontak' && typeof ensureRatingLoaded === 'function') ensureRatingLoaded();
 
       const video = $('rubik-video');
       if (view === 'hobi' && video) {
@@ -3580,6 +3749,100 @@
       $('success-msg').classList.remove('show');
       contactForm.style.display = 'block';
     });
+
+    /* ===== RATING (bintang kayak app ojol) ===== */
+    const RATING_KEY = 'rv-rated-v1';   // vote 1x per browser
+    const RATING_SCORE_KEY = 'rv-my-score-v1';
+    const starWrap = $('rating-stars');
+    const starBtns = Array.prototype.slice.call(starWrap.querySelectorAll('.star-btn'));
+    const ratingStatus = $('rating-status');
+    const ratingAvg = $('rating-avg');
+    const ratingCount = $('rating-count');
+    const ratingBarFill = $('rating-bar-fill');
+
+    let myScore = parseInt(localStorage.getItem(RATING_SCORE_KEY) || '', 10) || 0;
+    let hasVoted = localStorage.getItem(RATING_KEY) === '1';
+
+    function paintStars(n, preview) {
+      starBtns.forEach((b, i) => {
+        b.classList.toggle('on', i < n);
+        b.classList.toggle('hover', !!preview && i < n && i >= myScore && n > myScore);
+      });
+    }
+
+    function renderOverall(avg, count) {
+      ratingAvg.textContent = count ? avg.toFixed(1) : '-';
+      ratingCount.textContent = count + (count === 1 ? ' vote' : ' votes');
+      ratingBarFill.style.width = ((avg / 5) * 100) + '%';
+    }
+
+    async function loadRatingSummary() {
+      try {
+        const { data, error } = await db.from('ratings').select('score');
+        if (error) throw error;
+        const rows = data || [];
+        if (!rows.length) {
+          renderOverall(0, 0);
+          if (!hasVoted) ratingStatus.textContent = 'Be the first to rate!';
+          return;
+        }
+        const sum = rows.reduce((a, r) => a + (Number(r.score) || 0), 0);
+        renderOverall(sum / rows.length, rows.length);
+        if (!hasVoted) ratingStatus.textContent = 'Tap a star to rate';
+        return rows;
+      } catch (e) {
+        // Tabel ratings belum dibuat / error jaringan -> tampilan tetap rapi
+        console.warn('rating summary:', e);
+        renderOverall(0, 0);
+        if (!hasVoted) ratingStatus.textContent = 'Rating is not available yet';
+      }
+    }
+
+    if (hasVoted) {
+      starWrap.classList.add('locked');
+      starBtns.forEach(b => b.disabled = true);
+      paintStars(myScore);
+      ratingStatus.textContent = 'You rated this ' + myScore + ' \u2605 \u2014 thanks!';
+    } else {
+      ratingStatus.textContent = 'Tap a star to rate';
+      starBtns.forEach(b => {
+        b.addEventListener('mouseenter', () => paintStars(parseInt(b.dataset.score, 10), true));
+        b.addEventListener('mouseleave', () => paintStars(0));
+      });
+    }
+
+    starBtns.forEach(b => {
+      b.addEventListener('click', async () => {
+        if (hasVoted) return;
+        const score = parseInt(b.dataset.score, 10);
+        starBtns.forEach(x => x.disabled = true);
+        ratingStatus.textContent = 'Sending...';
+        try {
+          const { error } = await db.from('ratings').insert({ score: score });
+          if (error) throw error;
+          localStorage.setItem(RATING_KEY, '1');
+          localStorage.setItem(RATING_SCORE_KEY, String(score));
+          myScore = score;
+          hasVoted = true;
+          starWrap.classList.add('locked');
+          paintStars(score);
+          ratingStatus.textContent = 'You rated this ' + score + ' \u2605 \u2014 thanks!';
+          loadRatingSummary(); // refresh overall (server-side)
+        } catch (e) {
+          console.warn('rating submit:', e);
+          starBtns.forEach(x => x.disabled = false);
+          ratingStatus.textContent = 'Could not send rating, try again later';
+        }
+      });
+    });
+
+    // Ambil ringkasan rating pas pertama kali buka halaman kontak
+    let ratingLoaded = false;
+    function ensureRatingLoaded() {
+      if (ratingLoaded) return;
+      ratingLoaded = true;
+      loadRatingSummary();
+    }
 
     /* ===== PASSWORD GATE ===== */
     const pwOverlay = $('pw-overlay');
