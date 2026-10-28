@@ -7,6 +7,7 @@
   <title>MyWeb — Home</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link
     href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600;1,9..144,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
@@ -2676,7 +2677,7 @@
         <div class="profile-card">
           <div class="avatar-side">
             <div class="avatar-frame">
-              <img src="img/me mirror.jpg" alt="Profile Photo" id="avatar-img">
+              <img src="https://cdn.jsdelivr.net/gh/pecellc/esyn@main/img/me%20mirror.jpg" data-local-src="img/me mirror.jpg" alt="Profile Photo" id="avatar-img">
             </div>
             <div class="avatar-name">Excel</div>
             <div class="avatar-role">Student · Creator</div>
@@ -2783,7 +2784,7 @@
 
         <div class="video-row">
           <div class="video-card">
-            <video id="rubik-video" src="img/rubik.mp4" preload="metadata" playsinline muted></video>
+            <video id="rubik-video" src="https://cdn.jsdelivr.net/gh/pecellc/esyn@main/img/rubik.mp4" data-local-src="img/rubik.mp4" preload="metadata" playsinline muted></video>
             <div class="video-controls">
               <button class="vc-btn" id="vid-play" title="Play / Pause" aria-label="Play or pause">▶</button>
               <span class="vc-time" id="vid-time">0:00 / 0:00</span>
@@ -2831,7 +2832,7 @@
           </div>
 
           <div class="contact-item">
-            <img src="img/email.jpg" class="contact-icon" alt="">
+            <img src="https://cdn.jsdelivr.net/gh/pecellc/esyn@main/img/email.jpg" data-local-src="img/email.jpg" class="contact-icon" alt="">
             <div>
               <div class="contact-item-label">Email</div>
               <div class="contact-item-val">Exceladila123@gmail.com</div>
@@ -2847,7 +2848,7 @@
           </div>
 
           <div class="contact-item">
-            <img src="img/wasap.jpg" class="contact-icon" alt="">
+            <img src="https://cdn.jsdelivr.net/gh/pecellc/esyn@main/img/wasap.jpg" data-local-src="img/wasap.jpg" class="contact-icon" alt="">
             <div>
               <div class="contact-item-label">WhatsApp</div>
               <div class="contact-item-val">+62 895 3299 06073</div>
@@ -2912,7 +2913,7 @@
               <span class="ph-num">★</span>
               special photo
             </div>
-            <img id="secret-photo-1" src="img/1.jpg" alt="Photo 1">
+            <img id="secret-photo-1" src="https://cdn.jsdelivr.net/gh/pecellc/esyn@main/img/1.jpg" data-local-src="img/1.jpg" alt="Photo 1">
           </div>
           <div class="secret-hero-caption">
             Special Photo
@@ -3002,7 +3003,23 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppaWJpdmtodWFsdXRyZGlvanRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwOTE0NzgsImV4cCI6MjEwODY2NzQ3OH0.2kJM7uNIMxodj9GRU9B3QvLA7NZc2JjuUMN5U-i3-Z0'
     );
 
+    /* ===== CDN (jsDelivr) + fallback lokal ===== */
+    const CDN_BASE = 'https://cdn.jsdelivr.net/gh/pecellc/esyn@main/';
+    function cdnUrl(path) {
+      return CDN_BASE + path.split('/').map(s => {
+        try { return encodeURIComponent(decodeURIComponent(s)); }
+        catch (e) { return encodeURIComponent(s); }
+      }).join('/');
+    }
+    /* Pasang src lewat CDN, simpan path lokal buat jaring pengaman */
+    function setMedia(el, path) {
+      el.dataset.localSrc = path;
+      el.src = cdnUrl(path);
+      return el;
+    }
+
     const TRACKS = [
+      { src: 'audio/stereo%20love.mp4', name: 'Stereo Love' },
       { src: 'audio/ins.mp4', name: 'Luxury' },
       { src: 'audio/don%27t.mp4', name: "Don't" },
       { src: 'audio/Flatline.mp4', name: 'Flatline' }
@@ -3058,12 +3075,56 @@
         img.classList.remove('img-failed');
         img.classList.add('retry-flash');
         setTimeout(() => img.classList.remove('retry-flash'), 520);
+
+        const local = img.dataset.localSrc;
+        // Urutan kandidat: CDN (awal) -> lokal -> lokal -> CDN lagi (bolak-balik)
+        // Intinya: selalu ada jaring pengaman, foto nggak pernah dikubur
+        let base;
+        if (local && !img.dataset.triedLocal && img.src.indexOf(CDN_BASE) === 0) {
+          img.dataset.triedLocal = '1';
+          base = local;
+        } else if (local && n % 2 === 1) {
+          base = cdnUrl(local);
+        } else if (local) {
+          base = local;
+        } else {
+          base = img.src.replace(/[?&]__r=\d+$/, '');
+        }
         // Cache-buster biar nggak ketimpa error yang sama
-        const sep = img.src.includes('?') ? '&' : '?';
-        const base = img.src.replace(/[?&]__r=\d+$/, '');
+        const sep = base.includes('?') ? '&' : '?';
         setTimeout(() => {
           img.src = base + sep + '__r=' + Date.now();
         }, 600 * (n + 1));
+      });
+    }
+
+    /* ===== VIDEO RETRY (video juga nggak boleh ilang) ===== */
+    function attachVideoRetry(v, maxTries = 5) {
+      if (!v || v.dataset.retryBound === '1') return;
+      v.dataset.retryBound = '1';
+      let tries = 0;
+      v.addEventListener('error', () => {
+        if (tries >= maxTries) return;
+        tries++;
+        // CDN gagal -> jatuh ke file lokal, habis itu bolak-balik + cache-buster
+        const local = v.dataset.localSrc;
+        const onCdn = v.src.indexOf(CDN_BASE) === 0;
+        let base;
+        if (onCdn && local && !v.dataset.triedLocal) {
+          v.dataset.triedLocal = '1';
+          base = local;
+        } else if (local && tries % 2 === 1) {
+          base = cdnUrl(local);
+        } else if (local) {
+          base = local;
+        } else {
+          base = v.src.replace(/[?&]__r=\d+$/, '');
+        }
+        const sep = base.includes('?') ? '&' : '?';
+        setTimeout(() => {
+          v.src = base + sep + '__r=' + Date.now();
+          v.play().catch(() => { });
+        }, 700 * tries);
       });
     }
 
@@ -3186,7 +3247,9 @@
 
     function loadTrack(i, autoplay) {
       trackIndex = (i + TRACKS.length) % TRACKS.length;
-      audio.src = TRACKS[trackIndex].src;
+      audio.dataset.localSrc = TRACKS[trackIndex].src;
+      audio.dataset.triedLocal = '';
+      audio.src = cdnUrl(TRACKS[trackIndex].src);
       localStorage.setItem('rv-track-v2', trackIndex);
       updateMpUI();
       if (autoplay) {
@@ -3195,6 +3258,20 @@
         updateMpUI();
       }
     }
+
+    // Musik gagal dari CDN -> jatuh ke file lokal, jangan berhenti
+    audio.addEventListener('error', () => {
+      const local = audio.dataset.localSrc;
+      if (local && audio.src.indexOf(CDN_BASE) === 0 && !audio.dataset.triedLocal) {
+        audio.dataset.triedLocal = '1';
+        const sep = local.includes('?') ? '&' : '?';
+        const resume = !audio.paused;
+        setTimeout(() => {
+          audio.src = local + sep + '__r=' + Date.now();
+          if (resume || !userPaused) safePlay(audio);
+        }, 500);
+      }
+    });
 
     let userPaused = false;
 
@@ -3239,6 +3316,11 @@
       }
     });
     $('mp-next').addEventListener('click', () => loadTrack(trackIndex + 1, true));
+
+    // Lagu abis -> otomatis lanjut ke lagu berikutnya, habis semua -> ngulang dari awal
+    audio.addEventListener('ended', () => {
+      if (!userPaused) loadTrack(trackIndex + 1, true);
+    });
     $('mp-list-btn').addEventListener('click', () => {
       const list = $('mp-list');
       list.hidden = !list.hidden;
@@ -3420,7 +3502,7 @@
 
         const img = document.createElement('img');
         img.className = 'gallery-img';
-        img.src = item.img;
+        setMedia(img, item.img);
         img.alt = item.title;
         img.loading = 'lazy';
         img.decoding = 'async';
@@ -3440,8 +3522,13 @@
     }
 
     function openLightbox(item) {
-      $('lightbox-img').src = item.img;
-      $('lightbox-img').alt = item.title;
+      const lb = $('lightbox-img');
+      setMedia(lb, item.img);
+      attachImgRetry(lb, 6);
+      imgRetryCount.set(lb, 0); // reset jatah retry tiap ganti foto
+      lb.dataset.triedLocal = '';
+      lb.classList.remove('img-failed');
+      lb.alt = item.title;
       $('lightbox-title').textContent = item.title;
       $('lightbox-desc').textContent = item.desc || '';
       $('lightbox').classList.add('open');
@@ -3616,30 +3703,19 @@
         if (it.video) {
           const v = document.createElement('video');
           v.className = 'secret-video';
-          v.src = it.src;
+          setMedia(v, it.src);
           v.autoplay = true;
           v.loop = true;
           v.muted = true;
           v.playsInline = true;
           v.preload = 'auto';
-          let vTries = 0;
-          v.addEventListener('error', () => {
-            if (vTries < 4) {
-              vTries++;
-              const sep = v.src.includes('?') ? '&' : '?';
-              const base = v.src.replace(/[?&]__r=\d+$/, '');
-              setTimeout(() => {
-                v.src = base + sep + '__r=' + Date.now();
-                v.play().catch(() => { });
-              }, 700 * vTries);
-            }
-          });
+          attachVideoRetry(v, 5);
           frame.appendChild(ph);
           frame.appendChild(v);
           v.play().catch(() => { });
         } else {
           const img = document.createElement('img');
-          img.src = it.src;
+          setMedia(img, it.src);
           img.alt = 'Photo ' + it.n;
           img.loading = 'lazy';
           img.decoding = 'async';
@@ -3806,13 +3882,28 @@
     }
 
     /* ===== INIT ===== */
+    // Media statis di HTML juga dikasih jaring pengaman
+    attachImgRetry($('avatar-img'), 6);
+    document.querySelectorAll('.contact-icon').forEach(el => attachImgRetry(el, 6));
+    attachVideoRetry($('rubik-video'), 5);
     buildTrackList();
     buildGallery();
     buildSecret();
-    initMusic();
     updateLockBtn();
     setRangeFill(vidProgress);
     route();
+
+    // Musik ditunda biar nggak rebutan bandwidth sama foto
+    // (tetap mulai otomatis, cuma nunggu foto dapet giliran duluan)
+    let musicStarted = false;
+    function startMusicSoon() {
+      if (musicStarted) return;
+      musicStarted = true;
+      initMusic();
+    }
+    if (document.readyState === 'complete') setTimeout(startMusicSoon, 1500);
+    else window.addEventListener('load', () => setTimeout(startMusicSoon, 1500));
+    setTimeout(startMusicSoon, 6000); // jaringan lambat -> tetap jalan maks 6 detik
   </script>
 </body>
 
