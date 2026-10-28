@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyWeb — Home</title>
+  <title>exyn</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -435,6 +435,32 @@
     .nav-links a.active {
       color: var(--gold-soft);
       text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-owner {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: lowercase;
+      color: var(--rose-soft);
+      opacity: 0.65;
+      padding: 6px 9px;
+      transition: color 0.2s, opacity 0.2s, text-shadow 0.2s;
+    }
+
+    .nav-owner:hover {
+      opacity: 1;
+      color: var(--gold-soft);
+    }
+
+    .nav-owner.owner-on {
+      opacity: 1;
+      color: var(--gold);
+      text-shadow: 0 0 12px rgba(216, 180, 90, 0.6);
     }
 
     /* ===== BADGE & BUTTONS ===== */
@@ -1768,8 +1794,10 @@
 
     /* ===== RATING CARD (di bawah form) ===== */
     .rating-card {
+      position: relative;
       margin-top: 26px;
       padding-top: 24px;
+      padding-bottom: 20px;
       border-top: 1px dashed var(--line-soft);
       text-align: center;
     }
@@ -1781,12 +1809,24 @@
       margin-bottom: 6px;
     }
 
-    .rating-sub {
-      font-size: 0.78rem;
-      letter-spacing: 1.4px;
-      text-transform: uppercase;
-      color: var(--rose-soft);
-      margin-bottom: 20px;
+    .fb-placeholder {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.72rem;
+      letter-spacing: 0.6px;
+      color: var(--cream-dim);
+      opacity: 0.5;
+      padding: 4px 2px;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .fb-placeholder:hover {
+      opacity: 1;
+      color: var(--gold-soft);
     }
 
     .rating-stars {
@@ -2283,6 +2323,189 @@
       font-size: 0.9rem;
     }
 
+    /* ===== OWNER PANEL ===== */
+    .own-card {
+      text-align: left;
+      max-width: 520px;
+      max-height: 86vh;
+      overflow-y: auto;
+      padding: 30px 26px;
+    }
+
+    .own-card h3,
+    .own-card > p,
+    .fb-card h3,
+    .fb-card > p {
+      text-align: center;
+    }
+
+    .own-card > p,
+    .fb-card > p {
+      font-size: 0.86rem;
+      color: var(--cream-dim);
+      margin-bottom: 16px;
+    }
+
+    .own-sec {
+      margin-top: 16px;
+    }
+
+    .own-sec h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--line-soft);
+      padding-bottom: 6px;
+    }
+
+    .own-count {
+      color: var(--steel-dim);
+      font-size: 0.75rem;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .own-list {
+      max-height: 30vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-right: 4px;
+    }
+
+    .own-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(18, 18, 21, 0.7);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-s);
+      padding: 8px 10px;
+      font-size: 0.84rem;
+    }
+
+    .own-row .own-rid {
+      flex-shrink: 0;
+      width: 42px;
+      color: var(--steel-dim);
+      font-weight: 700;
+    }
+
+    .own-row .own-score {
+      flex-shrink: 0;
+      width: 58px;
+      background: rgba(10, 10, 12, 0.85);
+      border: 1px solid rgba(216, 180, 90, 0.3);
+      border-radius: 4px;
+      color: var(--gold-soft);
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 5px 6px;
+      outline: none;
+    }
+
+    .own-row .own-msg {
+      flex: 1;
+      background: rgba(10, 10, 12, 0.85);
+      border: 1px solid var(--line-soft);
+      border-radius: 4px;
+      color: var(--cream);
+      font-size: 0.82rem;
+      padding: 6px 8px;
+      resize: vertical;
+      min-height: 34px;
+      max-height: 96px;
+      outline: none;
+    }
+
+    .own-row .own-msg:focus {
+      border-color: var(--gold);
+    }
+
+    .own-row .own-when {
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      color: var(--steel-dim);
+    }
+
+    .own-save,
+    .own-del {
+      flex-shrink: 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 7px 10px;
+      transition: filter 0.2s, opacity 0.2s;
+    }
+
+    .own-save {
+      background: var(--grad-accent);
+      color: #16060a;
+    }
+
+    .own-del {
+      background: rgba(156, 35, 49, 0.35);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .own-save:hover,
+    .own-del:hover {
+      filter: brightness(1.15);
+    }
+
+    .own-save:disabled,
+    .own-del:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .own-ok {
+      color: #86efac;
+      font-size: 0.72rem;
+      flex-shrink: 0;
+    }
+
+    .own-empty {
+      color: var(--steel-dim);
+      font-size: 0.8rem;
+      font-style: italic;
+      padding: 8px 2px;
+    }
+
+    .own-foot {
+      margin-top: 18px;
+    }
+
+    .fb-input {
+      width: 100%;
+      background: rgba(18, 18, 21, 0.7);
+      border: 1.5px solid rgba(216, 180, 90, 0.3);
+      border-radius: var(--radius-s);
+      padding: 13px 16px;
+      color: var(--cream);
+      font-size: 0.95rem;
+      font-family: var(--font-body);
+      line-height: 1.5;
+      outline: none;
+      margin-bottom: 14px;
+      resize: vertical;
+      min-height: 96px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .fb-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(216, 180, 90, 0.15);
+    }
+
     /* ===== MUSIC PLAYER ===== */
     .mp {
       position: fixed;
@@ -2574,10 +2797,13 @@
       }
     }
 
-    /* ===== FOOTER ===== */
+    /* ===== FOOTER (nempel di bawah layar) ===== */
     footer {
-      position: relative;
-      z-index: 1;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      z-index: 900;
       flex-shrink: 0;
       border-top: 1px solid rgba(216, 180, 90, 0.22);
       padding: 28px 5vw 118px;
@@ -2588,7 +2814,7 @@
       gap: 16px;
       background:
         var(--hex-pattern),
-        rgba(10, 10, 12, 0.78);
+        rgba(10, 10, 12, 0.95);
       background-size: 56px 96px, auto;
     }
 
@@ -2754,6 +2980,74 @@
         grid-column: span 1;
       }
     }
+
+    /* ===== MOBILE PERFORMANCE: matiin efek glossy/animasi berat di HP ===== */
+    @media (max-width: 768px), (pointer: coarse) {
+
+      /* orb blur (glossy background) */
+      .orb1,
+      .orb2 {
+        display: none;
+      }
+
+      /* sweep glossy di belakang body */
+      body::after {
+        animation: none;
+        opacity: 0.3;
+        will-change: auto;
+      }
+
+      /* shine glossy di nav */
+      nav::before {
+        display: none;
+        animation: none;
+      }
+
+      /* animasi teks infinite */
+      .y-sign i {
+        animation: none;
+      }
+
+      .page-header h1 span,
+      .section-title span {
+        animation: none;
+      }
+
+      /* entrance dipertahankan, float-nya yang dibuang */
+      .hero-badge {
+        animation: fadeUp 0.7s ease both;
+      }
+
+      .hero-title {
+        animation: fadeUp 0.8s 0.1s ease both;
+        will-change: auto;
+      }
+
+      .ht-letter.accent {
+        animation: none;
+      }
+
+      /* efek halaman secret */
+      .secret-hero-ring::before {
+        animation: none;
+      }
+
+      .secret-ring-glow {
+        animation: none;
+      }
+
+      /* equalizer music player -> diam */
+      .mp-eq span {
+        animation-play-state: paused !important;
+      }
+
+      /* backdrop blur di lightbox & modal -> transparan biasa */
+      .lightbox,
+      .pw-overlay {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+    }
   </style>
 </head>
 
@@ -2768,6 +3062,9 @@
       <li><a href="#/profil" data-nav="profil">Profile</a></li>
       <li><a href="#/galeri" data-nav="galeri">Gallery</a></li>
       <li><a href="#/kontak" data-nav="kontak">Contact</a></li>
+      <li>
+        <button type="button" class="nav-owner" id="nav-owner" title="Owner login">pecel</button>
+      </li>
       <span class="nav-indicator" aria-hidden="true"></span>
     </ul>
   </nav>
@@ -3013,7 +3310,6 @@
 
           <div class="rating-card">
             <div class="rating-title">Rate This Site</div>
-            <div class="rating-sub">Tap the stars, it takes 2 seconds</div>
 
             <div class="rating-stars" id="rating-stars" role="radiogroup" aria-label="Site rating">
               <button type="button" class="star-btn" data-score="1" aria-label="1 star">&#9733;</button>
@@ -3035,6 +3331,8 @@
                 <div class="rating-count" id="rating-count">0 votes</div>
               </div>
             </div>
+
+            <button type="button" class="fb-placeholder" id="fb-open">give me feedback</button>
           </div>
         </div>
       </div>
@@ -3125,6 +3423,55 @@
       <div class="pw-actions">
         <button class="btn-outline" id="pw-cancel">Cancel</button>
         <button class="btn-primary" id="pw-submit">Unlock</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pw-overlay" id="own-overlay">
+    <div class="pw-card own-card">
+      <div class="pw-lock-badge" id="own-badge">🔑</div>
+      <h3 id="own-heading">Owner Login</h3>
+      <p id="own-subheading">Sign in as owner to edit rating &amp; feedback data</p>
+
+      <div id="own-login">
+        <input type="text" id="own-user" class="pw-input" placeholder="username" autocomplete="off"
+          spellcheck="false">
+        <input type="password" id="own-pass" class="pw-input" placeholder="password" autocomplete="off">
+        <div class="pw-error" id="own-error">Wrong username or password</div>
+        <div class="pw-actions">
+          <button class="btn-outline" id="own-cancel">Cancel</button>
+          <button class="btn-primary" id="own-login-btn">Login</button>
+        </div>
+      </div>
+
+      <div id="own-panel" hidden>
+        <div class="own-sec">
+          <h4>Ratings <span class="own-count" id="own-rating-count"></span></h4>
+          <div class="own-list" id="own-ratings"></div>
+        </div>
+        <div class="own-sec">
+          <h4>Feedback <span class="own-count" id="own-fb-count"></span></h4>
+          <div class="own-list" id="own-feedback"></div>
+        </div>
+        <div class="pw-actions own-foot">
+          <button class="btn-outline" id="own-logout">Log out</button>
+          <button class="btn-primary" id="own-close">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pw-overlay" id="fb-overlay">
+    <div class="pw-card fb-card">
+      <div class="pw-lock-badge">💬</div>
+      <h3>Give me feedback</h3>
+      <p>Say anything about this site — posted as <b>Anonymous</b>, you can send many times.</p>
+      <textarea id="fb-text" class="fb-input" rows="4" maxlength="1000"
+        placeholder="Your feedback about this site..."></textarea>
+      <div class="pw-error" id="fb-error">Write something first</div>
+      <div class="pw-actions">
+        <button class="btn-outline" id="fb-cancel">Cancel</button>
+        <button class="btn-primary" id="fb-send">Send</button>
       </div>
     </div>
   </div>
@@ -3306,7 +3653,7 @@
       });
       moveNavIndicator();
 
-      document.title = 'Excel';
+      document.title = 'exyn';
       window.scrollTo(0, 0);
 
       if (view === 'kontak' && typeof ensureRatingLoaded === 'function') ensureRatingLoaded();
@@ -3729,8 +4076,10 @@
     });
 
     /* ===== RATING (bintang kayak app ojol) ===== */
-    const RATING_KEY = 'rv-rated-v1';   // vote 1x per browser
+    const RATING_KEY = 'rv-rated-v1';   // cache vote di browser ini
     const RATING_SCORE_KEY = 'rv-my-score-v1';
+    const IP_KEY = 'rv-ip-v1';
+    const OWNER_HASH = '078319197472f315907470f49c47f597aec914f289c44b1c2cd187e141933d46';
     const starWrap = $('rating-stars');
     const starBtns = Array.prototype.slice.call(starWrap.querySelectorAll('.star-btn'));
     const ratingStatus = $('rating-status');
@@ -3740,6 +4089,24 @@
 
     let myScore = parseInt(localStorage.getItem(RATING_SCORE_KEY) || '', 10) || 0;
     let hasVoted = localStorage.getItem(RATING_KEY) === '1';
+
+    /* --- IP pengunjung: buat batas 1 IP = 1 vote --- */
+    async function getClientIp() {
+      try {
+        const r = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' });
+        const j = await r.json();
+        if (j && j.ip) {
+          localStorage.setItem(IP_KEY, j.ip);
+          return j.ip;
+        }
+      } catch (e) { /* offline / diblokir -> pakai id lokal */ }
+      let ip = localStorage.getItem(IP_KEY);
+      if (!ip) {
+        ip = 'dev-' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+        localStorage.setItem(IP_KEY, ip);
+      }
+      return ip;
+    }
 
     function paintStars(n, preview) {
       starBtns.forEach((b, i) => {
@@ -3752,6 +4119,19 @@
       ratingAvg.textContent = count ? avg.toFixed(1) : '-';
       ratingCount.textContent = count + (count === 1 ? ' vote' : ' votes');
       ratingBarFill.style.width = ((avg / 5) * 100) + '%';
+    }
+
+    function lockRating(score, saveLocal) {
+      myScore = score;
+      hasVoted = true;
+      if (saveLocal) {
+        localStorage.setItem(RATING_KEY, '1');
+        localStorage.setItem(RATING_SCORE_KEY, String(score));
+      }
+      starWrap.classList.add('locked');
+      starBtns.forEach(b => b.disabled = true);
+      paintStars(score);
+      ratingStatus.textContent = 'You rated this ' + score + ' \u2605 \u2014 thanks!';
     }
 
     async function loadRatingSummary() {
@@ -3776,11 +4156,42 @@
       }
     }
 
+    /* IP ini udah pernah vote? (dicek ke server) */
+    async function checkIpVote() {
+      if (hasVoted) return true;
+      try {
+        const ip = await getClientIp();
+        const { data, error } = await db.from('ratings').select('id,score').eq('ip', ip).limit(1);
+        if (!error && data && data.length) {
+          lockRating(Number(data[0].score) || 1, true);
+          return true;
+        }
+      } catch (e) { /* kolom ip belum ada -> biarin */ }
+      return false;
+    }
+
+    /* Kirim vote. 'dup' = IP ini udah kekunci di server */
+    async function submitVote(score, ip) {
+      // jalur 1: RPC vote_rating (batas 1 IP = 1 vote di server)
+      const rpc = await db.rpc('vote_rating', { p_score: score, p_ip: ip });
+      if (!rpc.error) return 'ok';
+      const rpcMsg = String(rpc.error.message || '');
+      if (/already voted/i.test(rpcMsg)) return 'dup';
+      if (!/vote_rating|could not find|PGRST204|does not exist/i.test(rpcMsg)) throw rpc.error;
+
+      // jalur 2: insert biasa + kolom ip (fallback pas SQL baru belum jalan)
+      const ins = await db.from('ratings').insert({ score: score, ip: ip });
+      if (!ins.error) return 'ok';
+      if (!/ip|PGRST204|column/i.test(String(ins.error.message || ''))) throw ins.error;
+
+      // jalur 3: tabel lama tanpa kolom ip
+      const old = await db.from('ratings').insert({ score: score });
+      if (old.error) throw old.error;
+      return 'ok';
+    }
+
     if (hasVoted) {
-      starWrap.classList.add('locked');
-      starBtns.forEach(b => b.disabled = true);
-      paintStars(myScore);
-      ratingStatus.textContent = 'You rated this ' + myScore + ' \u2605 \u2014 thanks!';
+      lockRating(myScore, false);
     } else {
       ratingStatus.textContent = 'Tap a star to rate';
       starBtns.forEach(b => {
@@ -3796,14 +4207,15 @@
         starBtns.forEach(x => x.disabled = true);
         ratingStatus.textContent = 'Sending...';
         try {
-          const { error } = await db.from('ratings').insert({ score: score });
-          if (error) throw error;
-          localStorage.setItem(RATING_KEY, '1');
-          localStorage.setItem(RATING_SCORE_KEY, String(score));
-          myScore = score;
-          hasVoted = true;
-          starWrap.classList.add('locked');
-          paintStars(score);
+          const ip = await getClientIp();
+          const res = await submitVote(score, ip);
+          if (res === 'dup') {
+            // udah vote dari IP ini -> kunci pakai skor asli dari server
+            const got = await checkIpVote();
+            if (!got) lockRating(score, true);
+            return;
+          }
+          lockRating(score, true);
           ratingStatus.textContent = 'You rated this ' + score + ' \u2605 \u2014 thanks!';
           loadRatingSummary(); // refresh overall (server-side)
         } catch (e) {
@@ -3820,7 +4232,348 @@
       if (ratingLoaded) return;
       ratingLoaded = true;
       loadRatingSummary();
+      if (!hasVoted) checkIpVote();
     }
+
+    /* ===== OWNER LOGIN + PANEL ADMIN ===== */
+    const ownOverlay = $('own-overlay');
+    const ownLogin = $('own-login');
+    const ownPanel = $('own-panel');
+    const ownUser = $('own-user');
+    const ownPass = $('own-pass');
+    const ownError = $('own-error');
+    const navOwner = $('nav-owner');
+
+    async function sha256Hex(text) {
+      if (!(window.crypto && crypto.subtle)) throw new Error('crypto unavailable');
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function isOwner() {
+      return sessionStorage.getItem('rv-owner-v1') === '1';
+    }
+
+    function ownShake() {
+      ownOverlay.classList.remove('error');
+      void ownOverlay.offsetWidth;
+      ownOverlay.classList.add('error');
+      ownError.classList.add('show');
+    }
+
+    function openOwn() {
+      ownError.classList.remove('show');
+      ownOverlay.classList.remove('error');
+      if (isOwner()) {
+        showOwnPanel();
+        return;
+      }
+      ownLogin.hidden = false;
+      ownPanel.hidden = true;
+      $('own-heading').textContent = 'Owner Login';
+      $('own-subheading').textContent = 'Sign in as owner to edit rating & feedback data';
+      ownUser.value = '';
+      ownPass.value = '';
+      ownOverlay.classList.add('open');
+      setTimeout(() => ownUser.focus(), 60);
+    }
+
+    function closeOwn() {
+      ownOverlay.classList.remove('open');
+      ownOverlay.classList.remove('error');
+    }
+
+    if (isOwner()) navOwner.classList.add('owner-on');
+
+    navOwner.addEventListener('click', openOwn);
+    $('own-cancel').addEventListener('click', closeOwn);
+    $('own-close').addEventListener('click', closeOwn);
+    ownOverlay.addEventListener('click', (e) => {
+      if (e.target === ownOverlay) closeOwn();
+    });
+
+    async function doOwnerLogin() {
+      const u = ownUser.value.trim().toLowerCase();
+      const p = ownPass.value;
+      if (!u || !p) {
+        ownShake();
+        return;
+      }
+      const btn = $('own-login-btn');
+      btn.disabled = true;
+      try {
+        const h = await sha256Hex(p);
+        if (u === 'pecel' && h === OWNER_HASH) {
+          sessionStorage.setItem('rv-owner-v1', '1');
+          navOwner.classList.add('owner-on');
+          ownPass.value = '';
+          showOwnPanel();
+          return;
+        }
+        ownPass.value = '';
+        ownShake();
+      } catch (e) {
+        console.warn('owner login:', e);
+        ownShake();
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    $('own-login-btn').addEventListener('click', doOwnerLogin);
+    ownPass.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') doOwnerLogin();
+    });
+    ownUser.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') ownPass.focus();
+    });
+
+    $('own-logout').addEventListener('click', () => {
+      sessionStorage.removeItem('rv-owner-v1');
+      navOwner.classList.remove('owner-on');
+      ownPanel.hidden = true;
+      ownLogin.hidden = false;
+      $('own-heading').textContent = 'Owner Login';
+      $('own-subheading').textContent = 'Sign in as owner to edit rating & feedback data';
+      ownUser.value = '';
+      ownPass.value = '';
+      ownError.classList.remove('show');
+    });
+
+    async function showOwnPanel() {
+      ownLogin.hidden = true;
+      ownPanel.hidden = false;
+      $('own-heading').textContent = 'Owner Panel';
+      $('own-subheading').textContent = 'Edit votes & feedback \u2014 saved straight to the site';
+      ownOverlay.classList.add('open');
+      await loadOwnData();
+    }
+
+    function fmtShortDate(s) {
+      try {
+        return new Date(s).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function escHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    /* --- jalur tulis khusus owner (kunci = hash password) --- */
+    async function adminUpdateRating(id, score) {
+      try {
+        const { error } = await db.rpc('admin_update_rating', {
+          p_id: id, p_score: score, p_secret: OWNER_HASH
+        });
+        if (!error) return true;
+        console.warn('admin update rating:', error);
+      } catch (e) {
+        console.warn('admin update rating:', e);
+      }
+      try { // fallback langsung (kalau policy diubah)
+        const { error } = await db.from('ratings').update({ score: score }).eq('id', id);
+        return !error;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function adminUpdateFeedback(id, message) {
+      try {
+        const { error } = await db.rpc('admin_update_feedback', {
+          p_id: id, p_message: message, p_secret: OWNER_HASH
+        });
+        if (!error) return true;
+        console.warn('admin update feedback:', error);
+      } catch (e) {
+        console.warn('admin update feedback:', e);
+      }
+      try {
+        const { error } = await db.from('feedback').update({ message: message }).eq('id', id);
+        return !error;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function adminDeleteFeedback(id) {
+      try {
+        const { error } = await db.rpc('admin_delete_feedback', {
+          p_id: id, p_secret: OWNER_HASH
+        });
+        if (!error) return true;
+        console.warn('admin delete feedback:', error);
+      } catch (e) {
+        console.warn('admin delete feedback:', e);
+      }
+      try {
+        const { error } = await db.from('feedback').delete().eq('id', id);
+        return !error;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function flashBtn(btn, label) {
+      btn.textContent = label;
+      setTimeout(() => {
+        btn.textContent = 'Save';
+      }, 1600);
+    }
+
+    async function loadOwnData() {
+      const ratBox = $('own-ratings');
+      const fbBox = $('own-feedback');
+      ratBox.innerHTML = '<div class="own-empty">Loading...</div>';
+      fbBox.innerHTML = '<div class="own-empty">Loading...</div>';
+      $('own-rating-count').textContent = '';
+      $('own-fb-count').textContent = '';
+
+      const rat = await db.from('ratings').select('id,score,created_at').order('id', { ascending: false });
+      if (rat.error) {
+        ratBox.innerHTML = '<div class="own-empty">Ratings not available yet (run the SQL)</div>';
+      } else {
+        const rows = rat.data || [];
+        $('own-rating-count').textContent = rows.length + ' votes';
+        ratBox.innerHTML = rows.length ? '' : '<div class="own-empty">No votes yet</div>';
+        rows.forEach((r) => {
+          const row = document.createElement('div');
+          row.className = 'own-row';
+          let opts = '';
+          for (let n = 1; n <= 5; n++) {
+            opts += '<option value="' + n + '"' + (Number(r.score) === n ? ' selected' : '') + '>' + n + ' \u2605</option>';
+          }
+          row.innerHTML =
+            '<span class="own-rid">#' + r.id + '</span>' +
+            '<select class="own-score" aria-label="score">' + opts + '</select>' +
+            '<span class="own-when">' + fmtShortDate(r.created_at) + '</span>' +
+            '<button type="button" class="own-save">Save</button>';
+          const btn = row.querySelector('.own-save');
+          btn.addEventListener('click', async () => {
+            const val = Number(row.querySelector('.own-score').value);
+            btn.disabled = true;
+            const ok = await adminUpdateRating(r.id, val);
+            btn.disabled = false;
+            flashBtn(btn, ok ? 'Saved' : 'Run SQL');
+            if (ok) loadRatingSummary();
+          });
+          ratBox.appendChild(row);
+        });
+      }
+
+      const fb = await db.from('feedback').select('id,message,created_at').order('id', { ascending: false });
+      if (fb.error) {
+        fbBox.innerHTML = '<div class="own-empty">Feedback not available yet (run the SQL)</div>';
+      } else {
+        const rows = fb.data || [];
+        $('own-fb-count').textContent = rows.length + ' msgs';
+        fbBox.innerHTML = rows.length ? '' : '<div class="own-empty">No feedback yet</div>';
+        rows.forEach((r) => {
+          const row = document.createElement('div');
+          row.className = 'own-row';
+          row.innerHTML =
+            '<span class="own-rid">#' + r.id + '</span>' +
+            '<textarea class="own-msg" rows="1" aria-label="feedback">' + escHtml(r.message || '') + '</textarea>' +
+            '<button type="button" class="own-save">Save</button>' +
+            '<button type="button" class="own-del">Del</button>';
+          const saveBtn = row.querySelector('.own-save');
+          const delBtn = row.querySelector('.own-del');
+          saveBtn.addEventListener('click', async () => {
+            const val = row.querySelector('.own-msg').value.trim();
+            if (!val) return;
+            saveBtn.disabled = true;
+            const ok = await adminUpdateFeedback(r.id, val);
+            saveBtn.disabled = false;
+            flashBtn(saveBtn, ok ? 'Saved' : 'Run SQL');
+          });
+          delBtn.addEventListener('click', async () => {
+            if (!confirm('Delete this feedback #' + r.id + '?')) return;
+            delBtn.disabled = true;
+            const ok = await adminDeleteFeedback(r.id);
+            if (ok) loadOwnData();
+            else {
+              delBtn.disabled = false;
+              delBtn.textContent = 'Run SQL';
+            }
+          });
+          fbBox.appendChild(row);
+        });
+      }
+    }
+
+    /* ===== FEEDBACK (anonymous, bebas berapa kali) ===== */
+    const fbOverlay = $('fb-overlay');
+    const fbText = $('fb-text');
+    const fbError = $('fb-error');
+    const fbOpenBtn = $('fb-open');
+
+    function fbShake() {
+      fbOverlay.classList.remove('error');
+      void fbOverlay.offsetWidth;
+      fbOverlay.classList.add('error');
+      fbError.classList.add('show');
+    }
+
+    fbOpenBtn.addEventListener('click', () => {
+      fbError.classList.remove('show');
+      fbOverlay.classList.remove('error');
+      fbOverlay.classList.add('open');
+      setTimeout(() => fbText.focus(), 60);
+    });
+
+    $('fb-cancel').addEventListener('click', () => fbOverlay.classList.remove('open'));
+    fbOverlay.addEventListener('click', (e) => {
+      if (e.target === fbOverlay) fbOverlay.classList.remove('open');
+    });
+
+    $('fb-send').addEventListener('click', async () => {
+      const txt = fbText.value.trim();
+      if (!txt) {
+        fbError.textContent = 'Write something first';
+        fbShake();
+        return;
+      }
+      fbError.classList.remove('show');
+      const btn = $('fb-send');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      try {
+        const { error } = await db.from('feedback').insert({ message: txt, name: 'Anonymous' });
+        if (error) throw error;
+        fbText.value = '';
+        fbOverlay.classList.remove('open');
+        fbOpenBtn.textContent = 'thanks for the feedback! \u2665';
+        setTimeout(() => {
+          fbOpenBtn.textContent = 'give me feedback';
+        }, 3000);
+      } catch (e) {
+        console.warn('feedback submit:', e);
+        fbError.textContent = 'Feedback not available yet \u2014 run the SQL in Supabase';
+        fbShake();
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send';
+      }
+    });
+
+    /* ===== FOOTER: nempel di bawah layar (kompensasi padding konten) ===== */
+    (function fitFooter() {
+      const fEl = document.querySelector('footer');
+      if (!fEl) return;
+      function fit() {
+        document.body.style.paddingBottom = fEl.offsetHeight + 'px';
+      }
+      window.addEventListener('resize', fit);
+      window.addEventListener('load', fit);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      fit();
+    })();
 
     /* ===== PASSWORD GATE ===== */
     const pwOverlay = $('pw-overlay');
@@ -3975,6 +4728,8 @@
     const SPARKLE_ICONS = ['✦', '✧', '✩', '✨', '✵'];
 
     function toggleSparkles(on) {
+      // di HP / layar sentuh: sparkle dimatiin biar nggak nge-lag
+      if (on && window.matchMedia && window.matchMedia('(pointer: coarse)').matches) on = false;
       if (on && !sparkleTimer) {
         sparkleTimer = setInterval(() => {
           if (document.hidden) return;
@@ -4020,6 +4775,8 @@
     }
 
     function toggleCarFx(on) {
+      // di HP / layar sentuh: efek mobil dimatiin biar nggak nge-lag
+      if (on && window.matchMedia && window.matchMedia('(pointer: coarse)').matches) on = false;
       if (on && !carTimer) {
         carTimer = setInterval(() => {
           if (document.hidden) return;
