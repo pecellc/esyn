@@ -386,6 +386,10 @@
       cursor: pointer;
     }
 
+    .nav-logo.owner-on {
+      filter: drop-shadow(0 0 10px rgba(216, 180, 90, 0.7));
+    }
+
     .nav-links {
       display: flex;
       gap: 4px;
@@ -435,32 +439,6 @@
     .nav-links a.active {
       color: var(--gold-soft);
       text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
-    }
-
-    .nav-owner {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: var(--font-display);
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: lowercase;
-      color: var(--rose-soft);
-      opacity: 0.65;
-      padding: 6px 9px;
-      transition: color 0.2s, opacity 0.2s, text-shadow 0.2s;
-    }
-
-    .nav-owner:hover {
-      opacity: 1;
-      color: var(--gold-soft);
-    }
-
-    .nav-owner.owner-on {
-      opacity: 1;
-      color: var(--gold);
-      text-shadow: 0 0 12px rgba(216, 180, 90, 0.6);
     }
 
     /* ===== BADGE & BUTTONS ===== */
@@ -2512,13 +2490,48 @@
       bottom: 18px;
       left: 18px;
       z-index: 6000;
-      width: min(460px, calc(100vw - 36px));
+      width: auto;
+      transform-origin: left bottom;
       background: rgba(10, 10, 12, 0.9);
       border: 1px solid rgba(216, 180, 90, 0.25);
       border-radius: 6px;
       clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
       box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7), 0 0 22px rgba(197, 48, 63, 0.2);
       overflow: hidden;
+    }
+
+    /* --- mode mini: cuma icon, menu keluar pas dipencet --- */
+    .mp:not(.open) .mp-meta,
+    .mp:not(.open) .mp-vol,
+    .mp:not(.open) #mp-list-btn,
+    .mp:not(.open) .mp-seek,
+    .mp:not(.open) .mp-list {
+      display: none;
+    }
+
+    .mp-fold {
+      display: none;
+    }
+
+    .mp.open .mp-fold {
+      display: flex;
+    }
+
+    .mp.open {
+      width: min(460px, calc(100vw - 36px));
+      animation: mpPop 0.32s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+    }
+
+    @keyframes mpPop {
+      from {
+        opacity: 0.3;
+        transform: translateX(-18px) scale(0.94);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
     }
 
     .mp::before {
@@ -2689,7 +2702,21 @@
       border-top: 1px solid rgba(216, 180, 90, 0.2);
       max-height: 210px;
       overflow-y: auto;
-      scrollbar-width: thin;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    /* tanpa scrollbar: panel admin & track list */
+    .own-card,
+    .own-list {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .mp-list::-webkit-scrollbar,
+    .own-card::-webkit-scrollbar,
+    .own-list::-webkit-scrollbar {
+      display: none;
     }
 
     .mp-list li {
@@ -2797,24 +2824,21 @@
       }
     }
 
-    /* ===== FOOTER (nempel di bawah layar) ===== */
+    /* ===== FOOTER (di bawah konten, diam di tempat) ===== */
     footer {
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      z-index: 900;
+      position: relative;
+      z-index: 1;
       flex-shrink: 0;
       border-top: 1px solid rgba(216, 180, 90, 0.22);
-      padding: 28px 5vw 118px;
+      padding: 20px 5vw 92px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 14px;
       background:
         var(--hex-pattern),
-        rgba(10, 10, 12, 0.95);
+        rgba(10, 10, 12, 0.8);
       background-size: 56px 96px, auto;
     }
 
@@ -2934,6 +2958,9 @@
       .mp {
         left: 12px;
         bottom: 12px;
+      }
+
+      .mp.open {
         width: calc(100vw - 24px);
       }
 
@@ -2981,73 +3008,6 @@
       }
     }
 
-    /* ===== MOBILE PERFORMANCE: matiin efek glossy/animasi berat di HP ===== */
-    @media (max-width: 768px), (pointer: coarse) {
-
-      /* orb blur (glossy background) */
-      .orb1,
-      .orb2 {
-        display: none;
-      }
-
-      /* sweep glossy di belakang body */
-      body::after {
-        animation: none;
-        opacity: 0.3;
-        will-change: auto;
-      }
-
-      /* shine glossy di nav */
-      nav::before {
-        display: none;
-        animation: none;
-      }
-
-      /* animasi teks infinite */
-      .y-sign i {
-        animation: none;
-      }
-
-      .page-header h1 span,
-      .section-title span {
-        animation: none;
-      }
-
-      /* entrance dipertahankan, float-nya yang dibuang */
-      .hero-badge {
-        animation: fadeUp 0.7s ease both;
-      }
-
-      .hero-title {
-        animation: fadeUp 0.8s 0.1s ease both;
-        will-change: auto;
-      }
-
-      .ht-letter.accent {
-        animation: none;
-      }
-
-      /* efek halaman secret */
-      .secret-hero-ring::before {
-        animation: none;
-      }
-
-      .secret-ring-glow {
-        animation: none;
-      }
-
-      /* equalizer music player -> diam */
-      .mp-eq span {
-        animation-play-state: paused !important;
-      }
-
-      /* backdrop blur di lightbox & modal -> transparan biasa */
-      .lightbox,
-      .pw-overlay {
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-      }
-    }
   </style>
 </head>
 
@@ -3056,15 +3016,12 @@
   <div class="orb2"></div>
 
   <nav>
-    <div class="nav-logo" id="nav-logo" onclick="location.hash='#/home'">Pecel</div>
+    <div class="nav-logo" id="nav-logo" title="Owner login">Pecel</div>
     <ul class="nav-links">
       <li><a href="#/home" data-nav="home" class="active">Home</a></li>
       <li><a href="#/profil" data-nav="profil">Profile</a></li>
       <li><a href="#/galeri" data-nav="galeri">Gallery</a></li>
       <li><a href="#/kontak" data-nav="kontak">Contact</a></li>
-      <li>
-        <button type="button" class="nav-owner" id="nav-owner" title="Owner login">pecel</button>
-      </li>
       <span class="nav-indicator" aria-hidden="true"></span>
     </ul>
   </nav>
@@ -3402,6 +3359,7 @@
         <input type="range" id="mp-volume" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
       </div>
       <button class="mp-mini" id="mp-list-btn" aria-label="Track list">☰</button>
+      <button class="mp-mini mp-fold" id="mp-fold" aria-label="Collapse player">&#9662;</button>
     </div>
     <div class="mp-seek">
       <span class="mp-time" id="mp-time" title="Click to restart">0:00</span>
@@ -3800,7 +3758,26 @@
       });
     }
 
-    $('mp-play').addEventListener('click', togglePlay);
+    $('mp-play').addEventListener('click', () => {
+      const wasOpen = mpBox.classList.contains('open');
+      if (!wasOpen) mpBox.classList.add('open'); // menu slide keluar pas dipencet
+      if (!wasOpen && !audio.paused) {
+        // musik lagi jalan -> cukup buka menunya, jangan langsung pause
+        if (audio.muted) {
+          audio.muted = false;
+          mpVolume.value = audio.volume;
+          setRangeFill(mpVolume);
+          updateVolIcon();
+        }
+        updateMpUI();
+        return;
+      }
+      togglePlay(); // buka + nyalain, atau play/pause biasa kalo menu udah kebuka
+    });
+    $('mp-fold').addEventListener('click', () => {
+      mpBox.classList.remove('open');
+      $('mp-list').hidden = true;
+    });
     $('mp-prev').addEventListener('click', () => {
       if (audio.currentTime > 3) {
         audio.currentTime = 0;
@@ -4242,7 +4219,7 @@
     const ownUser = $('own-user');
     const ownPass = $('own-pass');
     const ownError = $('own-error');
-    const navOwner = $('nav-owner');
+    const navLogo = $('nav-logo');
 
     async function sha256Hex(text) {
       if (!(window.crypto && crypto.subtle)) throw new Error('crypto unavailable');
@@ -4283,9 +4260,9 @@
       ownOverlay.classList.remove('error');
     }
 
-    if (isOwner()) navOwner.classList.add('owner-on');
+    if (isOwner()) navLogo.classList.add('owner-on');
 
-    navOwner.addEventListener('click', openOwn);
+    navLogo.addEventListener('click', openOwn);
     $('own-cancel').addEventListener('click', closeOwn);
     $('own-close').addEventListener('click', closeOwn);
     ownOverlay.addEventListener('click', (e) => {
@@ -4305,7 +4282,7 @@
         const h = await sha256Hex(p);
         if (u === 'pecel' && h === OWNER_HASH) {
           sessionStorage.setItem('rv-owner-v1', '1');
-          navOwner.classList.add('owner-on');
+          navLogo.classList.add('owner-on');
           ownPass.value = '';
           showOwnPanel();
           return;
@@ -4330,7 +4307,7 @@
 
     $('own-logout').addEventListener('click', () => {
       sessionStorage.removeItem('rv-owner-v1');
-      navOwner.classList.remove('owner-on');
+      navLogo.classList.remove('owner-on');
       ownPanel.hidden = true;
       ownLogin.hidden = false;
       $('own-heading').textContent = 'Owner Login';
@@ -4562,19 +4539,6 @@
       }
     });
 
-    /* ===== FOOTER: nempel di bawah layar (kompensasi padding konten) ===== */
-    (function fitFooter() {
-      const fEl = document.querySelector('footer');
-      if (!fEl) return;
-      function fit() {
-        document.body.style.paddingBottom = fEl.offsetHeight + 'px';
-      }
-      window.addEventListener('resize', fit);
-      window.addEventListener('load', fit);
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-      fit();
-    })();
-
     /* ===== PASSWORD GATE ===== */
     const pwOverlay = $('pw-overlay');
     const pwInput = $('pw-input');
@@ -4728,8 +4692,6 @@
     const SPARKLE_ICONS = ['✦', '✧', '✩', '✨', '✵'];
 
     function toggleSparkles(on) {
-      // di HP / layar sentuh: sparkle dimatiin biar nggak nge-lag
-      if (on && window.matchMedia && window.matchMedia('(pointer: coarse)').matches) on = false;
       if (on && !sparkleTimer) {
         sparkleTimer = setInterval(() => {
           if (document.hidden) return;
@@ -4775,8 +4737,6 @@
     }
 
     function toggleCarFx(on) {
-      // di HP / layar sentuh: efek mobil dimatiin biar nggak nge-lag
-      if (on && window.matchMedia && window.matchMedia('(pointer: coarse)').matches) on = false;
       if (on && !carTimer) {
         carTimer = setInterval(() => {
           if (document.hidden) return;
