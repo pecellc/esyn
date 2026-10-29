@@ -2997,6 +2997,62 @@
       }
     }
 
+    /* ===== MATIIN FX BERAT DI HP (biar nggak ngelag) =====
+       Kondisinya sama kayak HEAVY_FX_OFF di script: layar sempit ATAU layar sentuh,
+       jadi HP landscape / tablet touch juga kena, bukan cuma portrait */
+    @media (max-width: 640px), (pointer: coarse) {
+
+      /* mobil & cash spam dari JS juga dimatiin di script (toggleCarFx/toggleSparkles) */
+      .car-fx,
+      .sparkle-fx {
+        display: none !important;
+      }
+
+      /* gloss sweep: layer fixed segede layar, di-repaint terus 9 detik sekali */
+      body::after {
+        display: none;
+      }
+
+      /* orb blur 500px + drift animation: boros compositor */
+      .orb1,
+      .orb2 {
+        display: none;
+      }
+
+      /* shine navbar jalan tanpa henti */
+      nav::before {
+        animation: none;
+        opacity: 0;
+      }
+
+      /* teks PECEL cukup muncul sekali, nggak usah ngambang.
+         will-change dibuang: layer GPU permanen buat float yang udah dimatiin */
+      .hero-title {
+        animation: fadeUp 0.8s 0.1s ease both;
+        will-change: auto;
+      }
+
+      .hero-badge {
+        animation: fadeUp 0.7s ease both;
+      }
+
+      /* pulse/shimmer/ring-spin: nge-paint text & pseudo terus-terusan */
+      .ht-letter.accent,
+      .y-sign i,
+      .page-header h1 span,
+      .section-title span,
+      .secret-hero-ring::before {
+        animation: none;
+      }
+
+      /* backdrop blur di overlay kartu: buang di HP (latar udah near-opaque,
+         blur-nya hampir keliatan nol tapi GPU-nya jalan terus pas modal open) */
+      .lightbox,
+      .pw-overlay {
+        backdrop-filter: none;
+      }
+    }
+
     @media (max-width: 380px) {
       .nav-links a {
         font-size: 0.7rem;
@@ -3616,7 +3672,14 @@
       moveNavIndicator();
 
       document.title = 'exyn';
+      /* scroll instant: kalo pake scroll-behavior smooth, seluruh halaman
+         (mis. galeri ratusan px) di-animate pas ganti view sambil swipe
+         animation jalan -> dobel animasi = jank di HP */
+      const _de = document.documentElement;
+      const _prevSb = _de.style.scrollBehavior;
+      _de.style.scrollBehavior = 'auto';
       window.scrollTo(0, 0);
+      _de.style.scrollBehavior = _prevSb;
 
       if (view === 'kontak' && typeof ensureRatingLoaded === 'function') ensureRatingLoaded();
 
@@ -3635,12 +3698,14 @@
         video.pause();
       }
 
-      if (view === 'zx7k9q') {
-        document.querySelectorAll('.secret-video').forEach(v => {
+      document.querySelectorAll('.secret-video').forEach(v => {
+        if (view === 'zx7k9q') {
           v.muted = true;
           if (v.paused) v.play().catch(() => { });
-        });
-      }
+        } else if (!v.paused) {
+          v.pause(); // keluar dari halaman -> berhenti, jangan ngedecode di belakang layar
+        }
+      });
 
       toggleSparkles(view === 'profil' || view === 'hobi');
       toggleCarFx(view === 'home');
@@ -3660,7 +3725,17 @@
       ind.style.top = a.offsetTop + 'px';
       ind.style.transform = 'translateX(' + a.offsetLeft + 'px)';
     }
-    window.addEventListener('resize', moveNavIndicator);
+    /* resize di HP nyala tiap URL bar muncul/menghilang -> di-debounce rAF
+       biar moveNavIndicator (baca offsetWidth/offsetTop = forced reflow)
+       nggak jalan berulang-ulang */
+    let navIndRaf = 0;
+    window.addEventListener('resize', () => {
+      if (navIndRaf) return;
+      navIndRaf = requestAnimationFrame(() => {
+        navIndRaf = 0;
+        moveNavIndicator();
+      });
+    });
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(moveNavIndicator);
     }
@@ -4666,15 +4741,17 @@
           const v = document.createElement('video');
           v.className = 'secret-video';
           setMedia(v, it.src);
-          v.autoplay = true;
           v.loop = true;
           v.muted = true;
           v.playsInline = true;
-          v.preload = 'auto';
+          /* Jangan autoplay/prefetch di init: view-nya display:none, jadi
+             videonya muter + full download tanpa keliatan -> nguras CPU,
+             baterai, dan bandwidth buat halaman yang belum tentu dibuka.
+             route() yang play pas masuk & pause pas keluar halaman secret. */
+          v.preload = 'metadata';
           attachVideoRetry(v, 5);
           frame.appendChild(ph);
           frame.appendChild(v);
-          v.play().catch(() => { });
         } else {
           const img = document.createElement('img');
           setMedia(img, it.src);
@@ -4691,11 +4768,16 @@
 
     attachImgRetry($('secret-photo-1'), 6);
 
+    /* ===== FX BERAT: DIOFFKAN DI HP (touch/layar sempit) ===== */
+    const HEAVY_FX_OFF = !!(window.matchMedia &&
+      window.matchMedia('(max-width: 640px), (pointer: coarse)').matches);
+
     /* ===== SPARKLES ===== */
     let sparkleTimer = null;
     const SPARKLE_ICONS = ['✦', '✧', '✩', '✨', '✵'];
 
     function toggleSparkles(on) {
+      if (HEAVY_FX_OFF) on = false;
       if (on && !sparkleTimer) {
         sparkleTimer = setInterval(() => {
           if (document.hidden) return;
@@ -4741,6 +4823,7 @@
     }
 
     function toggleCarFx(on) {
+      if (HEAVY_FX_OFF) on = false;
       if (on && !carTimer) {
         carTimer = setInterval(() => {
           if (document.hidden) return;
