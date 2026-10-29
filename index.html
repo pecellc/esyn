@@ -2111,6 +2111,10 @@
       background: rgba(18, 18, 21, 0.5);
       padding: 10px;
       transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      /* sama kayak .gallery-item: frame di luar layar nggak di-layout/di-paint —
+         halaman ini ada 9 foto + 1 video, kerasa banget pas scroll di HP */
+      content-visibility: auto;
+      contain-intrinsic-size: auto 320px;
     }
 
     .secret-frame:hover {
@@ -2311,14 +2315,14 @@
     }
 
     .own-card h3,
-    .own-card > p,
+    .own-card>p,
     .fb-card h3,
-    .fb-card > p {
+    .fb-card>p {
       text-align: center;
     }
 
-    .own-card > p,
-    .fb-card > p {
+    .own-card>p,
+    .fb-card>p {
       font-size: 0.86rem;
       color: var(--cream-dim);
       margin-bottom: 16px;
@@ -3000,7 +3004,8 @@
     /* ===== MATIIN FX BERAT DI HP (biar nggak ngelag) =====
        Kondisinya sama kayak HEAVY_FX_OFF di script: layar sempit ATAU layar sentuh,
        jadi HP landscape / tablet touch juga kena, bukan cuma portrait */
-    @media (max-width: 640px), (pointer: coarse) {
+    @media (max-width: 640px),
+    (pointer: coarse) {
 
       /* mobil & cash spam dari JS juga dimatiin di script (toggleCarFx/toggleSparkles) */
       .car-fx,
@@ -3036,12 +3041,13 @@
         animation: fadeUp 0.7s ease both;
       }
 
-      /* pulse/shimmer/ring-spin: nge-paint text & pseudo terus-terusan */
+      /* pulse/shimmer/ring-spin/glow: nge-paint text & pseudo terus-terusan */
       .ht-letter.accent,
       .y-sign i,
       .page-header h1 span,
       .section-title span,
-      .secret-hero-ring::before {
+      .secret-hero-ring::before,
+      .secret-ring-glow {
         animation: none;
       }
 
@@ -3067,7 +3073,6 @@
         grid-column: span 1;
       }
     }
-
   </style>
 </head>
 
@@ -3452,8 +3457,7 @@
       <p id="own-subheading">Sign in as owner to edit rating &amp; feedback data</p>
 
       <div id="own-login">
-        <input type="text" id="own-user" class="pw-input" placeholder="username" autocomplete="off"
-          spellcheck="false">
+        <input type="text" id="own-user" class="pw-input" placeholder="username" autocomplete="off" spellcheck="false">
         <input type="password" id="own-pass" class="pw-input" placeholder="password" autocomplete="off">
         <div class="pw-error" id="own-error">Wrong username or password</div>
         <div class="pw-actions">
@@ -4934,6 +4938,26 @@
     buildTrackList();
     buildGallery();
     buildSecret();
+
+    /* ===== VIDEO OFFSCREEN: pause pas keluar layar =====
+       Video loop (rubik & 6.mp4 di hidden page) tetap ngedecode walaupun
+       nggak keliatan -> CPU/baterai terkuras, scroll jadi nge-lag di HP.
+       Pause kalau di luar viewport, main lagi kalau view-nya aktif & masuk layar. */
+    if ('IntersectionObserver' in window) {
+      const vidObs = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          const v = en.target;
+          const view = v.closest('.view');
+          if (!en.isIntersecting) {
+            if (!v.paused) v.pause();
+          } else if (view && view.classList.contains('active') && v.paused) {
+            v.play().catch(() => { });
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.secret-video, #rubik-video').forEach(v => vidObs.observe(v));
+    }
+
     updateLockBtn();
     setRangeFill(vidProgress);
     route();
