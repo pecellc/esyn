@@ -3688,17 +3688,8 @@
       if (view === 'kontak' && typeof ensureRatingLoaded === 'function') ensureRatingLoaded();
 
       const video = $('rubik-video');
-      if (view === 'hobi' && video) {
-        if (video.paused) {
-          const p = video.play();
-          if (p && typeof p.catch === 'function') {
-            p.catch(() => {
-              video.muted = true;
-              safePlay(video);
-            });
-          }
-        }
-      } else if (view !== 'hobi' && video && !video.paused) {
+      /* jangan autoplay: biarin berhenti dulu, cuma main kalau user pencet play */
+      if (view !== 'hobi' && video && !video.paused) {
         video.pause();
       }
 
@@ -4725,12 +4716,9 @@
         { n: 1, src: 'img/3.jpg' },
         { n: 2, src: 'img/10.jpg' },
         { n: 3, src: 'img/2.jpg' },
-        { n: 4, src: 'img/5.jpg' },
-        { n: 5, src: 'img/6.mp4', video: true },
-        { n: 6, src: 'img/4.png' },
-        { n: 7, src: 'img/12.jpg' },
-        { n: 8, src: 'img/9.jpg' },
-        { n: 9, src: 'img/11.jpg' }
+        { n: 4, src: 'img/12.jpg' },
+        { n: 5, src: 'img/9.jpg' },
+        { n: 6, src: 'img/11.jpg' }
       ];
 
       items.forEach((it) => {
@@ -4940,19 +4928,14 @@
     buildSecret();
 
     /* ===== VIDEO OFFSCREEN: pause pas keluar layar =====
-       Video loop (rubik & 6.mp4 di hidden page) tetap ngedecode walaupun
-       nggak keliatan -> CPU/baterai terkuras, scroll jadi nge-lag di HP.
-       Pause kalau di luar viewport, main lagi kalau view-nya aktif & masuk layar. */
+       Video loop (rubik) tetap ngedecode walaupun nggak keliatan -> CPU/baterai
+       terkuras, scroll jadi nge-lag di HP. Pause kalau di luar viewport —
+       jangan di-play-in lagi otomatis (rubik harusnya cuma jalan kalo user
+       pencet play, tombol play-nya ikut ke-update via event 'pause'). */
     if ('IntersectionObserver' in window) {
       const vidObs = new IntersectionObserver((entries) => {
         entries.forEach((en) => {
-          const v = en.target;
-          const view = v.closest('.view');
-          if (!en.isIntersecting) {
-            if (!v.paused) v.pause();
-          } else if (view && view.classList.contains('active') && v.paused) {
-            v.play().catch(() => { });
-          }
+          if (!en.isIntersecting && !en.target.paused) en.target.pause();
         });
       }, { threshold: 0.15 });
       document.querySelectorAll('.secret-video, #rubik-video').forEach(v => vidObs.observe(v));
