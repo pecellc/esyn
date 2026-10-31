@@ -1347,6 +1347,69 @@
       flex-shrink: 0;
     }
 
+    /* kartu link IG — video rubik diganti link, embed video bikin lag di HP */
+    .watch-ig-card {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 22px;
+      text-decoration: none;
+      color: inherit;
+      background: var(--card);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-l);
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      transition: transform 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+
+    .watch-ig-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--line-gold);
+      background: var(--card-strong);
+      box-shadow: 0 14px 36px rgba(10, 10, 12, 0.5), 0 0 22px rgba(214, 36, 159, 0.18);
+    }
+
+    .watch-ig-icon {
+      width: 54px;
+      height: 54px;
+      flex-shrink: 0;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      color: #fff;
+      background: radial-gradient(circle at 30% 110%, #fdf497 0%, #fd5949 45%, #d6249f 62%, #285aeb 95%);
+      box-shadow: 0 8px 22px rgba(214, 36, 159, 0.35);
+    }
+
+    .watch-ig-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .watch-ig-text b {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 3px;
+    }
+
+    .watch-ig-text small {
+      font-size: 0.78rem;
+      color: var(--cream-dim);
+    }
+
+    .watch-ig-arrow {
+      flex-shrink: 0;
+      color: var(--gold-soft);
+      font-size: 1.15rem;
+    }
+
     .lock-btn {
       width: 56px;
       height: 56px;
@@ -3217,17 +3280,15 @@
         </div>
 
         <div class="video-row">
-          <div class="video-card">
-            <video id="rubik-video" src="https://cdn.jsdelivr.net/gh/pecellc/esyn@main/img/rubik.mp4"
-              data-local-src="img/rubik.mp4" preload="metadata" playsinline muted></video>
-            <div class="video-controls">
-              <button class="vc-btn" id="vid-play" title="Play / Pause" aria-label="Play or pause">▶</button>
-              <span class="vc-time" id="vid-time">0:00 / 0:00</span>
-              <input type="range" class="range-progress" id="vid-progress" min="0" max="1000" step="1" value="0"
-                aria-label="Video progress">
-              <button class="vc-btn" id="vid-fs" title="Fullscreen" aria-label="Fullscreen">⛶</button>
-            </div>
-          </div>
+          <a class="watch-ig-card" href="https://www.instagram.com/couldrnt/" target="_blank" rel="noopener"
+            aria-label="Watch my Rubik's videos on Instagram">
+            <span class="watch-ig-icon" aria-hidden="true">▶</span>
+            <span class="watch-ig-text">
+              <b>Watch my solves on Instagram</b>
+              <small>Video rubik ada di @couldrnt — klik buat buka</small>
+            </span>
+            <span class="watch-ig-arrow" aria-hidden="true">↗</span>
+          </a>
 
           <div class="video-side">
             <button class="lock-btn" id="lock-btn" title="Hidden page" aria-label="Hidden page">🔒</button>
@@ -3687,21 +3748,6 @@
 
       if (view === 'kontak' && typeof ensureRatingLoaded === 'function') ensureRatingLoaded();
 
-      const video = $('rubik-video');
-      /* jangan autoplay: biarin berhenti dulu, cuma main kalau user pencet play */
-      if (view !== 'hobi' && video && !video.paused) {
-        video.pause();
-      }
-
-      document.querySelectorAll('.secret-video').forEach(v => {
-        if (view === 'zx7k9q') {
-          v.muted = true;
-          if (v.paused) v.play().catch(() => { });
-        } else if (!v.paused) {
-          v.pause(); // keluar dari halaman -> berhenti, jangan ngedecode di belakang layar
-        }
-      });
-
       toggleSparkles(view === 'profil' || view === 'hobi');
       toggleCarFx(view === 'home');
     }
@@ -3988,54 +4034,15 @@
       window.addEventListener('keydown', unlock);
     }
 
-    /* ===== VIDEO CONTROLS ===== */
-    const video = $('rubik-video');
-    const vidProgress = $('vid-progress');
-    let seeking = false;
-
+    /* ===== VIDEO RUBIK DIHAPUS — DIGANTI LINK INSTAGRAM =====
+       Embed video bikin lag di HP, jadi halaman hobi sekarang cuma nampilin
+       kartu link ke IG. fmtTime tetep dipake sama music player. */
     function fmtTime(s) {
       if (!isFinite(s) || s < 0) return '0:00';
       const m = Math.floor(s / 60);
       const sec = Math.floor(s % 60).toString().padStart(2, '0');
       return m + ':' + sec;
     }
-
-    function updateVideoTime() {
-      $('vid-time').textContent = fmtTime(video.currentTime) + ' / ' + fmtTime(video.duration);
-      if (!seeking) {
-        const pct = video.duration ? (video.currentTime / video.duration) * 1000 : 0;
-        vidProgress.value = pct;
-        setRangeFill(vidProgress);
-      }
-    }
-
-    $('vid-play').addEventListener('click', () => {
-      if (video.paused) safePlay(video);
-      else video.pause();
-    });
-
-    video.addEventListener('play', () => $('vid-play').textContent = '❚❚');
-    video.addEventListener('pause', () => $('vid-play').textContent = '▶');
-    video.addEventListener('loadedmetadata', updateVideoTime);
-    video.addEventListener('timeupdate', updateVideoTime);
-    video.addEventListener('ended', () => $('vid-play').textContent = '▶');
-
-    vidProgress.addEventListener('pointerdown', () => seeking = true);
-    vidProgress.addEventListener('pointerup', () => seeking = false);
-    window.addEventListener('pointerup', () => seeking = false);
-    vidProgress.addEventListener('input', () => {
-      setRangeFill(vidProgress);
-      if (video.duration) {
-        video.currentTime = (vidProgress.value / 1000) * video.duration;
-      }
-    });
-
-    $('vid-fs').addEventListener('click', () => {
-      const el = video.parentElement;
-      if (document.fullscreenElement) document.exitFullscreen();
-      else if (el.requestFullscreen) el.requestFullscreen();
-      else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
-    });
 
     /* ===== GALERI ===== */
     function buildGallery() {
@@ -4922,27 +4929,10 @@
     // Media statis di HTML juga dikasih jaring pengaman
     attachImgRetry($('avatar-img'), 6);
     document.querySelectorAll('.contact-icon').forEach(el => attachImgRetry(el, 6));
-    attachVideoRetry($('rubik-video'), 5);
     buildTrackList();
     buildGallery();
     buildSecret();
-
-    /* ===== VIDEO OFFSCREEN: pause pas keluar layar =====
-       Video loop (rubik) tetap ngedecode walaupun nggak keliatan -> CPU/baterai
-       terkuras, scroll jadi nge-lag di HP. Pause kalau di luar viewport —
-       jangan di-play-in lagi otomatis (rubik harusnya cuma jalan kalo user
-       pencet play, tombol play-nya ikut ke-update via event 'pause'). */
-    if ('IntersectionObserver' in window) {
-      const vidObs = new IntersectionObserver((entries) => {
-        entries.forEach((en) => {
-          if (!en.isIntersecting && !en.target.paused) en.target.pause();
-        });
-      }, { threshold: 0.15 });
-      document.querySelectorAll('.secret-video, #rubik-video').forEach(v => vidObs.observe(v));
-    }
-
     updateLockBtn();
-    setRangeFill(vidProgress);
     route();
 
     // Musik ditunda biar nggak rebutan bandwidth sama foto
