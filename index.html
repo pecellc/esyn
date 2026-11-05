@@ -6135,7 +6135,7 @@
           <div class="lb-head">
             <div>
               <div class="sec-eyebrow">✦ Public leaderboard</div>
-              <h3 class="lb-title">Time to beat <b>13.95s</b></h3>
+              <h3 class="lb-title">Time to beat <b id="lb-beat">13.95s</b></h3>
             </div>
             <span class="lb-status" id="lb-status">loading…</span>
           </div>
@@ -9173,8 +9173,9 @@
         lbRows = [];
         lbOffline = true;
       }
-      // benchmark 13.95s selalu ada, walaupun seed SQL belum jalan
-      const hasBench = lbRows.some(r => r.player_id === 'excel' || String(r.name).toLowerCase() === 'excel');
+      // benchmark 13.95s selalu ada, walaupun seed SQL belum jalan.
+      // Cek player_id, bukan nama — pemain lain boleh saja bernama "excel".
+      const hasBench = lbRows.some(r => r.player_id === 'excel');
       if (!hasBench) lbRows.push({
         player_id: 'excel', name: 'excel', best_ms: RB_BENCH_MS, virtual: true
       });
@@ -9201,6 +9202,11 @@
       if (status) {
         status.textContent = lbOffline ? 'offline' : 'live';
         status.classList.toggle('off', lbOffline);
+      }
+      const beatEl = $('lb-beat');
+      if (beatEl) {
+        const bench = lbRows.find(r => r.player_id === 'excel');
+        beatEl.textContent = fmtMs(bench ? bench.best_ms : RB_BENCH_MS) + 's';
       }
       if (!lbRows.length) {
         list.innerHTML = '<li class="lb-empty">No times yet — be the first.</li>';
