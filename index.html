@@ -4333,6 +4333,336 @@
       }
     }
 
+    /* ===== TIMER PLAYER + LEADERBOARD ===== */
+    .timer-player {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      padding: 12px 14px;
+      background: rgba(10, 10, 12, 0.45);
+      box-shadow: inset 0 0 0 1px rgba(216, 180, 90, 0.18);
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    }
+
+    .tp-label {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+    }
+
+    .tp-input {
+      flex: 1 1 180px;
+      min-width: 0;
+      padding: 10px 12px;
+      background: #0e0e11;
+      color: var(--cream);
+      font-family: inherit;
+      font-size: 0.9rem;
+      border: 1px solid rgba(216, 180, 90, 0.22);
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .tp-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(216, 180, 90, 0.12);
+    }
+
+    .tp-input.need {
+      animation: tpShake 0.4s;
+      border-color: var(--velvet-400);
+    }
+
+    @keyframes tpShake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      75% {
+        transform: translateX(5px);
+      }
+    }
+
+    .tp-btn {
+      padding: 10px 18px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: #1a070c;
+      background: linear-gradient(100deg, var(--gold), #e6c87a);
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      transition: filter 0.2s;
+    }
+
+    .tp-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .tp-hint {
+      flex: 1 1 100%;
+      font-size: 0.72rem;
+      letter-spacing: 0.3px;
+      color: var(--steel-dim);
+    }
+
+    .tp-hint.ok {
+      color: #7ee0a3;
+    }
+
+    .lb-card {
+      position: relative;
+      margin-top: 24px;
+      padding: 26px 26px 20px;
+      background: var(--card);
+      border: 1px solid rgba(216, 180, 90, 0.24);
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    }
+
+    .lb-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 26px;
+      width: 54px;
+      height: 3px;
+      background: var(--grad-accent);
+    }
+
+    .lb-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .lb-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 3vw, 1.6rem);
+      font-weight: 800;
+    }
+
+    .lb-title b {
+      color: var(--gold-soft);
+      font-family: var(--font-hero);
+      font-style: normal;
+      letter-spacing: 0.5px;
+    }
+
+    .lb-status {
+      font-size: 0.6rem;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: #7ee0a3;
+      padding: 5px 10px;
+      border: 1px solid rgba(126, 224, 163, 0.35);
+      background: rgba(126, 224, 163, 0.08);
+    }
+
+    .lb-status.off {
+      color: #e0a37e;
+      border-color: rgba(224, 163, 126, 0.4);
+      background: rgba(224, 163, 126, 0.08);
+    }
+
+    .lb-list {
+      list-style: none;
+      margin-top: 16px;
+    }
+
+    .lb-row {
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 8px;
+      border-top: 1px solid rgba(255, 250, 245, 0.07);
+    }
+
+    .lb-row:first-child {
+      border-top: none;
+    }
+
+    .lb-rank {
+      font-family: var(--font-hero);
+      font-size: 0.9rem;
+      color: var(--steel-dim);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .lb-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .lb-time {
+      font-family: var(--font-hero);
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      font-variant-numeric: tabular-nums;
+      color: var(--cream);
+    }
+
+    .lb-row.lb-top1 {
+      background: linear-gradient(90deg, rgba(216, 180, 90, 0.12), transparent 70%);
+    }
+
+    .lb-row.lb-top1 .lb-rank,
+    .lb-row.lb-top1 .lb-time {
+      color: var(--gold-soft);
+    }
+
+    .lb-row.lb-you {
+      background: rgba(197, 48, 63, 0.14);
+      box-shadow: inset 2px 0 0 var(--velvet-400);
+    }
+
+    .lb-tag {
+      font-style: normal;
+      font-size: 0.52rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      border: 1px solid rgba(216, 180, 90, 0.4);
+      padding: 2px 6px;
+      margin-left: 6px;
+      vertical-align: 2px;
+    }
+
+    .lb-tag-you {
+      color: #ffb3bd;
+      border-color: rgba(197, 48, 63, 0.55);
+    }
+
+    .lb-empty,
+    .lb-gap {
+      padding: 16px 8px;
+      color: var(--steel-dim);
+      font-size: 0.82rem;
+      list-style: none;
+    }
+
+    .lb-gap {
+      text-align: center;
+      letter-spacing: 4px;
+    }
+
+    .lb-note {
+      margin-top: 14px;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      color: var(--steel-dim);
+    }
+
+    /* ===== ADMIN TEXT EDITOR ===== */
+    body.editing-text [data-edit] {
+      outline: 2px dashed rgba(216, 180, 90, 0.6);
+      outline-offset: 5px;
+      border-radius: 3px;
+      cursor: text;
+      transition: outline-color 0.2s, background 0.2s;
+    }
+
+    body.editing-text [data-edit]:hover {
+      outline-color: var(--gold);
+      background: rgba(216, 180, 90, 0.07);
+    }
+
+    body.editing-text [data-edit]:focus {
+      outline-style: solid;
+      outline-color: var(--gold);
+      background: rgba(216, 180, 90, 0.09);
+    }
+
+    .edit-bar {
+      position: fixed;
+      left: 50%;
+      bottom: 160px;
+      transform: translate(-50%, 18px);
+      z-index: 1250;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: rgba(12, 12, 15, 0.96);
+      border: 1px solid rgba(216, 180, 90, 0.4);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+    }
+
+    .edit-bar.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+
+    .edit-bar-txt {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      padding: 0 6px;
+    }
+
+    .edit-save,
+    .edit-cancel {
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 9px 14px;
+    }
+
+    .edit-save {
+      background: var(--grad-accent);
+      color: #fff;
+    }
+
+    .edit-cancel {
+      background: transparent;
+      color: var(--cream-dim);
+      box-shadow: inset 0 0 0 1px rgba(255, 250, 245, 0.2);
+    }
+
+    .own-hint {
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--steel-dim);
+      margin-bottom: 12px;
+    }
+
+    .own-edit-btn {
+      width: 100%;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 900px) {
       .profile-card {
@@ -4523,6 +4853,58 @@
 
       .footer-mid {
         gap: 10px 14px;
+      }
+
+      .timer-player {
+        padding: 10px 12px;
+      }
+
+      .tp-label {
+        flex: 1 1 100%;
+      }
+
+      .tp-input {
+        flex: 1 1 120px;
+      }
+
+      .tp-btn {
+        padding: 10px 14px;
+      }
+
+      .tp-hint {
+        font-size: 0.68rem;
+      }
+
+      .lb-card {
+        padding: 22px 18px 18px;
+      }
+
+      .lb-row {
+        grid-template-columns: 24px minmax(0, 1fr) auto;
+        gap: 8px;
+        padding: 10px 4px;
+      }
+
+      .lb-time {
+        font-size: 0.92rem;
+      }
+
+      .edit-bar {
+        left: 12px;
+        right: 12px;
+        bottom: 150px;
+        transform: translateY(18px);
+        justify-content: space-between;
+      }
+
+      .edit-bar.show {
+        transform: translateY(0);
+      }
+
+      .edit-bar-txt {
+        font-size: 0.6rem;
+        letter-spacing: 1px;
+        padding: 0 2px;
       }
     }
 
@@ -4817,9 +5199,9 @@
         <div class="y-sign" aria-hidden="true"><i></i><i></i><i></i></div>
         <div class="hero-badge">✦ Welcome</div>
         <h1 class="hero-title" id="hero-title"><span class="accent">pecel</span></h1>
-        <p class="hero-desc">
+        <p class="hero-desc" data-edit="home.hero-desc">
           Student by day, camera and cube by night. I chase languages, take way too many photos
-          of Bandung, and try to solve a Rubik's cube before my tea goes cold.
+          of Bandung, and try to solve a Rubik's cube before my tea goes cold. anjay
         </p>
         <div class="hero-btns">
           <a href="#/profil" class="btn-primary" id="meet-me-btn">Meet Me</a>
@@ -4850,7 +5232,7 @@
             <div class="stat-label">Photos in gallery</div>
           </div>
           <div class="stat" data-reveal>
-            <div class="stat-num stat-words">Sub-30</div>
+            <div class="stat-num stat-words">13.95s</div>
             <div class="stat-label">Rubik personal best</div>
           </div>
           <div class="stat" data-reveal>
@@ -4874,7 +5256,7 @@
         <div class="about-copy" data-reveal="right">
           <div class="sec-eyebrow">✦ Who's this guy</div>
           <h2 class="sec-title">Hey, I'm <span>Excel</span></h2>
-          <p class="sec-lead">
+          <p class="sec-lead" data-edit="home.about-lead">
             Usually called Pecel. I'm 16, I live in Bandung, and I'm saving up to study abroad —
             so right now my browser is 60% dictionaries and 40% everything else.
           </p>
@@ -4882,7 +5264,7 @@
             <div class="fact"><i>Birthday</i><b>May 29, 2010</b></div>
             <div class="fact"><i>School</i><b>SMK Taruna Harapan 1 Cipatat</b></div>
             <div class="fact"><i>Hobbies</i><b>GAMES · LANGUAGES · RUBIK'S</b></div>
-            <div class="fact"><i>Down for</i><b>Chats, collabs, corrections</b></div>
+            <div class="fact"><i>Down for</i><b data-edit="home.down-for">Chats, play together</b></div>
           </div>
           <div class="skill-tags">
             <span class="skill-tag">Languages</span>
@@ -4921,7 +5303,7 @@
           <div class="cta-text">
             <div class="sec-eyebrow sec-eyebrow-dark">✦ Say something</div>
             <h2 class="cta-title">Got a thought, a rating, or a random meme?</h2>
-            <p>Drop a message, star the site, or just tell me the nav is ugly — I read all of it.</p>
+            <p data-edit="home.cta-text">Drop a message, star the site, or just tell me the nav is ugly — I read all of it.</p>
           </div>
           <div class="cta-actions">
             <a class="btn-primary" href="#/kontak">Send a message</a>
@@ -4934,18 +5316,6 @@
         </div>
       </div>
 
-      <div class="home-block wall-block">
-        <div class="sec-head" data-reveal>
-          <div>
-            <div class="sec-eyebrow">✦ Guestbook</div>
-            <h2 class="sec-title">What people <span>left behind</span></h2>
-          </div>
-          <button class="btn-ghost" id="wall-add">Write one +</button>
-        </div>
-        <div class="wall-grid" id="wall-grid" data-reveal>
-          <div class="wall-note wall-loading">Pulling notes off the wall…</div>
-        </div>
-      </div>
     </section>
 
     <section class="view" data-view="profil">
@@ -4989,7 +5359,7 @@
             <div class="page-badge">✦ Profile Page</div>
             <h1>Hello, I'm <span>Excel Adila Putra</span></h1>
 
-            <p class="bio-text">
+            <p class="bio-text" data-edit="profil.bio">
               My name is Excel, usually called Pecel. I'm passionate about learning languages
               with the dream of studying abroad.
             </p>
@@ -5038,7 +5408,7 @@
       <div class="page-header" data-reveal>
         <div class="page-badge">✦ Hobby Page</div>
         <h1>Rubik's <span>Cube</span></h1>
-        <p>Training patience, speed, and consistency every single day</p>
+        <p data-edit="hobi.sub">Training patience, speed, and consistency every single day</p>
       </div>
 
       <div class="hobby-wrap">
@@ -5047,7 +5417,7 @@
             <div class="info-chip-icon">⏱</div>
             <div>
               <div class="info-chip-label">PR (Personal Record)</div>
-              <div class="info-chip-val">Sub 30 · 15</div>
+              <div class="info-chip-val">13.95s</div>
             </div>
           </div>
           <div class="info-chip" data-reveal>
@@ -5084,6 +5454,15 @@
               Your last few solves stay on this device.</p>
           </div>
 
+          <div class="timer-player">
+            <label class="tp-label" for="rb-name">Playing as</label>
+            <input class="tp-input" id="rb-name" type="text" maxlength="20" placeholder="type your name first"
+              autocomplete="off" spellcheck="false" aria-describedby="rb-name-hint">
+            <button class="tp-btn" id="rb-name-save" type="button">Set</button>
+            <span class="tp-hint" id="rb-name-hint">Name is required — your personal best goes to the public
+              leaderboard.</span>
+          </div>
+
           <div class="timer-main">
             <div class="timer-display" id="rb-time">0.00</div>
             <button class="timer-btn" id="rb-btn" type="button">START</button>
@@ -5099,6 +5478,21 @@
             <li class="timer-empty">no solves yet — go warm up your hands</li>
           </ul>
           <button class="timer-clear" id="rb-clear" type="button" hidden>clear history</button>
+        </div>
+
+        <div class="lb-card" data-reveal>
+          <div class="lb-head">
+            <div>
+              <div class="sec-eyebrow">✦ Public leaderboard</div>
+              <h3 class="lb-title">Time to beat <b>13.95s</b></h3>
+            </div>
+            <span class="lb-status" id="lb-status">loading…</span>
+          </div>
+          <ol class="lb-list" id="lb-list">
+            <li class="lb-empty">Fetching times…</li>
+          </ol>
+          <p class="lb-note">Only your personal best counts. Set a name above before you start — anyone can see
+            the board.</p>
         </div>
       </div>
     </section>
@@ -5128,7 +5522,7 @@
         <div class="contact-info">
           <div data-reveal>
             <div class="contact-info-title">Let's Get to <span>Know Each Other</span></div>
-            <p class="contact-info-text">
+            <p class="contact-info-text" data-edit="kontak.intro">
               Got a question or just want to reach out?
               Don't hesitate to send me a message.
             </p>
@@ -5286,6 +5680,12 @@
   <button class="to-top" id="to-top" aria-label="Back to top">↑</button>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <div class="edit-bar" id="edit-bar" role="region" aria-label="Page text editor">
+    <span class="edit-bar-txt">✎ Editing page text</span>
+    <button class="edit-save" id="edit-save" type="button">Save</button>
+    <button class="edit-cancel" id="edit-cancel" type="button">Cancel</button>
+  </div>
+
   <div class="mp" id="mp">
     <audio id="bg-audio" loop preload="none"></audio>
     <div class="mp-main">
@@ -5347,6 +5747,11 @@
       </div>
 
       <div id="own-panel" hidden>
+        <div class="own-sec">
+          <h4>Page text</h4>
+          <p class="own-hint">Edit the copy straight on the page. Saved changes show up for everyone.</p>
+          <button class="btn-primary own-edit-btn" id="own-edit-text" type="button">✎ Edit page text</button>
+        </div>
         <div class="own-sec">
           <h4>Ratings <span class="own-count" id="own-rating-count"></span></h4>
           <div class="own-list" id="own-ratings"></div>
@@ -6284,7 +6689,7 @@
       ownLogin.hidden = true;
       ownPanel.hidden = false;
       $('own-heading').textContent = 'Owner Panel';
-      $('own-subheading').textContent = 'Edit votes & feedback \u2014 saved straight to the site';
+      $('own-subheading').textContent = 'Edit votes, feedback & page text \u2014 live';
       ownOverlay.classList.add('open');
       await loadOwnData();
     }
@@ -6407,7 +6812,12 @@
         });
       }
 
-      const fb = await db.from('feedback').select('id,message,created_at').order('id', { ascending: false });
+      /* feedback cuma bisa dibaca lewat RPC owner (RLS publik sudah ditutup).
+         fallback direct-select buat database yang belum di-update SQL-nya. */
+      let fb = await db.rpc('admin_list_feedback', { p_secret: OWNER_HASH });
+      if (fb.error) {
+        fb = await db.from('feedback').select('id,message,created_at').order('id', { ascending: false });
+      }
       if (fb.error) {
         fbBox.innerHTML = '<div class="own-empty">Feedback not available yet (run the SQL)</div>';
       } else {
@@ -6446,6 +6856,92 @@
         });
       }
     }
+
+    /* ===== ADMIN TEXT EDITOR (copy langsung di halaman) ===== */
+    let editingText = false;
+
+    async function loadSiteContent() {
+      if (editingText) return;
+      try {
+        const { data, error } = await db.from('site_content').select('key,value');
+        if (error) throw error;
+        (data || []).forEach(row => {
+          const val = String(row.value == null ? '' : row.value).trim();
+          if (!val) return;
+          document.querySelectorAll('[data-edit]').forEach(el => {
+            if (el.dataset.edit === row.key) el.textContent = val;
+          });
+        });
+      } catch (e) { /* tabel belum dibuat — teks asli tetap dipakai */ }
+    }
+
+    function startTextEdit() {
+      if (!isOwner() || editingText) return;
+      closeOwn();
+      editingText = true;
+      document.body.classList.add('editing-text');
+      document.querySelectorAll('[data-edit]').forEach(el => {
+        el.dataset.editOrig = el.textContent;
+        el.setAttribute('contenteditable', 'true');
+        el.setAttribute('spellcheck', 'false');
+      });
+      const bar = $('edit-bar');
+      if (bar) bar.classList.add('show');
+      showToast('click the highlighted text to edit');
+    }
+
+    async function saveTextChanges(changes) {
+      let ok = 0, bad = 0;
+      for (const c of changes) {
+        try {
+          const { error } = await db.rpc('admin_set_content', {
+            p_key: c[0], p_value: c[1], p_secret: OWNER_HASH
+          });
+          if (error) throw error;
+          ok++;
+        } catch (e) {
+          bad++;
+          console.warn('save text:', c[0], e);
+        }
+      }
+      if (bad) showToast(ok + ' saved, ' + bad + ' failed — run the SQL');
+      else showToast(ok + ' text saved ✓');
+      if (!bad) loadSiteContent();
+    }
+
+    function endTextEdit(save) {
+      if (!editingText) return;
+      const changes = [];
+      document.querySelectorAll('[data-edit]').forEach(el => {
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('spellcheck');
+        const now = el.textContent.replace(/\s+/g, ' ').trim();
+        const orig = String(el.dataset.editOrig || '').replace(/\s+/g, ' ').trim();
+        if (save && now && now !== orig) changes.push([el.dataset.edit, now]);
+        if (!save && el.dataset.editOrig != null) el.textContent = el.dataset.editOrig;
+        delete el.dataset.editOrig;
+      });
+      editingText = false;
+      document.body.classList.remove('editing-text');
+      const bar = $('edit-bar');
+      if (bar) bar.classList.remove('show');
+      if (!save) { showToast('edit cancelled'); return; }
+      if (!changes.length) { showToast('nothing changed'); return; }
+      saveTextChanges(changes);
+    }
+
+    const ownEditBtn = $('own-edit-text');
+    if (ownEditBtn) ownEditBtn.addEventListener('click', startTextEdit);
+    if ($('edit-save')) $('edit-save').addEventListener('click', () => endTextEdit(true));
+    if ($('edit-cancel')) $('edit-cancel').addEventListener('click', () => endTextEdit(false));
+    document.addEventListener('keydown', (e) => {
+      if (!editingText) return;
+      if (e.key === 'Escape') { e.preventDefault(); endTextEdit(false); }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        endTextEdit(true);
+      }
+    });
 
     /* ===== FEEDBACK (anonymous, bebas berapa kali) ===== */
     const fbOverlay = $('fb-overlay');
@@ -7038,38 +7534,8 @@
       if (cnt) cnt.textContent = GALLERY.length;
     }
 
-    /* --- dinding ucapan (tabel feedback, SELECT publik) --- */
-    async function loadWall() {
-      const grid = $('wall-grid');
-      if (!grid) return;
-      try {
-        const { data, error } = await db.from('feedback')
-          .select('id,name,message,created_at')
-          .order('id', { ascending: false })
-          .limit(6);
-        if (error) throw error;
-        const rows = data || [];
-        if (!rows.length) {
-          grid.innerHTML = '<div class="wall-note wall-off"><p>Nobody has left anything yet — be the first one.</p></div>';
-          return;
-        }
-        grid.innerHTML = rows.map(r => {
-          const who = (r.name && r.name !== 'Anonymous') ? r.name : 'Someone';
-          let when = '';
-          try {
-            when = new Date(r.created_at).toLocaleDateString('en-GB',
-              { day: 'numeric', month: 'short', year: 'numeric' });
-          } catch (e) { }
-          return '<div class="wall-note"><p>' + escHtml(r.message || '') + '</p>' +
-            '<div class="wall-who"><b>' + escHtml(who) + '</b><span>' + when + '</span></div></div>';
-        }).join('');
-      } catch (e) {
-        grid.innerHTML = '<div class="wall-note wall-off"><p>The wall is offline right now — check back later.</p></div>';
-      }
-    }
-
     /* --- tombol yang buka modal feedback --- */
-    ['cta-feedback', 'wall-add'].forEach(id => {
+    ['cta-feedback'].forEach(id => {
       const b = $(id);
       if (b) b.addEventListener('click', () => {
         const target = $('fb-open');
@@ -7122,6 +7588,7 @@
     }
     function rbStartTimer() {
       if (rbRunning || !rbTime) return;
+      if (!player.name) { needName(); return; }
       rbRunning = true;
       rbStart = performance.now();
       rbTime.classList.add('run');
@@ -7145,6 +7612,7 @@
         try { localStorage.setItem(RB_KEY, JSON.stringify(rbSolves)); } catch (e) { }
         rbPaint();
         showToast('solve ' + fmtMs(ms) + ' saved');
+        submitScore(ms);
       }
     }
     function rbToggle() {
@@ -7172,6 +7640,166 @@
       rbToggle();
     });
     if (rbTime) rbPaint();
+
+    /* --- nama pemain + leaderboard publik --- */
+    const PLAYER_KEY = 'rv-player-v1';
+    const RB_BENCH_MS = 13950;
+    let player = { id: '', name: '' };
+    try {
+      const savedPlayer = JSON.parse(localStorage.getItem(PLAYER_KEY) || '{}');
+      if (savedPlayer && typeof savedPlayer === 'object') {
+        player.id = savedPlayer.id || '';
+        player.name = savedPlayer.name || '';
+      }
+    } catch (e) { }
+
+    if (!player.id) {
+      player.id = (window.crypto && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : 'p-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+    }
+    try { localStorage.setItem(PLAYER_KEY, JSON.stringify(player)); } catch (e) { }
+
+    const rbName = $('rb-name'), rbNameSave = $('rb-name-save'), rbNameHint = $('rb-name-hint');
+    if (rbName && player.name) rbName.value = player.name;
+    if (rbNameHint && player.name) {
+      rbNameHint.textContent = 'Playing as ' + player.name + ' — your best run is on the board.';
+      rbNameHint.classList.add('ok');
+    }
+
+    let lbRows = [];
+    let lbOffline = false;
+
+    function needName() {
+      showToast('set your name first — leaderboard needs it');
+      if (rbName) {
+        rbName.classList.add('need');
+        rbName.focus();
+        setTimeout(() => rbName.classList.remove('need'), 1200);
+      }
+    }
+
+    function setPlayerName(raw) {
+      const name = String(raw || '').replace(/\s+/g, ' ').trim().slice(0, 20);
+      if (!name) { needName(); return false; }
+      player.name = name;
+      try { localStorage.setItem(PLAYER_KEY, JSON.stringify(player)); } catch (e) { }
+      if (rbName) rbName.value = name;
+      if (rbNameHint) {
+        rbNameHint.textContent = 'Playing as ' + name + ' — your best run is on the board.';
+        rbNameHint.classList.add('ok');
+      }
+      showToast('name saved · ' + name);
+      const mine = lbRows.find(r => r.player_id === player.id);
+      const best = rbSolves.length ? Math.min.apply(null, rbSolves) : (mine ? mine.best_ms : null);
+      if (best) submitScore(best);
+      return true;
+    }
+
+    if (rbNameSave) rbNameSave.addEventListener('click', () => setPlayerName(rbName.value));
+    if (rbName) rbName.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); setPlayerName(rbName.value); }
+    });
+
+    async function loadLeaderboard() {
+      const list = $('lb-list');
+      if (!list) return;
+      try {
+        const { data, error } = await db.from('rubik_scores')
+          .select('player_id,name,best_ms')
+          .order('best_ms', { ascending: true })
+          .limit(50);
+        if (error) throw error;
+        lbRows = (data || []).map(r => ({
+          player_id: r.player_id, name: r.name, best_ms: Number(r.best_ms) || 0
+        }));
+        lbOffline = false;
+      } catch (e) {
+        lbRows = [];
+        lbOffline = true;
+      }
+      // benchmark 13.95s selalu ada, walaupun seed SQL belum jalan
+      const hasBench = lbRows.some(r => r.player_id === 'excel' || String(r.name).toLowerCase() === 'excel');
+      if (!hasBench) lbRows.push({ player_id: 'excel', name: 'excel', best_ms: RB_BENCH_MS });
+      lbRows.sort((a, b) => a.best_ms - b.best_ms);
+      renderLeaderboard();
+    }
+
+    function renderLeaderboard() {
+      const list = $('lb-list'), status = $('lb-status');
+      if (!list) return;
+      if (status) {
+        status.textContent = lbOffline ? 'offline' : 'live';
+        status.classList.toggle('off', lbOffline);
+      }
+      if (!lbRows.length) {
+        list.innerHTML = '<li class="lb-empty">No times yet — be the first.</li>';
+        return;
+      }
+      const html = [];
+      const myRank = lbRows.findIndex(r => r.player_id === player.id);
+      const rowHtml = (r, i, mine) => {
+        const rank = i + 1;
+        const cls = 'lb-row' + (mine ? ' lb-you' : '') + (rank === 1 ? ' lb-top1' : '');
+        const isBench = r.player_id === 'excel';
+        return '<li class="' + cls + '">' +
+          '<span class="lb-rank">' + rank + '</span>' +
+          '<span class="lb-name">' + escHtml(r.name) +
+          (isBench ? ' <i class="lb-tag">record</i>' : '') +
+          (mine ? ' <i class="lb-tag lb-tag-you">you</i>' : '') +
+          '</span>' +
+          '<span class="lb-time">' + fmtMs(r.best_ms) + 's</span></li>';
+      };
+      lbRows.slice(0, 15).forEach((r, i) => {
+        html.push(rowHtml(r, i, r.player_id === player.id));
+      });
+      if (myRank >= 15) {
+        html.push('<li class="lb-gap">⋯</li>');
+        html.push(rowHtml(lbRows[myRank], myRank, true));
+      }
+      list.innerHTML = html.join('');
+    }
+
+    async function submitScore(ms) {
+      if (!player.name || !ms) return false;
+      try {
+        const { error } = await db.rpc('submit_rubik_score', {
+          p_player_id: player.id,
+          p_name: player.name,
+          p_best_ms: Math.round(ms),
+          p_secret: isOwner() ? OWNER_HASH : null
+        });
+        if (error) throw error;
+        await loadLeaderboard();
+        return true;
+      } catch (e) {
+        console.warn('leaderboard submit:', e);
+        showToast(lbOffline ? 'leaderboard offline — run the SQL first' : 'could not save to leaderboard');
+        return false;
+      }
+    }
+
+    /* --- realtime: teks & leaderboard update tanpa reload --- */
+    function initRealtimeBoard() {
+      try {
+        db.channel('rv-site-content')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'site_content' }, (payload) => {
+            const row = payload.new;
+            if (!row || !row.key || editingText) return;
+            const val = String(row.value == null ? '' : row.value).trim();
+            if (!val) return;
+            document.querySelectorAll('[data-edit]').forEach(el => {
+              if (el.dataset.edit === row.key) el.textContent = val;
+            });
+          })
+          .subscribe();
+        db.channel('rv-rubik-lb')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'rubik_scores' }, () => {
+            loadLeaderboard();
+          })
+          .subscribe();
+      } catch (e) { }
+    }
 
     /* --- lightbox: panah, keyboard, swipe --- */
     const lbPrev = $('lb-prev'), lbNext = $('lb-next'), lbBox = $('lightbox');
@@ -7208,7 +7836,13 @@
     updateLockBtn();
     route();
     observeReveals();
-    loadWall();
+    loadLeaderboard();
+    loadSiteContent();
+    initRealtimeBoard();
+    setInterval(() => { if (!editingText && !document.hidden) loadSiteContent(); }, 45000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && !editingText) loadSiteContent();
+    });
 
     // Musik ditunda biar nggak rebutan bandwidth sama foto
     // (tetap mulai otomatis, cuma nunggu foto dapet giliran duluan)
