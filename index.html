@@ -40,7 +40,15 @@
         if (localStorage.getItem('rv-theme-v1') === 'matcha') {
           document.documentElement.setAttribute('data-theme', 'matcha');
           var meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', '#08120c');
+          if (meta) meta.setAttribute('content', '#f4f1e4');
+          var scheme = document.querySelector('meta[name="color-scheme"]');
+          if (scheme) scheme.setAttribute('content', 'light');
+          // Font Outfit cuma diunduh kalau tema matcha kepilih.
+          var font = document.createElement('link');
+          font.id = 'matcha-font';
+          font.rel = 'stylesheet';
+          font.href = 'https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap';
+          document.head.appendChild(font);
         }
       } catch (e) { }
     })();
@@ -6011,92 +6019,1008 @@
   
 
     /* ==========================================================
-       THEME: MATCHA (varian hijau minimalis)
-       Semua komponen ikut lewat variable, jadi nggak ada duplikat
-       layout / gambar — cuma palette yang diganti.
+       THEME: MATCHA — "clover" (light, minimal, leafy)
+       Rombakan penuh: palette, tipografi, bentuk sudut, nav,
+       footer, hidden page, modal, dan ornamen clover. Semua lewat
+       override CSS — struktur HTML, gambar, dan beban animasi
+       tetap sama, jadi nggak ada biaya render tambahan.
        ========================================================== */
     html[data-theme="matcha"] {
-      --velvet-950: #040805;
-      --velvet-900: #08120c;
-      --velvet-800: #0f1f16;
-      --velvet-700: #16301f;
-      --velvet-600: #24523a;
-      --velvet-500: #3c8a5f;
-      --velvet-400: #7cc79a;
-      --rose: #a8d8b9;
-      --rose-soft: #cdebd6;
-      --cream: #f1efe3;
-      --cream-dim: rgba(241, 239, 227, 0.66);
-      --cream-faint: rgba(241, 239, 227, 0.42);
-      --frost: #fbfaf1;
-      --carbon: #070a08;
-      --carbon-2: #0c120e;
-      --steel: #b9c3ba;
-      --steel-dim: rgba(185, 195, 186, 0.55);
-      --gold: #a8c97e;
-      --gold-soft: #d3e6ad;
-      --card: linear-gradient(155deg, rgba(255, 252, 244, 0.06), rgba(7, 10, 8, 0.45));
-      --card-strong: linear-gradient(155deg, rgba(255, 252, 244, 0.1), rgba(15, 31, 22, 0.5));
-      --line: rgba(168, 216, 185, 0.28);
-      --line-soft: rgba(168, 216, 185, 0.13);
-      --line-gold: rgba(168, 201, 126, 0.32);
-      --shadow-pink: 0 6px 30px rgba(60, 138, 95, 0.42);
-      --grad-accent: linear-gradient(90deg, var(--velvet-400), var(--gold));
-      --grad-text: linear-gradient(92deg, var(--cream) 5%, var(--gold-soft) 55%, var(--velvet-400) 100%);
+      --font-display: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-hero: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-body: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
 
-      --gold-rgb: 168, 201, 126;
-      --gold-soft-rgb: 211, 230, 173;
-      --velvet-500-rgb: 60, 138, 95;
-      --velvet-400-rgb: 124, 199, 154;
-      --velvet-700-rgb: 22, 48, 31;
-      --velvet-800-rgb: 15, 31, 22;
-      --velvet-900-rgb: 8, 18, 12;
-      --rose-rgb: 168, 216, 185;
-      --coral-rgb: 90, 190, 140;
-      --pink-soft-rgb: 190, 230, 202;
-      --velvet-glow-rgb: 130, 220, 165;
-      --carbon-rgb: 7, 10, 8;
-      --carbon-2-rgb: 12, 18, 14;
-      --carbon-3-rgb: 10, 16, 12;
-      --carbon-4-rgb: 14, 22, 17;
-      --steel-rgb: 185, 195, 186;
-      --cream-rgb: 241, 239, 227;
-      --warm-white-rgb: 255, 252, 244;
+      --radius-s: 10px;
+      --radius-m: 16px;
+      --radius-l: 24px;
+
+      /* teks di atas kertas krem */
+      --cream: #1f3225;
+      --cream-dim: rgba(31, 50, 37, 0.7);
+      --cream-faint: rgba(31, 50, 37, 0.55);
+      --steel: #55684f;
+      --steel-dim: rgba(61, 82, 56, 0.62);
+      --frost: #fbfaf1;
+
+      /* permukaan */
+      --carbon: #f4f1e4;
+      --carbon-2: #efecdd;
+      --ink-warm: #1e3326;
+      --ink-deep: #ece8d8;
+      --ink-deepest: #f4f1e4;
+
+      /* hijau matcha / clover */
+      --velvet-950: #0c140e;
+      --velvet-900: #142117;
+      --velvet-800: #1d3123;
+      --velvet-700: #294733;
+      --velvet-600: #3d6b49;
+      --velvet-500: #4f8b5c;
+      --velvet-400: #8cbf8e;
+      --rose: #6f9f74;
+      --rose-soft: #42663a;
+      --gold: #5f8f4a;
+      --gold-soft: #42663a;
+
+      --card: linear-gradient(155deg, rgba(255, 255, 255, 0.74), rgba(244, 241, 228, 0.88));
+      --card-strong: linear-gradient(155deg, #ffffff, #f1eedf);
+      --line: rgba(63, 125, 78, 0.3);
+      --line-soft: rgba(63, 125, 78, 0.16);
+      --line-gold: rgba(63, 125, 78, 0.24);
+      --grad-accent: linear-gradient(90deg, var(--velvet-500), var(--gold));
+      --grad-text: linear-gradient(92deg, #2c4d34 4%, #4f8b5c 54%, #7fae74 100%);
+
+      --gold-rgb: 95, 143, 74;
+      --gold-soft-rgb: 66, 102, 58;
+      --velvet-500-rgb: 79, 139, 92;
+      --velvet-400-rgb: 140, 191, 142;
+      --velvet-700-rgb: 41, 71, 51;
+      --velvet-800-rgb: 29, 49, 35;
+      --velvet-900-rgb: 20, 33, 23;
+      --rose-rgb: 111, 159, 116;
+      --coral-rgb: 168, 201, 126;
+      --pink-soft-rgb: 190, 218, 186;
+      --velvet-glow-rgb: 168, 201, 126;
+      --carbon-rgb: 244, 241, 228;
+      --carbon-2-rgb: 239, 236, 221;
+      --carbon-3-rgb: 250, 248, 241;
+      --carbon-4-rgb: 252, 250, 244;
+      --steel-rgb: 85, 104, 79;
+      --cream-rgb: 31, 50, 37;
+      --warm-white-rgb: 255, 255, 255;
       --frost-rgb: 251, 250, 241;
-      --ink-warm-rgb: 22, 40, 28;
-      --ink-deep-rgb: 6, 12, 8;
-      --ink-deepest-rgb: 3, 7, 5;
-      --ring-glow-rgb: 130, 220, 165;
-      --ring-glow-2-rgb: 168, 216, 185;
-      --ink-warm: #16281c;
-      --ink-deep: #060c08;
-      --ink-deepest: #030705;
-      --paper-1: #f2f4e4;
-      --paper-2: #e8ecd4;
-      --paper-3: #dbe3c4;
-      --gold-pale: #f2f7dd;
-      --gold-deep: #6f8f45;
+      --ink-warm-rgb: 30, 51, 38;
+      --ink-deep-rgb: 236, 232, 216;
+      --ink-deepest-rgb: 244, 241, 228;
+      --ring-glow-rgb: 140, 191, 142;
+      --ring-glow-2-rgb: 168, 201, 126;
+      --paper-1: #eef3e3;
+      --paper-2: #e4ecd5;
+      --paper-3: #d9e5c8;
+      --gold-pale: #f2f6e6;
+      --gold-deep: #466b36;
+
+      --clover-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e'/%3E%3Cpath d='M16 18.6V29' stroke='%233f7d4e' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
 
       --page-bg:
-        linear-gradient(112deg, rgba(var(--velvet-400-rgb), 0.14) 0%, transparent 34%),
-        linear-gradient(300deg, rgba(var(--gold-rgb), 0.07) 0%, transparent 28%),
-        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.012) 0 2px, transparent 2px 4px),
-        repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.26) 0 2px, transparent 2px 4px),
-        linear-gradient(158deg, #070a08 0%, #08120c 42%, #0f1f16 72%, #16301f 118%);
+        radial-gradient(1100px 720px at 8% -10%, rgba(140, 191, 142, 0.34) 0%, transparent 62%),
+        radial-gradient(900px 620px at 102% 8%, rgba(196, 214, 150, 0.28) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, rgba(63, 125, 78, 0.016) 0 2px, transparent 2px 5px),
+        linear-gradient(180deg, #f7f4e8 0%, #f2efdf 55%, #ece9d8 100%);
 
-      --hex-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='96'%3E%3Cg fill='none' stroke='%23a8c97e' stroke-opacity='0.2' stroke-width='1.4'%3E%3Cpath d='M28 -16 L56 0 L56 32 L28 48 L0 32 L0 0 Z'/%3E%3Cpath d='M0 32 L28 48 L28 80 L0 96 L-28 80 L-28 48 Z'/%3E%3Cpath d='M56 32 L84 48 L84 80 L56 96 L28 80 L28 48 Z'/%3E%3C/g%3E%3C/svg%3E");
+      /* watermark clover, gantiin sarang lebah emas */
+      --hex-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='96'%3E%3Cg transform='translate(12 32)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e' fill-opacity='0.12'/%3E%3C/g%3E%3C/svg%3E");
     }
 
-    /* tombol utama: gradient terang bikin teks putih susah dibaca di matcha */
+    /* --- base kertas + dekorasi --- */
+    html[data-theme="matcha"] {
+      scrollbar-color: rgba(79, 139, 92, 0.7) #ece8d8;
+    }
+
+    html[data-theme="matcha"] ::selection {
+      background: #3f7d4e;
+      color: #f7f5ea;
+    }
+
+    html[data-theme="matcha"] ::-webkit-scrollbar-track {
+      background: #ece8d8;
+    }
+
+    html[data-theme="matcha"] ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #8cbf8e, #4f8b5c);
+      border-color: #ece8d8;
+    }
+
+    html[data-theme="matcha"] body {
+      padding-top: 92px;
+    }
+
+    /* gloss sweep putih di atas kertas terang cuma bikin kotor */
+    html[data-theme="matcha"] body::after {
+      display: none;
+    }
+
+    html[data-theme="matcha"] .orb1 {
+      background: radial-gradient(circle, rgba(140, 191, 142, 0.5) 0%, transparent 70%);
+    }
+
+    html[data-theme="matcha"] .orb2 {
+      background: radial-gradient(circle, rgba(196, 214, 150, 0.45) 0%, transparent 70%);
+    }
+
+    html[data-theme="matcha"] .cursor-glow {
+      background: radial-gradient(circle,
+          rgba(95, 143, 74, 0.1) 0%,
+          rgba(140, 191, 142, 0.05) 45%,
+          transparent 72%);
+    }
+
+    /* --- nav: pill krem mengambang --- */
+    html[data-theme="matcha"] nav {
+      top: 12px;
+      left: 14px;
+      right: 14px;
+      width: auto;
+      padding: 9px 14px 9px 18px;
+      border: 1px solid rgba(63, 125, 78, 0.16);
+      border-radius: 999px;
+      background: rgba(250, 248, 239, 0.94);
+      box-shadow: 0 14px 34px rgba(44, 61, 42, 0.1);
+      overflow: hidden;
+    }
+
+    html[data-theme="matcha"] nav::before,
+    html[data-theme="matcha"] nav::after {
+      display: none;
+    }
+
+    html[data-theme="matcha"] .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--font-display);
+      font-style: normal;
+      font-weight: 600;
+      font-size: 1.22rem;
+      letter-spacing: 0.02em;
+      text-transform: lowercase;
+      transform: none;
+      color: #2c4d34;
+      background: none;
+      -webkit-text-fill-color: currentColor;
+    }
+
+    html[data-theme="matcha"] .nav-logo::before {
+      content: '';
+      width: 21px;
+      height: 21px;
+      flex: 0 0 auto;
+      background: var(--clover-icon) center / contain no-repeat;
+    }
+
+    html[data-theme="matcha"] .nav-logo.owner-on {
+      filter: drop-shadow(0 0 8px rgba(79, 139, 92, 0.5));
+    }
+
+    html[data-theme="matcha"] .nav-links a {
+      clip-path: none;
+      border-radius: 999px;
+      color: rgba(44, 66, 41, 0.64);
+      padding: 8px 15px;
+      letter-spacing: 1.4px;
+    }
+
+    html[data-theme="matcha"] .nav-links a:hover {
+      color: #26422d;
+      background: rgba(140, 191, 142, 0.2);
+    }
+
+    html[data-theme="matcha"] .nav-links a.active {
+      color: #fbfaf1;
+      text-shadow: none;
+    }
+
+    html[data-theme="matcha"] .nav-indicator {
+      clip-path: none;
+      border-radius: 999px;
+      background: #3f7d4e;
+      box-shadow: 0 6px 16px rgba(63, 125, 78, 0.28);
+    }
+
+    html[data-theme="matcha"] .nav-burger {
+      clip-path: none;
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(63, 125, 78, 0.22);
+    }
+
+    html[data-theme="matcha"] .nav-burger span {
+      background: #3f6a45;
+    }
+
+    html[data-theme="matcha"] .theme-switch {
+      border-radius: 999px;
+      border-color: rgba(63, 125, 78, 0.24);
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    html[data-theme="matcha"] .theme-switch:hover,
+    html[data-theme="matcha"] .theme-switch:focus-visible {
+      border-color: rgba(63, 125, 78, 0.5);
+      background: #fff;
+    }
+
+    html[data-theme="matcha"] .ts-knob {
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(44, 61, 42, 0.28);
+    }
+
+    html[data-theme="matcha"] .scroll-progress {
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3f7d4e, #8cbf8e);
+      box-shadow: 0 0 10px rgba(63, 125, 78, 0.45);
+    }
+
+    /* --- drawer HP: kertas krem, bukan gelap --- */
+    html[data-theme="matcha"] .nav-drawer {
+      background: rgba(246, 243, 232, 0.995);
+    }
+
+    html[data-theme="matcha"] .drawer-inner>a {
+      font-weight: 500;
+      font-style: normal;
+      letter-spacing: -0.01em;
+      color: #2c4d34;
+    }
+
+    html[data-theme="matcha"] .drawer-inner>a:hover,
+    html[data-theme="matcha"] .drawer-inner>a.active {
+      color: #4f8b5c;
+      letter-spacing: 0;
+    }
+
+    html[data-theme="matcha"] .drawer-rule {
+      background: linear-gradient(90deg, transparent, rgba(63, 125, 78, 0.5), transparent);
+    }
+
+    html[data-theme="matcha"] .drawer-socials a {
+      clip-path: none;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(63, 125, 78, 0.18);
+      color: #42663a;
+    }
+
+    /* --- hero --- */
+    html[data-theme="matcha"] .y-sign {
+      width: 66px;
+      height: 66px;
+      margin-bottom: 18px;
+      background: var(--clover-icon) center / contain no-repeat;
+      filter: drop-shadow(0 10px 20px rgba(63, 125, 78, 0.22));
+    }
+
+    html[data-theme="matcha"] .y-sign i {
+      display: none;
+    }
+
+    /* garis vertikal ala supercar nggak cocok di kertas bersih */
+    html[data-theme="matcha"] .hero {
+      background: none;
+    }
+
+    html[data-theme="matcha"] .hero-badge,
+    html[data-theme="matcha"] .page-badge {
+      display: inline-flex;
+      align-items: center;
+      clip-path: none;
+      border-radius: 999px;
+      padding: 8px 20px;
+      background: rgba(140, 191, 142, 0.18);
+      box-shadow: inset 0 0 0 1px rgba(63, 125, 78, 0.22);
+      color: #33553a;
+      font-weight: 700;
+      letter-spacing: 2.2px;
+    }
+
+    html[data-theme="matcha"] .hero-badge::before,
+    html[data-theme="matcha"] .page-badge::before {
+      content: '';
+      width: 13px;
+      height: 13px;
+      margin-right: 4px;
+      flex: 0 0 auto;
+      background: var(--clover-icon) center / contain no-repeat;
+    }
+
+    html[data-theme="matcha"] .hero-title {
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      font-stretch: 100%;
+      text-transform: lowercase;
+      animation: fadeUp 0.8s 0.1s ease both;
+      will-change: auto;
+    }
+
+    html[data-theme="matcha"] .ht-letter {
+      color: #2c4d34;
+      text-shadow: none;
+      filter: drop-shadow(0 10px 22px rgba(63, 125, 78, 0.16));
+    }
+
+    html[data-theme="matcha"] .ht-letter.accent {
+      color: #2c4d34;
+      background: linear-gradient(180deg, #2c4d34 15%, #5f8f4a 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: none;
+      animation: none;
+    }
+
+    html[data-theme="matcha"] .ht-letter:hover {
+      text-shadow: none;
+    }
+
+    html[data-theme="matcha"] .hero-desc {
+      color: rgba(31, 50, 37, 0.72);
+    }
+
+    html[data-theme="matcha"] .hero-meta {
+      color: rgba(31, 50, 37, 0.66);
+    }
+
+    html[data-theme="matcha"] .hero-meta b,
+    html[data-theme="matcha"] .footer-clock b,
+    html[data-theme="matcha"] .drawer-meta b {
+      color: #42663a;
+    }
+
+    html[data-theme="matcha"] .scroll-cue {
+      color: rgba(31, 50, 37, 0.5);
+    }
+
+    html[data-theme="matcha"] .scroll-cue:hover {
+      color: #3f7d4e;
+    }
+
+    html[data-theme="matcha"] .scroll-cue-line {
+      background: linear-gradient(180deg, rgba(63, 125, 78, 0.15), rgba(63, 125, 78, 0.65));
+    }
+
+    /* --- judul section --- */
+    html[data-theme="matcha"] .sec-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #4f8b5c;
+      letter-spacing: 2.4px;
+    }
+
+    html[data-theme="matcha"] .sec-eyebrow::before {
+      content: '';
+      width: 11px;
+      height: 11px;
+      flex: 0 0 auto;
+      background: var(--clover-icon) center / contain no-repeat;
+    }
+
+    html[data-theme="matcha"] .sec-eyebrow-dark {
+      color: #3f7d4e;
+    }
+
+    html[data-theme="matcha"] .sec-title,
+    html[data-theme="matcha"] .section-title {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    html[data-theme="matcha"] .sec-title span,
+    html[data-theme="matcha"] .section-title span {
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-style: normal;
+    }
+
+    html[data-theme="matcha"] .section-title::after {
+      clip-path: none;
+      border-radius: 999px;
+      background: #8cbf8e;
+    }
+
+    html[data-theme="matcha"] .page-header h1 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    html[data-theme="matcha"] .page-header h1 span {
+      background: linear-gradient(92deg, #2c4d34 5%, #4f8b5c 45%, #7fae74 68%, #2c4d34 95%);
+      background-size: 230% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textShimmer 6s linear infinite;
+    }
+
+    /* --- tombol: pill, bukan angle --- */
     html[data-theme="matcha"] .btn-primary {
-      background: linear-gradient(100deg, #1c3d28, #2f7150 55%, #3c8a5f);
-      color: #f5fbf1;
-      box-shadow: 0 6px 28px rgba(36, 82, 58, 0.55);
+      clip-path: none;
+      border-radius: 999px;
+      background: linear-gradient(100deg, #2f5236, #3f7d4e 58%, #5f8f4a);
+      color: #fbfaf1;
+      letter-spacing: 1.2px;
+      box-shadow: 0 10px 26px rgba(47, 82, 54, 0.2);
     }
 
     html[data-theme="matcha"] .btn-primary:hover {
-      box-shadow: 0 10px 36px rgba(90, 190, 140, 0.35), 0 0 22px rgba(168, 201, 126, 0.22);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 32px rgba(47, 82, 54, 0.28);
     }
+
+    html[data-theme="matcha"] .btn-outline {
+      clip-path: none;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: inset 0 0 0 1.5px rgba(63, 125, 78, 0.3);
+      color: #2f5236;
+      letter-spacing: 1.2px;
+    }
+
+    html[data-theme="matcha"] .btn-outline:hover {
+      background: #fff;
+      color: #2f5236;
+      box-shadow: inset 0 0 0 1.5px #3f7d4e, 0 8px 22px rgba(63, 125, 78, 0.14);
+      transform: translateY(-3px);
+    }
+
+    html[data-theme="matcha"] .btn-ghost {
+      clip-path: none;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: inset 0 0 0 1.5px rgba(63, 125, 78, 0.22);
+      color: #33553a;
+    }
+
+    html[data-theme="matcha"] .btn-ghost:hover {
+      color: #2f5236;
+      border-color: #3f7d4e;
+      background: #fff;
+    }
+
+    /* --- kartu & panel --- */
+    html[data-theme="matcha"] .card,
+    html[data-theme="matcha"] .profile-card,
+    html[data-theme="matcha"] .watch-ig-card,
+    html[data-theme="matcha"] .contact-info,
+    html[data-theme="matcha"] .contact-form-card,
+    html[data-theme="matcha"] .cta-inner,
+    html[data-theme="matcha"] .wall-note,
+    html[data-theme="matcha"] .timer-card,
+    html[data-theme="matcha"] .scramble,
+    html[data-theme="matcha"] .lb-card,
+    html[data-theme="matcha"] .rate-pop,
+    html[data-theme="matcha"] .pw-card,
+    html[data-theme="matcha"] .mp,
+    html[data-theme="matcha"] .timer-player {
+      clip-path: none;
+      border-radius: 22px;
+    }
+
+    html[data-theme="matcha"] .card {
+      background: rgba(255, 255, 255, 0.6);
+      border-color: rgba(63, 125, 78, 0.16);
+      box-shadow: 0 10px 28px rgba(60, 90, 60, 0.06);
+    }
+
+    html[data-theme="matcha"] .card::before {
+      background: #8cbf8e;
+      height: 3px;
+      border-radius: 3px;
+    }
+
+    html[data-theme="matcha"] .card::after {
+      display: none;
+    }
+
+    html[data-theme="matcha"] .card:hover {
+      background: #fff;
+      border-color: rgba(63, 125, 78, 0.4);
+      box-shadow: 0 16px 38px rgba(60, 90, 60, 0.12);
+    }
+
+    html[data-theme="matcha"] .about-frame,
+    html[data-theme="matcha"] .gallery-item,
+    html[data-theme="matcha"] .shot,
+    html[data-theme="matcha"] .secret-frame {
+      clip-path: none;
+      border-radius: 22px;
+      border-color: rgba(63, 125, 78, 0.16);
+      background: #efecdd;
+    }
+
+    html[data-theme="matcha"] .about-frame,
+    html[data-theme="matcha"] .gallery-item:hover,
+    html[data-theme="matcha"] .shot:hover {
+      border-color: rgba(63, 125, 78, 0.38);
+    }
+
+    html[data-theme="matcha"] .about-media::after {
+      clip-path: none;
+      border-radius: 26px;
+      border-color: rgba(63, 125, 78, 0.32);
+    }
+
+    html[data-theme="matcha"] .about-frame {
+      box-shadow: 0 22px 50px rgba(60, 90, 60, 0.14);
+    }
+
+    html[data-theme="matcha"] .about-stamp {
+      background: #fbfaf1;
+      border-color: rgba(63, 125, 78, 0.5);
+      box-shadow: 0 12px 28px rgba(60, 90, 60, 0.16);
+      color: #42663a;
+    }
+
+    html[data-theme="matcha"] .stats-grid {
+      border-color: rgba(63, 125, 78, 0.16);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.52);
+    }
+
+    html[data-theme="matcha"] .stat {
+      border-color: rgba(63, 125, 78, 0.14);
+    }
+
+    html[data-theme="matcha"] .stat::before {
+      clip-path: none;
+      border-radius: 999px;
+    }
+
+    html[data-theme="matcha"] .marquee {
+      border-color: rgba(63, 125, 78, 0.2);
+      background: linear-gradient(90deg, rgba(140, 191, 142, 0.22), rgba(196, 214, 150, 0.28), rgba(140, 191, 142, 0.22));
+    }
+
+    html[data-theme="matcha"] .skill-tag,
+    html[data-theme="matcha"] .filter-chip,
+    html[data-theme="matcha"] .copy-chip,
+    html[data-theme="matcha"] .lightbox-count,
+    html[data-theme="matcha"] .footer-links a,
+    html[data-theme="matcha"] .shot-tag {
+      clip-path: none;
+      border-radius: 999px;
+    }
+
+    html[data-theme="matcha"] .filter-chip {
+      background: rgba(255, 255, 255, 0.6);
+      border-color: rgba(63, 125, 78, 0.2);
+      color: #3d5238;
+    }
+
+    html[data-theme="matcha"] .filter-chip.on,
+    html[data-theme="matcha"] .filter-chip:hover {
+      background: #3f7d4e;
+      border-color: #3f7d4e;
+      color: #fbfaf1;
+    }
+
+    html[data-theme="matcha"] .shot-tag {
+      background: rgba(12, 20, 14, 0.62);
+      border-color: rgba(168, 201, 126, 0.4);
+      color: #eef4e6;
+    }
+
+    /* overlay caption foto tetap gelap: biar foto & teksnya kebaca */
+    html[data-theme="matcha"] .gallery-overlay,
+    html[data-theme="matcha"] .shot-cap {
+      background: linear-gradient(to top, rgba(12, 20, 14, 0.92) 0%, rgba(12, 20, 14, 0.32) 44%, transparent 76%);
+    }
+
+    html[data-theme="matcha"] .gallery-overlay-text h3,
+    html[data-theme="matcha"] .shot-cap b {
+      color: #eef4e6;
+      font-style: normal;
+    }
+
+    html[data-theme="matcha"] .gallery-overlay-text p,
+    html[data-theme="matcha"] .shot-cap i {
+      color: rgba(238, 244, 230, 0.72);
+    }
+
+    html[data-theme="matcha"] .lightbox {
+      background: rgba(10, 17, 12, 0.94);
+    }
+
+    html[data-theme="matcha"] .lightbox-inner img {
+      border-color: rgba(168, 201, 126, 0.3);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 30px rgba(140, 191, 142, 0.18);
+    }
+
+    html[data-theme="matcha"] .lightbox-caption h3 {
+      color: #eef4e6;
+      font-style: normal;
+    }
+
+    html[data-theme="matcha"] .lightbox-caption p {
+      color: rgba(238, 244, 230, 0.72);
+    }
+
+    html[data-theme="matcha"] .lightbox-close {
+      color: #2c4d34;
+      border-color: rgba(63, 125, 78, 0.3);
+    }
+
+    html[data-theme="matcha"] .tt-btn {
+      background: #fff;
+      color: #141414;
+    }
+
+    /* --- form --- */
+    html[data-theme="matcha"] .pw-input,
+    html[data-theme="matcha"] .form-group input,
+    html[data-theme="matcha"] .form-group textarea,
+    html[data-theme="matcha"] .form-group select {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(63, 125, 78, 0.22);
+      color: #1f3225;
+    }
+
+    html[data-theme="matcha"] .pw-input::placeholder,
+    html[data-theme="matcha"] .form-group input::placeholder,
+    html[data-theme="matcha"] .form-group textarea::placeholder {
+      color: rgba(31, 50, 37, 0.4);
+    }
+
+    html[data-theme="matcha"] .pw-card {
+      background: #fbfaf1;
+      border-color: rgba(63, 125, 78, 0.22);
+      box-shadow: 0 30px 70px rgba(30, 51, 38, 0.24);
+    }
+
+    html[data-theme="matcha"] .pw-lock-badge {
+      clip-path: none;
+      border-radius: 22px;
+      background: linear-gradient(150deg, #3f7d4e, #8cbf8e);
+      color: #fbfaf1;
+    }
+
+    html[data-theme="matcha"] .pw-overlay {
+      background: rgba(236, 232, 216, 0.9);
+    }
+
+    /* --- hidden page: clover ring --- */
+    html[data-theme="matcha"] .secret-hero-ring::before {
+      background: conic-gradient(from 0deg,
+          #8cbf8e,
+          #d9e5c8,
+          #4f8b5c,
+          #c4d696,
+          #3f7d4e,
+          #d9e5c8,
+          #8cbf8e);
+      box-shadow:
+        0 0 22px rgba(79, 139, 92, 0.35),
+        0 0 46px rgba(168, 201, 126, 0.28),
+        inset 0 0 18px rgba(255, 255, 255, 0.45);
+    }
+
+    html[data-theme="matcha"] .secret-hero-ring::after {
+      border-color: #f4f1e4;
+      box-shadow: inset 0 0 0 1.5px rgba(63, 125, 78, 0.35);
+    }
+
+    html[data-theme="matcha"] .secret-ring-gems span {
+      clip-path: none;
+      border-radius: 50%;
+      background: var(--clover-icon) center / contain no-repeat;
+      box-shadow: 0 4px 12px rgba(63, 125, 78, 0.25);
+    }
+
+    html[data-theme="matcha"] .secret-frame {
+      box-shadow: 0 12px 30px rgba(60, 90, 60, 0.1);
+    }
+
+    html[data-theme="matcha"] .photo-del {
+      background: rgba(12, 20, 14, 0.75);
+      border-color: rgba(168, 201, 126, 0.45);
+      color: #eef4e6;
+    }
+
+    html[data-theme="matcha"] .photo-del:hover {
+      background: #b3543f;
+      color: #fff;
+    }
+
+    /* --- timer & leaderboard --- */
+    html[data-theme="matcha"] .timer-display {
+      font-weight: 600;
+      color: #2c4d34;
+      text-shadow: 0 8px 26px rgba(63, 125, 78, 0.16);
+    }
+
+    html[data-theme="matcha"] .timer-display.run,
+    html[data-theme="matcha"] .timer-display.armed {
+      color: #3f7d4e;
+      text-shadow: 0 8px 28px rgba(63, 125, 78, 0.24);
+    }
+
+    html[data-theme="matcha"] .timer-btn {
+      clip-path: none;
+      border-radius: 999px;
+      background: linear-gradient(100deg, #2f5236, #3f7d4e 60%, #5f8f4a);
+      color: #fbfaf1;
+    }
+
+    html[data-theme="matcha"] .timer-btn.stop {
+      background: #b3543f;
+      color: #fff;
+    }
+
+    html[data-theme="matcha"] .timer-btn.armed {
+      background: #5f8f4a;
+      color: #fff;
+    }
+
+    html[data-theme="matcha"] .scramble-text {
+      color: #2c4d34;
+    }
+
+    html[data-theme="matcha"] .scramble-btn,
+    html[data-theme="matcha"] .tp-btn {
+      clip-path: none;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(63, 125, 78, 0.22);
+      color: #33553a;
+    }
+
+    html[data-theme="matcha"] .scramble-btn:hover,
+    html[data-theme="matcha"] .tp-btn:hover {
+      background: #fff;
+      color: #2f5236;
+    }
+
+    html[data-theme="matcha"] .lb-status {
+      border-radius: 999px;
+      background: rgba(79, 139, 92, 0.12);
+      border-color: rgba(79, 139, 92, 0.36);
+      color: #356b45;
+    }
+
+    html[data-theme="matcha"] .lb-row.lb-top1 .lb-time {
+      color: #3f7d4e;
+    }
+
+    /* --- footer: kertas + watermark clover --- */
+    html[data-theme="matcha"] footer {
+      border-top-color: rgba(63, 125, 78, 0.18);
+      background:
+        var(--hex-pattern),
+        rgba(238, 240, 223, 0.96);
+    }
+
+    html[data-theme="matcha"] footer::before {
+      height: 3px;
+      background: linear-gradient(90deg, #8cbf8e, #d9e5c8, #8cbf8e);
+    }
+
+    html[data-theme="matcha"] footer::after {
+      content: '';
+      position: absolute;
+      right: 5vw;
+      top: 50%;
+      width: 118px;
+      height: 118px;
+      transform: translateY(-50%);
+      background: var(--clover-icon) center / contain no-repeat;
+      opacity: 0.07;
+      pointer-events: none;
+    }
+
+    html[data-theme="matcha"] footer p {
+      color: rgba(31, 50, 37, 0.66);
+    }
+
+    html[data-theme="matcha"] footer p b {
+      color: #33553a;
+    }
+
+    html[data-theme="matcha"] .footer-links a {
+      background: rgba(255, 255, 255, 0.62);
+      box-shadow: inset 0 0 0 1px rgba(63, 125, 78, 0.16);
+      color: rgba(31, 50, 37, 0.66);
+    }
+
+    html[data-theme="matcha"] .footer-links a:hover {
+      background: #fff;
+      color: #2f5236;
+    }
+
+    html[data-theme="matcha"] .footer-copy,
+    html[data-theme="matcha"] .footer-ig {
+      color: rgba(31, 50, 37, 0.66);
+    }
+
+    html[data-theme="matcha"] .footer-copy:hover,
+    html[data-theme="matcha"] .footer-ig:hover {
+      color: #2f5236;
+    }
+
+    /* --- floating bits --- */
+    html[data-theme="matcha"] .to-top {
+      background: #3f7d4e;
+      border-color: rgba(63, 125, 78, 0.3);
+      color: #fbfaf1;
+      box-shadow: 0 12px 28px rgba(47, 82, 54, 0.26);
+    }
+
+    html[data-theme="matcha"] .to-top:hover {
+      background: #2f5236;
+      color: #fbfaf1;
+    }
+
+    html[data-theme="matcha"] .toast {
+      clip-path: none;
+      border-radius: 999px;
+      background: #2c4d34;
+      border-color: rgba(168, 201, 126, 0.35);
+      color: #f2f5e9;
+      box-shadow: 0 14px 32px rgba(44, 77, 52, 0.28);
+    }
+
+    html[data-theme="matcha"] .rate-pop {
+      background: #fbfaf1;
+      border-color: rgba(63, 125, 78, 0.2);
+      box-shadow: 0 22px 60px rgba(30, 51, 38, 0.2);
+    }
+
+    html[data-theme="matcha"] .mp {
+      border-color: rgba(63, 125, 78, 0.18);
+      box-shadow: 0 14px 34px rgba(30, 51, 38, 0.12);
+    }
+
+    html[data-theme="matcha"] .is-loading {
+      background: rgba(63, 125, 78, 0.06);
+    }
+
+    html[data-theme="matcha"] .is-loading::after {
+      background: linear-gradient(100deg, transparent 20%, rgba(63, 125, 78, 0.1) 42%, transparent 64%);
+    }
+
+    /* --- polish: komponen yang masih bawa warna gelap hardcoded --- */
+    html[data-theme="matcha"] .info-chip {
+      clip-path: none;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    html[data-theme="matcha"] .info-chip:hover {
+      border-color: rgba(63, 125, 78, 0.4);
+      background: #fff;
+    }
+
+    html[data-theme="matcha"] .skill-tag {
+      clip-path: none;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.66);
+      box-shadow: inset 0 0 0 1px rgba(63, 125, 78, 0.2);
+      color: #33553a;
+    }
+
+    html[data-theme="matcha"] .skill-tag:hover {
+      background: #3f7d4e;
+      box-shadow: inset 0 0 0 1px #3f7d4e;
+      color: #fbfaf1;
+    }
+
+    html[data-theme="matcha"] .scramble {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(63, 125, 78, 0.07));
+      border-color: rgba(63, 125, 78, 0.18);
+    }
+
+    html[data-theme="matcha"] .copy-chip {
+      clip-path: none;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.75);
+      color: #33553a;
+      box-shadow: inset 0 0 0 1px rgba(63, 125, 78, 0.22);
+    }
+
+    html[data-theme="matcha"] .copy-chip:hover {
+      background: #3f7d4e;
+      color: #fbfaf1;
+      box-shadow: inset 0 0 0 1px #3f7d4e;
+    }
+
+    html[data-theme="matcha"] .cta-inner {
+      box-shadow: 0 24px 60px rgba(60, 90, 60, 0.14);
+    }
+
+    html[data-theme="matcha"] .mp {
+      background: rgba(250, 248, 239, 0.94);
+      border-color: rgba(63, 125, 78, 0.2);
+      box-shadow: 0 16px 40px rgba(44, 61, 42, 0.18);
+    }
+
+    html[data-theme="matcha"] .contact-icon {
+      border-radius: 14px;
+    }
+
+    html[data-theme="matcha"] .secret-hero-caption {
+      color: #33553a;
+    }
+
+    html[data-theme="matcha"] .timer-clear:hover {
+      color: #b3543f;
+    }
+
+    html[data-theme="matcha"] .lb-del {
+      border-color: rgba(179, 84, 63, 0.35);
+      color: #b3543f;
+    }
+
+    html[data-theme="matcha"] .lb-del:hover {
+      background: #b3543f;
+      border-color: #b3543f;
+      color: #fff;
+    }
+
+    html[data-theme="matcha"] .secret-hero-caption small {
+      color: rgba(31, 50, 37, 0.58);
+    }
+
+    html[data-theme="matcha"] .secret-frame {
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    html[data-theme="matcha"] .scramble-label,
+    html[data-theme="matcha"] .rate-pop-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    html[data-theme="matcha"] .scramble-label::before,
+    html[data-theme="matcha"] .rate-pop-badge::before {
+      content: '';
+      width: 11px;
+      height: 11px;
+      flex: 0 0 auto;
+      background: var(--clover-icon) center / contain no-repeat;
+    }
+
+    /* tipografi matcha: tanpa italic dekoratif */
+    html[data-theme="matcha"] h1,
+    html[data-theme="matcha"] h2,
+    html[data-theme="matcha"] h3,
+    html[data-theme="matcha"] h4,
+    html[data-theme="matcha"] .sec-title,
+    html[data-theme="matcha"] .section-title,
+    html[data-theme="matcha"] .card-title,
+    html[data-theme="matcha"] .cta-title {
+      font-style: normal;
+    }
+
+    @media (max-width: 760px) {
+      html[data-theme="matcha"] nav {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        padding: 8px 10px 8px 15px;
+      }
+
+      html[data-theme="matcha"] body {
+        padding-top: 86px;
+      }
+
+      html[data-theme="matcha"] footer::after {
+        display: none;
+      }
+    }
+
 </style>
 </head>
 
@@ -6650,7 +7574,7 @@
   </main>
 
   <footer>
-    <p>© 2026 <b>Excel Adila Putra</b> — Red Velvet Edition</p>
+    <p>© 2026 <b>Excel Adila Putra</b> — <span id="footer-edition">Red Velvet Edition</span></p>
     <div class="footer-mid">
       <span class="footer-clock clock-zones">
         <span class="cz"><i>WIB</i> <b id="footer-clock">--:--:--</b></span>
@@ -9781,13 +10705,50 @@
       }
 
       /* ===== INIT ===== */
-      /* --- tema: Aventador (default) / Matcha --- */
+      /* --- tema: Aventador (default) / Matcha "clover" --- */
       const THEME_KEY = 'rv-theme-v1';
+      const MATCHA_FONT_HREF = 'https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap';
+      const MATCHA_FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23f4f1e4'/%3E%3Cg transform='scale(2)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e'/%3E%3C/g%3E%3C/svg%3E";
+      const ORNAMENT_SEL = '.hero-badge, .page-badge, .sec-eyebrow, .scramble-label, .rate-pop-badge';
       const themeSwitch = $('theme-switch');
       const themeMeta = document.querySelector('meta[name="theme-color"]');
+      const schemeMeta = document.querySelector('meta[name="color-scheme"]');
+      const faviconEl = document.querySelector('link[rel="icon"]');
+      const faviconLambo = faviconEl ? faviconEl.getAttribute('href') : '';
 
       function currentTheme() {
         return document.documentElement.getAttribute('data-theme') === 'matcha' ? 'matcha' : 'lambo';
+      }
+
+      function ensureMatchaFont() {
+        if (document.getElementById('matcha-font')) return;
+        const link = document.createElement('link');
+        link.id = 'matcha-font';
+        link.rel = 'stylesheet';
+        link.href = MATCHA_FONT_HREF;
+        document.head.appendChild(link);
+      }
+
+      /* Badge pakai ikon clover CSS di matcha, jadi glyph ✦ dibuang.
+         Footer dapat edisi yang sesuai tema. */
+      function applyThemeCopy() {
+        const matcha = currentTheme() === 'matcha';
+        document.querySelectorAll(ORNAMENT_SEL).forEach((el) => {
+          const rest = el.textContent.replace(/^\s*[✦☘🍀]\s*/, '');
+          el.textContent = matcha ? rest : '✦ ' + rest;
+        });
+        const edition = $('footer-edition');
+        if (edition) edition.textContent = matcha ? 'Matcha Edition' : 'Red Velvet Edition';
+        if (faviconEl && faviconLambo) {
+          faviconEl.setAttribute('href', matcha ? MATCHA_FAVICON : faviconLambo);
+        }
+      }
+
+      function remeasureNav() {
+        if (typeof moveNavIndicator === 'function') requestAnimationFrame(moveNavIndicator);
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(() => requestAnimationFrame(moveNavIndicator));
+        }
       }
 
       function syncThemeUI() {
@@ -9798,7 +10759,10 @@
             ? 'Theme: Matcha. Switch to Aventador'
             : 'Theme: Aventador. Switch to Matcha');
         }
-        if (themeMeta) themeMeta.setAttribute('content', t === 'matcha' ? '#08120c' : '#0a0a0c');
+        if (themeMeta) themeMeta.setAttribute('content', t === 'matcha' ? '#f4f1e4' : '#0a0a0c');
+        if (schemeMeta) schemeMeta.setAttribute('content', t === 'matcha' ? 'light' : 'dark');
+        if (t === 'matcha') ensureMatchaFont();
+        applyThemeCopy();
       }
 
       function setTheme(name, announce) {
@@ -9807,6 +10771,7 @@
         else document.documentElement.removeAttribute('data-theme');
         try { localStorage.setItem(THEME_KEY, t); } catch (e) { }
         syncThemeUI();
+        remeasureNav();
         if (announce) {
           const lite = document.documentElement.classList.contains('perf-lite');
           const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
