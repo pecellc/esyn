@@ -17,13 +17,32 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a070c'/%3E%3Cpath d='M32 10 L52 32 L32 54 L12 32 Z' fill='%23d8b45a'/%3E%3Cpath d='M32 20 L44 32 L32 44 L20 32 Z' fill='%239c2331'/%3E%3C/svg%3E">
-  <script>document.documentElement.className += ' js';</script>
+  <script>
+    document.documentElement.className += ' js';
+    (function () {
+      // Ringan sejak frame pertama: perangkat lemah / minta animasi dikurangi
+      // langsung dapat mode hemat tanpa nunggu JS utama jalan.
+      try {
+        var el = document.documentElement;
+        var mem = typeof navigator.deviceMemory === 'number' ? navigator.deviceMemory : 8;
+        var cores = typeof navigator.hardwareConcurrency === 'number' ? navigator.hardwareConcurrency : 8;
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var slowNet = !!(navigator.connection && /(^|-)2g$/i.test(navigator.connection.effectiveType || ''));
+        if (reduce || mem <= 4 || cores <= 4 || slowNet) {
+          el.classList.add('perf-lite');
+          el.classList.add('perf-reduce');
+        }
+      } catch (e) { }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://ziibivkhualutrdiojto.supabase.co" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600;1,9..144,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <style>
     :root {
       --velvet-950: #0c0406;
@@ -3988,6 +4007,12 @@
       box-shadow: 0 10px 30px rgba(23, 180, 119, 0.4);
     }
 
+    .timer-btn.armed {
+      background: linear-gradient(100deg, #1d7a4d, #46c47d 60%, #b6f5cf);
+      color: #04140a;
+      box-shadow: 0 10px 30px rgba(70, 196, 125, 0.42);
+    }
+
     .timer-stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -4335,12 +4360,14 @@
       left: 0;
       bottom: -1px;
       height: 3px;
-      width: 0%;
+      width: 100%;
+      transform: scaleX(0);
+      transform-origin: left center;
       background: linear-gradient(90deg, var(--gold), var(--velvet-400));
       box-shadow: 0 0 12px rgba(216, 180, 90, 0.75);
       z-index: 2;
       pointer-events: none;
-      transition: width 0.12s linear;
+      will-change: transform;
     }
 
     /* layar sentuh: caption galeri nggak boleh nunggu hover */
@@ -5345,8 +5372,198 @@
       /* backdrop blur di overlay kartu: buang di HP (latar udah near-opaque,
          blur-nya hampir keliatan nol tapi GPU-nya jalan terus pas modal open) */
       .lightbox,
-      .pw-overlay {
+      .pw-overlay,
+      .nav-drawer {
         backdrop-filter: none;
+      }
+    }
+
+    /* ===== MODE HEMAT (perf-lite) =====
+       Dipasang dari script head buat device lemah. Marquee & timer tetap
+       jalan; yang dimatiin cuma animasi dekoratif yang makan compositor. */
+    html.perf-lite .orb1,
+    html.perf-lite .orb2,
+    html.perf-lite body::after {
+      display: none;
+    }
+
+    html.perf-lite nav::before {
+      animation: none;
+      opacity: 0;
+    }
+
+    html.perf-lite .hero-title {
+      animation: fadeUp 0.5s ease both;
+      will-change: auto;
+    }
+
+    html.perf-lite .hero-badge {
+      animation: fadeUp 0.5s ease both;
+    }
+
+    html.perf-lite .ht-letter.accent,
+    html.perf-lite .y-sign i,
+    html.perf-lite .page-header h1 span,
+    html.perf-lite .section-title span,
+    html.perf-lite .secret-hero-ring::before,
+    html.perf-lite .secret-ring-glow,
+    html.perf-lite .scroll-cue::after,
+    html.perf-lite .eq i,
+    html.perf-lite .lb-skel .lb-sk,
+    html.perf-lite .is-loading::after {
+      animation: none;
+      will-change: auto;
+    }
+
+    html.perf-lite .cursor-glow {
+      display: none !important;
+    }
+
+    html.perf-lite nav,
+    html.perf-lite .nav-drawer,
+    html.perf-lite .lightbox,
+    html.perf-lite .pw-overlay,
+    html.perf-lite .photo-del,
+    html.perf-lite .contact-form-card,
+    html.perf-lite .rate-pop {
+      backdrop-filter: none;
+    }
+
+    /* ===== SKELETON LOADING ===== */
+    @keyframes skShimmer {
+      from {
+        background-position: 180% 0;
+      }
+
+      to {
+        background-position: -80% 0;
+      }
+    }
+
+    @keyframes skSweep {
+      from {
+        transform: translateX(-110%);
+      }
+
+      to {
+        transform: translateX(110%);
+      }
+    }
+
+    .is-loading {
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    /* sweep pakai transform (compositor) — bukan background-position
+       yang repaint tiap frame di belasan kartu sekaligus */
+    .is-loading::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(100deg,
+          transparent 20%,
+          rgba(255, 255, 255, 0.1) 42%,
+          transparent 64%);
+      transform: translateX(-110%);
+      animation: skSweep 1.35s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    .is-loading > img,
+    .is-loading .gallery-img {
+      opacity: 0;
+    }
+
+    .gallery-item > img,
+    .shot > img,
+    .secret-frame > img,
+    .about-frame > img,
+    .avatar-frame > img {
+      transition: opacity 0.35s ease;
+    }
+
+    .lb-skel {
+      pointer-events: none;
+    }
+
+    .lb-skel .lb-sk {
+      display: block;
+      height: 10px;
+      border-radius: 3px;
+      background-color: rgba(255, 255, 255, 0.045);
+      background-image: linear-gradient(100deg,
+          rgba(255, 255, 255, 0.04) 25%,
+          rgba(255, 255, 255, 0.12) 42%,
+          rgba(255, 255, 255, 0.04) 60%);
+      background-size: 220% 100%;
+      animation: skShimmer 1.3s linear infinite;
+    }
+
+    .lb-skel .lb-sk-rank {
+      width: 16px;
+    }
+
+    .lb-skel .lb-sk-name {
+      width: min(62%, 160px);
+    }
+
+    .lb-skel .lb-sk-time {
+      width: 54px;
+      justify-self: end;
+    }
+
+    /* ===== HAPUS SKOR LEADERBOARD (khusus owner) ===== */
+    .lb-row.has-del {
+      grid-template-columns: 30px minmax(0, 1fr) auto 26px;
+    }
+
+    .lb-del {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      border: 1px solid rgba(255, 180, 180, 0.35);
+      border-radius: 50%;
+      background: transparent;
+      color: #ffb4b4;
+      font-size: 0.95rem;
+      line-height: 1;
+      cursor: pointer;
+      justify-self: end;
+      transition: background 0.18s, color 0.18s;
+    }
+
+    .lb-del:hover {
+      background: #9c2331;
+      color: #fff;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto !important;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+
+      .marquee-track {
+        animation: none !important;
+      }
+
+      .orb1,
+      .orb2,
+      body::after {
+        display: none !important;
       }
     }
 
@@ -5884,8 +6101,8 @@
           <div class="timer-head">
             <div class="sec-eyebrow">✦ Race the cube</div>
             <h3 class="timer-title">Time a solve</h3>
-            <p class="timer-sub">Press <kbd>Space</kbd> or hit the bar to start, tap again to stop.
-              Your last few solves stay on this device.</p>
+            <p class="timer-sub">Hold <kbd>Space</kbd> until it turns green, then release to start —
+              press <kbd>Space</kbd> again to stop. Your last few solves stay on this device.</p>
           </div>
 
           <div class="timer-player">
@@ -6315,8 +6532,10 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+  // Tunggu DOMContentLoaded: halaman statis tampil dulu, SDK Supabase
+  // (defer) selesai dieksekusi, baru app-nya jalan — nggak blank nunggu CDN.
+  window.addEventListener('DOMContentLoaded', function () {
     /* ===== SUPABASE ===== */
     const db = supabase.createClient(
       'https://ziibivkhualutrdiojto.supabase.co',
@@ -6440,6 +6659,19 @@
           img.src = base + sep + '__r=' + Date.now();
         }, 600 * (n + 1));
       });
+    }
+
+    /* ===== SKELETON SAMPAI FOTO SIAP ===== */
+    function watchShimmer(img, holder) {
+      if (!img || !holder) return;
+      holder.classList.add('is-loading');
+      const done = () => holder.classList.remove('is-loading');
+      if (img.complete && img.naturalWidth > 0) {
+        done();
+        return;
+      }
+      img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', done, { once: true });
     }
 
     /* ===== VIDEO RETRY (video juga nggak boleh ilang) ===== */
@@ -6810,6 +7042,7 @@
         img.loading = 'lazy';
         img.decoding = 'async';
         attachPhotoRetry(img, item.img, 4);
+        watchShimmer(img, div);
 
         const overlay = document.createElement('div');
         overlay.className = 'gallery-overlay';
@@ -7214,6 +7447,8 @@
         if (owner) el.removeAttribute('hidden');
         else el.setAttribute('hidden', '');
       });
+      // tombol hapus di leaderboard ikut muncul/hilang tanpa reload
+      if (typeof window.__lbRender === 'function') window.__lbRender();
     }
 
     if ($('gallery-add-photo')) $('gallery-add-photo').addEventListener('click', () => openPhotoModal('gallery'));
@@ -8189,6 +8424,7 @@
           img.loading = 'lazy';
           img.decoding = 'async';
           attachPhotoRetry(img, it.src, 6);
+          watchShimmer(img, frame);
           frame.appendChild(ph);
           frame.appendChild(img);
           if (it.title) {
@@ -8205,9 +8441,36 @@
 
     attachImgRetry($('secret-photo-1'), 6);
 
-    /* ===== FX BERAT: DIOFFKAN DI HP (touch/layar sempit) ===== */
-    const HEAVY_FX_OFF = !!(window.matchMedia &&
+    /* ===== FX BERAT: DIOFFKAN DI HP / DEVICE LEMAH ===== */
+    const PERF_LITE = document.documentElement.classList.contains('perf-lite');
+    const HEAVY_FX_OFF = PERF_LITE || !!(window.matchMedia &&
       window.matchMedia('(max-width: 640px), (pointer: coarse)').matches);
+    let cursorGlowOn = !HEAVY_FX_OFF;
+
+    // Adaptif: kalau frame rate masih rendah di laptop lemah, turunkan mode.
+    if (!PERF_LITE) {
+      setTimeout(() => {
+        if (document.hidden) return;
+        let frames = 0, t0 = 0, stopped = false;
+        const sample = (t) => {
+          if (stopped) return;
+          if (!t0) t0 = t;
+          frames++;
+          if (t - t0 < 1200) { requestAnimationFrame(sample); return; }
+          stopped = true;
+          const fps = frames * 1000 / (t - t0);
+          if (fps < 42) {
+            document.documentElement.classList.add('perf-lite', 'perf-reduce');
+            document.documentElement.dataset.autoLite = String(Math.round(fps));
+            cursorGlowOn = false;
+            const cg = document.querySelector('.cursor-glow');
+            if (cg) cg.remove();
+            try { toggleSparkles(false); toggleCarFx(false); } catch (e) { }
+          }
+        };
+        requestAnimationFrame(sample);
+      }, 2600);
+    }
 
     /* ===== SPARKLES ===== */
     let sparkleTimer = null;
@@ -8328,7 +8591,7 @@
     })();
 
     /* ===== CURSOR GLOW ===== */
-    if (window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+    if (cursorGlowOn && window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
       const cGlow = document.createElement('div');
       cGlow.className = 'cursor-glow';
       document.body.appendChild(cGlow);
@@ -8337,6 +8600,7 @@
         cx = gx,
         cy = gy;
       window.addEventListener('pointermove', (e) => {
+        if (!cursorGlowOn) return;
         gx = e.clientX;
         gy = e.clientY;
         cGlow.classList.add('on');
@@ -8347,6 +8611,7 @@
       });
       let running = false;
       function followGlow() {
+        if (!cursorGlowOn) { running = false; return; }
         const dx = gx - cx,
           dy = gy - cy;
         if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
@@ -8510,17 +8775,28 @@
       }, 1600);
     });
 
-    /* --- scroll progress + back to top --- */
+    /* --- scroll progress + back to top (rAF, transform doang) --- */
     const toTopBtn = $('to-top');
     const progressEl = $('scroll-progress');
-    function onScrollUI() {
+    let scrollQueued = false;
+    function paintScrollUI() {
+      scrollQueued = false;
       const st = window.scrollY || document.documentElement.scrollTop;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      if (progressEl) progressEl.style.width = (max > 0 ? Math.min(100, (st / max) * 100) : 0) + '%';
+      if (progressEl) {
+        const ratio = max > 0 ? Math.min(1, Math.max(0, st / max)) : 0;
+        progressEl.style.transform = 'scaleX(' + ratio + ')';
+      }
       if (toTopBtn) toTopBtn.classList.toggle('show', st > 520);
     }
+    function onScrollUI() {
+      if (scrollQueued) return;
+      scrollQueued = true;
+      requestAnimationFrame(paintScrollUI);
+    }
     window.addEventListener('scroll', onScrollUI, { passive: true });
-    onScrollUI();
+    window.addEventListener('resize', onScrollUI, { passive: true });
+    paintScrollUI();
     if (toTopBtn) {
       toTopBtn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -8590,6 +8866,7 @@
         img.loading = 'lazy';
         img.decoding = 'async';
         attachPhotoRetry(img, item.img, 4);
+        watchShimmer(img, b);
         const tag = document.createElement('span');
         tag.className = 'shot-tag';
         tag.textContent = (CAT_LABEL[item.cat] || 'Photo').toUpperCase();
@@ -8667,6 +8944,8 @@
       rbAo5 = $('rb-ao5'), rbCount = $('rb-count'), rbSess = $('rb-sessions'),
       rbClear = $('rb-clear');
     let rbRunning = false, rbStart = 0, rbRaf = 0;
+    let rbArmed = false, rbArmTimer = 0;
+    const RB_ARM_MS = 300; // tahan Space ~0.3s dulu, baru hijau & siap start
     let rbSolves = [];
     try { rbSolves = JSON.parse(localStorage.getItem(RB_KEY) || '[]'); if (!Array.isArray(rbSolves)) rbSolves = []; } catch (e) { rbSolves = []; }
 
@@ -8704,14 +8983,43 @@
       rbTime.textContent = fmtMs(performance.now() - rbStart);
       rbRaf = requestAnimationFrame(rbTick);
     }
+    function rbDisarm() {
+      if (rbArmTimer) {
+        clearTimeout(rbArmTimer);
+        rbArmTimer = 0;
+      }
+      rbArmed = false;
+      if (rbTime) rbTime.classList.remove('armed');
+      if (rbBtn) {
+        rbBtn.classList.remove('armed');
+        if (!rbRunning) rbBtn.textContent = 'START';
+      }
+    }
+    function rbArm() {
+      if (!rbTime || rbRunning || rbArmed || rbArmTimer) return;
+      if (!player.name) { needName(); return; }
+      rbTime.classList.remove('run');
+      rbTime.textContent = '0.00';
+      // Hijau baru setelah ditahan sebentar — sama kayak csTimer.
+      rbArmTimer = setTimeout(() => {
+        rbArmTimer = 0;
+        rbArmed = true;
+        rbTime.classList.add('armed');
+        rbBtn.classList.add('armed');
+        rbBtn.textContent = 'READY';
+      }, RB_ARM_MS);
+    }
     function rbStartTimer() {
       if (rbRunning || !rbTime) return;
       if (!player.name) { needName(); return; }
+      rbDisarm();
       rbRunning = true;
       rbStart = performance.now();
+      rbTime.textContent = '0.00';
       rbTime.classList.add('run');
       rbTime.classList.remove('armed');
       rbBtn.textContent = 'STOP';
+      rbBtn.classList.remove('armed');
       rbBtn.classList.add('stop');
       rbTick();
     }
@@ -8724,6 +9032,7 @@
       rbTime.textContent = fmtMs(ms);
       rbBtn.textContent = 'START';
       rbBtn.classList.remove('stop');
+      rbBtn.classList.remove('armed');
       if (ms > 300) {
         rbSolves.push(Math.round(ms));
         if (rbSolves.length > 60) rbSolves.shift();
@@ -8732,6 +9041,11 @@
         showToast('solve ' + fmtMs(ms) + ' saved');
         submitScore(ms);
       }
+    }
+    function rbArmRelease() {
+      const ready = rbArmed;
+      rbDisarm();
+      if (ready) rbStartTimer();
     }
     function rbToggle() {
       if (!rbTime) return;
@@ -8745,18 +9059,39 @@
       rbPaint();
       showToast('history cleared');
     });
-    document.addEventListener('keydown', (e) => {
-      if (e.code !== 'Space' && e.key !== ' ') return;
+
+    function isSpaceKey(e) {
+      return e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar';
+    }
+    function timerHot() {
+      if (!rbTime || !rbTime.offsetParent) return false;
+      if ($('lightbox').classList.contains('open')) return false;
+      if ($('pw-overlay').classList.contains('open')) return false;
+      if ($('fb-overlay').classList.contains('open')) return false;
+      return true;
+    }
+    function spaceTyping(e) {
+      if (e.target === rbBtn) return false; // tombol timer tetap ikut aturan Space
       const tag = (e.target.tagName || '').toLowerCase();
-      if (tag === 'input' || tag === 'textarea' || tag === 'select' || tag === 'button' || e.target.isContentEditable) return;
-      if (!rbTime || !rbTime.offsetParent) return;             // cuma kalau kartu timer kelihatan
-      if ($('lightbox').classList.contains('open')) return;
-      if ($('pw-overlay').classList.contains('open')) return;
-      if ($('fb-overlay').classList.contains('open')) return;
+      return tag === 'input' || tag === 'textarea' || tag === 'select' ||
+        tag === 'button' || e.target.isContentEditable;
+    }
+    document.addEventListener('keydown', (e) => {
+      if (!isSpaceKey(e) || spaceTyping(e) || !timerHot()) return;
       e.preventDefault();
       if (e.repeat) return;
-      rbToggle();
+      if (rbRunning) { rbStopTimer(); return; } // jalan -> Space langsung stop
+      rbArm();                                   // diam -> tahan dulu buat arm
     });
+    document.addEventListener('keyup', (e) => {
+      if (!isSpaceKey(e) || spaceTyping(e) || !timerHot()) return;
+      if (rbRunning) return;
+      if (!rbArmed && !rbArmTimer) return;       // cuma kalau tadi beneran arm
+      e.preventDefault();
+      rbArmRelease();                            // lepas -> start
+    });
+    window.addEventListener('blur', rbDisarm);
+    window.addEventListener('hashchange', rbDisarm);
     if (rbTime) rbPaint();
 
     /* --- nama pemain + leaderboard publik --- */
@@ -8787,6 +9122,7 @@
 
     let lbRows = [];
     let lbOffline = false;
+    let lbLoaded = false;
 
     function needName() {
       showToast('set your name first — leaderboard needs it');
@@ -8829,7 +9165,8 @@
           .limit(50);
         if (error) throw error;
         lbRows = (data || []).map(r => ({
-          player_id: r.player_id, name: r.name, best_ms: Number(r.best_ms) || 0
+          player_id: r.player_id, name: r.name, best_ms: Number(r.best_ms) || 0,
+          virtual: false
         }));
         lbOffline = false;
       } catch (e) {
@@ -8838,14 +9175,29 @@
       }
       // benchmark 13.95s selalu ada, walaupun seed SQL belum jalan
       const hasBench = lbRows.some(r => r.player_id === 'excel' || String(r.name).toLowerCase() === 'excel');
-      if (!hasBench) lbRows.push({ player_id: 'excel', name: 'excel', best_ms: RB_BENCH_MS });
+      if (!hasBench) lbRows.push({
+        player_id: 'excel', name: 'excel', best_ms: RB_BENCH_MS, virtual: true
+      });
       lbRows.sort((a, b) => a.best_ms - b.best_ms);
+      lbLoaded = true;
       renderLeaderboard();
     }
 
     function renderLeaderboard() {
       const list = $('lb-list'), status = $('lb-status');
       if (!list) return;
+      if (!lbLoaded) {
+        if (status) status.textContent = 'loading…';
+        list.setAttribute('aria-busy', 'true');
+        list.innerHTML = new Array(4).fill(
+          '<li class="lb-row lb-skel" aria-hidden="true">' +
+          '<span class="lb-sk lb-sk-rank"></span>' +
+          '<span class="lb-sk lb-sk-name"></span>' +
+          '<span class="lb-sk lb-sk-time"></span></li>'
+        ).join('');
+        return;
+      }
+      list.removeAttribute('aria-busy');
       if (status) {
         status.textContent = lbOffline ? 'offline' : 'live';
         status.classList.toggle('off', lbOffline);
@@ -8858,7 +9210,9 @@
       const myRank = lbRows.findIndex(r => r.player_id === player.id);
       const rowHtml = (r, i, mine) => {
         const rank = i + 1;
-        const cls = 'lb-row' + (mine ? ' lb-you' : '') + (rank === 1 ? ' lb-top1' : '');
+        const canDel = isOwner() && !r.virtual;
+        const cls = 'lb-row' + (mine ? ' lb-you' : '') + (rank === 1 ? ' lb-top1' : '') +
+          (canDel ? ' has-del' : '');
         const isBench = r.player_id === 'excel';
         return '<li class="' + cls + '">' +
           '<span class="lb-rank">' + rank + '</span>' +
@@ -8866,7 +9220,14 @@
           (isBench ? ' <i class="lb-tag">record</i>' : '') +
           (mine ? ' <i class="lb-tag lb-tag-you">you</i>' : '') +
           '</span>' +
-          '<span class="lb-time">' + fmtMs(r.best_ms) + 's</span></li>';
+          '<span class="lb-time">' + fmtMs(r.best_ms) + 's</span>' +
+          (canDel
+            ? '<button type="button" class="lb-del" data-player="' +
+              escHtml(r.player_id).replace(/"/g, '&quot;') + '" data-name="' +
+              escHtml(r.name).replace(/"/g, '&quot;') +
+              '" title="Delete score" aria-label="Delete score">×</button>'
+            : '') +
+          '</li>';
       };
       lbRows.slice(0, 15).forEach((r, i) => {
         html.push(rowHtml(r, i, r.player_id === player.id));
@@ -8876,6 +9237,35 @@
         html.push(rowHtml(lbRows[myRank], myRank, true));
       }
       list.innerHTML = html.join('');
+    }
+
+    window.__lbRender = renderLeaderboard;
+
+    async function deleteRubikScore(id, name) {
+      if (!isOwner()) return false;
+      if (!confirm('Remove ' + (name || 'this player') + ' from the leaderboard?')) return false;
+      try {
+        const { error } = await db.rpc('admin_delete_rubik_score', {
+          p_secret: OWNER_HASH, p_player_id: id
+        });
+        if (error) throw error;
+        showToast('score removed');
+        await loadLeaderboard();
+        return true;
+      } catch (e) {
+        console.warn('delete score:', e);
+        showToast('could not delete — run sql/rubik_admin_delete.sql');
+        return false;
+      }
+    }
+
+    if ($('lb-list')) {
+      $('lb-list').addEventListener('click', (e) => {
+        const btn = e.target.closest('.lb-del');
+        if (!btn) return;
+        e.stopPropagation();
+        deleteRubikScore(btn.dataset.player, btn.dataset.name);
+      });
     }
 
     async function submitScore(ms) {
@@ -8951,6 +9341,10 @@
     attachImgRetry($('avatar-img'), 6);
     document.querySelectorAll('.contact-icon').forEach(el => attachImgRetry(el, 6));
     document.querySelectorAll('img[data-local-src]').forEach(el => attachImgRetry(el, 6));
+    document.querySelectorAll('.about-frame > img, .avatar-frame > img')
+      .forEach(img => watchShimmer(img, img.parentElement));
+    document.querySelectorAll('img.contact-icon').forEach(img => watchShimmer(img, img));
+    if ($('secret-photo-1')) watchShimmer($('secret-photo-1'), $('secret-photo-1'));
     buildTrackList();
     rebuildPhotoData();
     buildMarquee();
@@ -8962,8 +9356,8 @@
     loadSiteContent();
     loadPhotos();
     initRealtimeBoard();
-    setInterval(() => { if (!editingText && !document.hidden) loadSiteContent(); }, 45000);
-    setInterval(() => { if (!document.hidden) loadPhotos(); }, 60000);
+    setInterval(() => { if (!editingText && !document.hidden) loadSiteContent(); }, PERF_LITE ? 120000 : 45000);
+    setInterval(() => { if (!document.hidden) loadPhotos(); }, PERF_LITE ? 180000 : 60000);
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && !editingText) loadSiteContent();
       if (!document.hidden) loadPhotos();
@@ -8972,6 +9366,7 @@
     // Player disiapkan langsung, tapi TIDAK autoplay: suara baru keluar
     // setelah pengunjung pencet tombol play (preload="none", jadi hemat data).
     initMusic();
+  });
   </script>
 </body>
 
