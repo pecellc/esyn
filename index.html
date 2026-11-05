@@ -5364,6 +5364,218 @@
         grid-column: span 1;
       }
     }
+
+    /* ===== ADMIN PHOTO TOOLS ===== */
+    .marquee-half {
+      display: flex;
+      flex: 0 0 auto;
+      width: max-content;
+    }
+
+    .gallery-toolbar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .gallery-toolbar .gallery-filters {
+      margin-bottom: 14px;
+    }
+
+    .photo-add {
+      margin: 0 0 24px;
+      padding: 10px 20px;
+      font-size: 0.72rem;
+    }
+
+    body:not(.owner) [data-owner-only] {
+      display: none !important;
+    }
+
+    .photo-del {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 4;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 1px solid rgba(255, 180, 180, 0.5);
+      border-radius: 50%;
+      background: rgba(10, 4, 6, 0.82);
+      color: #ffb4b4;
+      font-size: 1.1rem;
+      line-height: 1;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    body.owner .photo-del {
+      display: flex;
+    }
+
+    .photo-del:hover {
+      background: #9c2331;
+      color: #fff;
+      transform: scale(1.08);
+    }
+
+    .secret-frame {
+      position: relative;
+    }
+
+    .secret-cap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 22px 14px 12px;
+      background: linear-gradient(transparent, rgba(6, 3, 4, 0.9));
+      color: var(--cream);
+      font-size: 0.78rem;
+      letter-spacing: 0.4px;
+      text-align: left;
+      pointer-events: none;
+    }
+
+    .photo-card {
+      max-width: 460px;
+      max-height: 92vh;
+      overflow-y: auto;
+      padding: 30px 26px;
+      text-align: left;
+    }
+
+    .photo-card h3 {
+      font-size: 1.35rem;
+      margin-bottom: 4px;
+    }
+
+    .photo-card > p {
+      margin-bottom: 18px;
+      font-size: 0.8rem;
+    }
+
+    .photo-field {
+      margin-bottom: 14px;
+    }
+
+    .photo-field > label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--steel-dim);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    .photo-field > label span {
+      color: var(--cream-faint);
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-transform: none;
+    }
+
+    .photo-card .pw-input,
+    .photo-card select.pw-input {
+      margin-bottom: 0;
+      padding: 11px 14px;
+      text-align: left;
+      font-size: 0.92rem;
+      letter-spacing: 0;
+    }
+
+    .photo-card select.pw-input {
+      appearance: none;
+      cursor: pointer;
+      background-image: linear-gradient(45deg, transparent 50%, var(--gold) 50%),
+        linear-gradient(135deg, var(--gold) 50%, transparent 50%);
+      background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+    }
+
+    .photo-grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .photo-file {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: 1.5px dashed rgba(216, 180, 90, 0.42);
+      border-radius: var(--radius-s);
+      color: var(--gold-soft);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .photo-file:hover {
+      border-color: var(--gold);
+      background: rgba(216, 180, 90, 0.08);
+    }
+
+    .photo-file-name {
+      display: block;
+      margin-top: 6px;
+      color: var(--cream-faint);
+      font-size: 0.72rem;
+      word-break: break-all;
+    }
+
+    .photo-preview {
+      margin: 4px 0 14px;
+      border: 1px solid var(--line-gold);
+      border-radius: var(--radius-s);
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .photo-preview img {
+      display: block;
+      width: 100%;
+      max-height: 230px;
+      object-fit: contain;
+    }
+
+    .photo-status {
+      min-height: 18px;
+      margin: 0 0 12px;
+      color: var(--cream-dim);
+      font-size: 0.76rem;
+      line-height: 1.4;
+    }
+
+    .photo-status.bad {
+      color: #fca5a5;
+    }
+
+    .photo-status.good {
+      color: #86efac;
+    }
+
+    @media (max-width: 430px) {
+      .photo-grid2 {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-card {
+        padding: 26px 18px;
+      }
+    }
   </style>
 </head>
 
@@ -5458,7 +5670,7 @@
             <div class="stat-label">Rubik personal best</div>
           </div>
           <div class="stat" data-reveal>
-            <div class="stat-num" data-count="2">2</div>
+            <div class="stat-num" data-count="4">4</div>
             <div class="stat-label">Languages in play</div>
           </div>
         </div>
@@ -5472,7 +5684,7 @@
               decoding="async">
           </div>
           <div class="about-stamp" aria-hidden="true">
-            <span>EST.</span><b>2010</b><span>BANDUNG</span>
+            <span>BORN</span><b>2010</b><span>BANDUNG</span>
           </div>
         </div>
         <div class="about-copy" data-reveal="right">
@@ -5503,7 +5715,7 @@
       </div>
 
       <div class="marquee" aria-hidden="true">
-        <div class="marquee-track">
+        <div class="marquee-track" id="marquee-track">
           <span>Photography <i>✦</i> Languages <i>✦</i> Rubik's Cube <i>✦</i> Games <i>✦</i> Drawing <i>✦</i> Bandung <i>✦</i> </span>
           <span>Photography <i>✦</i> Languages <i>✦</i> Rubik's Cube <i>✦</i> Games <i>✦</i> Drawing <i>✦</i> Bandung <i>✦</i> </span>
         </div>
@@ -5727,7 +5939,10 @@
       </div>
 
       <div class="gallery-wrap">
-        <div class="gallery-filters" id="gallery-filters" data-reveal aria-label="Filter photos"></div>
+        <div class="gallery-toolbar" data-reveal>
+          <div class="gallery-filters" id="gallery-filters" aria-label="Filter photos"></div>
+          <button class="btn-outline photo-add" id="gallery-add-photo" data-owner-only type="button">＋ Add photo</button>
+        </div>
         <div class="gallery-grid" id="gallery-grid"></div>
         <p class="gallery-empty" id="gallery-empty" hidden>Nothing in that pile yet — try another filter.</p>
       </div>
@@ -5877,6 +6092,7 @@
         <div class="secret-grid" id="secret-grid"></div>
 
         <div class="secret-actions">
+          <button class="btn-outline photo-add" id="secret-add-photo" data-owner-only type="button">＋ Add photo</button>
           <button class="btn-outline" id="relock-btn">🔒 Lock Again &amp; Exit</button>
         </div>
       </div>
@@ -5999,6 +6215,14 @@
           <button class="btn-primary own-edit-btn" id="own-edit-text" type="button">✎ Edit page text</button>
         </div>
         <div class="own-sec">
+          <h4>Photos</h4>
+          <p class="own-hint">Add a photo to the public gallery or the hidden page. Images picked from your device are compressed before upload.</p>
+          <div class="pw-actions own-photo-actions">
+            <button class="btn-outline" id="own-add-gallery" type="button">＋ Gallery photo</button>
+            <button class="btn-outline" id="own-add-secret" type="button">＋ Hidden photo</button>
+          </div>
+        </div>
+        <div class="own-sec">
           <h4>Ratings <span class="own-count" id="own-rating-count"></span></h4>
           <div class="own-list" id="own-ratings"></div>
         </div>
@@ -6010,6 +6234,54 @@
           <button class="btn-outline" id="own-logout">Log out</button>
           <button class="btn-primary" id="own-close">Close</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pw-overlay" id="photo-overlay">
+    <div class="pw-card photo-card" role="dialog" aria-labelledby="photo-heading" aria-modal="true">
+      <h3 id="photo-heading">Add photo</h3>
+      <p id="photo-sub">Owner only — this shows up for everyone once saved.</p>
+
+      <div class="photo-field">
+        <label for="photo-title">Caption</label>
+        <input type="text" id="photo-title" class="pw-input" maxlength="70" placeholder="e.g. Bandung at dusk">
+      </div>
+
+      <div class="photo-grid2">
+        <div class="photo-field" id="photo-cat-field">
+          <label for="photo-cat">Category</label>
+          <select id="photo-cat" class="pw-input">
+            <option value="nature">Nature</option>
+            <option value="art">Art</option>
+            <option value="food">Food</option>
+            <option value="people" selected>People</option>
+            <option value="city">City</option>
+            <option value="game">Game</option>
+          </select>
+        </div>
+        <div class="photo-field">
+          <label for="photo-file">From device <span>(auto-compressed)</span></label>
+          <label class="photo-file" for="photo-file">Choose image</label>
+          <input type="file" id="photo-file" accept="image/*" hidden>
+          <span class="photo-file-name" id="photo-file-name">no file chosen</span>
+        </div>
+      </div>
+
+      <div class="photo-field">
+        <label for="photo-url">…or image URL</label>
+        <input type="url" id="photo-url" class="pw-input" inputmode="url" placeholder="https://example.com/photo.jpg">
+      </div>
+
+      <div class="photo-preview" id="photo-preview" hidden>
+        <img id="photo-preview-img" alt="Photo preview">
+      </div>
+
+      <div class="photo-status" id="photo-status"></div>
+
+      <div class="pw-actions">
+        <button class="btn-outline" id="photo-cancel" type="button">Cancel</button>
+        <button class="btn-primary" id="photo-save" type="button">Add photo</button>
       </div>
     </div>
   </div>
@@ -6066,6 +6338,27 @@
       return el;
     }
 
+    /* Foto dari admin bisa berupa URL eksternal atau data URL hasil kompres.
+       Jangan lewat cdnUrl() — kalau tidak, URL-nya rusak. */
+    function isRemotePhoto(src) {
+      return /^(https?:\/\/|data:image\/)/i.test(String(src || ''));
+    }
+
+    function setPhoto(el, src) {
+      if (isRemotePhoto(src)) {
+        el.removeAttribute('data-local-src');
+        el.src = src;
+      } else {
+        setMedia(el, src);
+      }
+      return el;
+    }
+
+    function attachPhotoRetry(img, src, max) {
+      // Data URL nggak ada gunanya di-retry (dan nambah '?__r' malah merusak).
+      if (!/^data:/i.test(String(src || ''))) attachImgRetry(img, max || 4);
+    }
+
     const TRACKS = [
       { src: 'audio/stereo%20love.mp4', name: 'Stereo Love' },
       { src: 'audio/ins.mp4', name: 'Luxury' },
@@ -6073,7 +6366,7 @@
       { src: 'audio/Flatline.mp4', name: 'Flatline' }
     ];
 
-    const GALLERY = [
+    const STATIC_GALLERY = [
       { title: 'Flower', desc: '', img: 'img/bunga.jpg', featured: true, cat: 'nature' },
       { title: 'Art Piece', desc: 'Creativity', img: 'img/lukiduk.jpg', cat: 'art' },
       { title: 'larp', desc: '', img: 'img/saham.jpg', cat: 'people' },
@@ -6090,6 +6383,7 @@
       { title: 'Ice Cream', desc: '', img: 'img/aisekerimu.jpg', cat: 'food' },
       { title: 'Loblok', desc: '', img: 'img/lawd.png', cat: 'game' }
     ];
+    let GALLERY = STATIC_GALLERY.slice();
 
     const CAT_LABEL = { nature: 'Nature', art: 'Art', food: 'Food', people: 'People', city: 'City', game: 'Game' };
 
@@ -6511,19 +6805,27 @@
 
         const img = document.createElement('img');
         img.className = 'gallery-img';
-        setMedia(img, item.img);
+        setPhoto(img, item.img);
         img.alt = item.title;
         img.loading = 'lazy';
         img.decoding = 'async';
-        attachImgRetry(img);
+        attachPhotoRetry(img, item.img, 4);
 
         const overlay = document.createElement('div');
         overlay.className = 'gallery-overlay';
-        overlay.innerHTML = '<div class="gallery-overlay-text"><h3>' + item.title + '</h3><p>' +
-          (item.desc || '') + '</p></div>';
+        const ovText = document.createElement('div');
+        ovText.className = 'gallery-overlay-text';
+        const h3 = document.createElement('h3');
+        h3.textContent = item.title;
+        const p = document.createElement('p');
+        p.textContent = item.desc || '';
+        ovText.appendChild(h3);
+        ovText.appendChild(p);
+        overlay.appendChild(ovText);
 
         div.appendChild(img);
         div.appendChild(overlay);
+        if (item.id != null) addPhotoDelete(div, item.id);
 
         div.addEventListener('click', () => openLightboxAt(list, list.indexOf(item)));
         grid.appendChild(div);
@@ -6538,6 +6840,7 @@
       if (!wrap) return;
       const cats = [];
       GALLERY.forEach(g => { if (g.cat && cats.indexOf(g.cat) === -1) cats.push(g.cat); });
+      if (galFilter !== 'all' && cats.indexOf(galFilter) === -1) galFilter = 'all';
       wrap.innerHTML = '';
       const mk = (val, label) => {
         const b = document.createElement('button');
@@ -6562,8 +6865,8 @@
       lbIndex = ((i || 0) + lbList.length) % lbList.length;
       const item = lbList[lbIndex];
       const lb = $('lightbox-img');
-      setMedia(lb, item.img);
-      attachImgRetry(lb, 6);
+      setPhoto(lb, item.img);
+      attachPhotoRetry(lb, item.img, 6);
       imgRetryCount.set(lb, 0); // reset jatah retry tiap ganti foto
       lb.dataset.triedLocal = '';
       lb.classList.remove('img-failed');
@@ -6590,6 +6893,416 @@
     $('lightbox-close').addEventListener('click', closeLightbox);
     $('lightbox').addEventListener('click', (e) => {
       if (e.target === e.currentTarget) closeLightbox();
+    });
+
+    /* ===== ADMIN PHOTOS (public gallery + hidden page) ===== */
+    const LOCAL_PHOTOS_KEY = 'rv-photos-local-v1';
+    const SECRET_BASE = [
+      { n: 1, src: 'img/3.jpg' },
+      { n: 2, src: 'img/10.jpg' },
+      { n: 3, src: 'img/2.jpg' },
+      { n: 4, src: 'img/12.jpg' },
+      { n: 5, src: 'img/9.jpg' },
+      { n: 6, src: 'img/11.jpg' }
+    ];
+
+    let serverPhotos = [];
+    let secretPhotos = [];
+    let localPhotos = readLocalPhotos();
+    let photoLoading = false;
+    let photoTableReady = false;
+
+    function readLocalPhotos() {
+      try {
+        const raw = localStorage.getItem(LOCAL_PHOTOS_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveLocalPhotos(list) {
+      try {
+        localStorage.setItem(LOCAL_PHOTOS_KEY, JSON.stringify(list));
+        return true;
+      } catch (e) {
+        console.warn('local photo storage full:', e);
+        return false;
+      }
+    }
+
+    function photoKey(p) {
+      return String(p.scope || 'gallery') + '|' + String(p.title || '') + '|' +
+        String(p.image_url || p.img || '');
+    }
+
+    function allPhotoRows() {
+      const seen = {};
+      const out = [];
+      serverPhotos.concat(localPhotos).forEach(p => {
+        const k = photoKey(p);
+        if (seen[k]) return;
+        seen[k] = 1;
+        out.push(p);
+      });
+      return out;
+    }
+
+    function normalizePhoto(row) {
+      return {
+        id: row.id == null ? 'local-' + Date.now() : row.id,
+        scope: row.scope === 'secret' ? 'secret' : 'gallery',
+        title: String(row.title || 'Photo').trim() || 'Photo',
+        desc: String(row.caption != null ? row.caption : (row.desc || '')),
+        cat: String(row.cat || 'people'),
+        img: String(row.image_url || row.img || ''),
+        sort: Number(row.sort_order) || 0,
+        local: String(row.id || '').indexOf('local-') === 0
+      };
+    }
+
+    function rebuildPhotoData() {
+      const rows = allPhotoRows().map(normalizePhoto).filter(p => p.img);
+      GALLERY = STATIC_GALLERY.concat(rows.filter(p => p.scope === 'gallery'));
+      secretPhotos = rows.filter(p => p.scope === 'secret');
+      buildGalleryFilters();
+      buildGallery();
+      buildHomeShots();
+      buildSecret();
+      updatePhotoCounts();
+      lastPhotoSignature = photoSignature();
+    }
+
+    function photoSignature() {
+      return JSON.stringify(serverPhotos) + '|' + JSON.stringify(localPhotos);
+    }
+    let lastPhotoSignature = '';
+
+    function updatePhotoCounts() {
+      document.querySelectorAll('[data-count-gallery]').forEach(el => {
+        el.dataset.counted = '1';
+        el.textContent = GALLERY.length;
+      });
+      const shots = $('shots-count');
+      if (shots) shots.textContent = GALLERY.length;
+    }
+
+    async function loadPhotos() {
+      if (photoLoading) return;
+      photoLoading = true;
+      let timer = 0;
+      try {
+        const ctrl = new AbortController();
+        timer = setTimeout(() => ctrl.abort(), 8000);
+        const { data, error } = await db.from('gallery_photos')
+          .select('id,scope,title,caption,cat,image_url,sort_order')
+          .order('sort_order', { ascending: true })
+          .order('id', { ascending: true })
+          .abortSignal(ctrl.signal);
+        if (error) throw error;
+        serverPhotos = data || [];
+        photoTableReady = true;
+      } catch (e) {
+        photoTableReady = false;
+      } finally {
+        clearTimeout(timer);
+        photoLoading = false;
+        localPhotos = readLocalPhotos();
+        if (photoSignature() !== lastPhotoSignature) rebuildPhotoData();
+      }
+    }
+
+    function addPhotoDelete(parent, id) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'photo-del';
+      b.textContent = '×';
+      b.title = 'Delete photo';
+      b.setAttribute('aria-label', 'Delete photo');
+      b.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (!isOwner()) return;
+        if (!confirm('Delete this photo?')) return;
+        b.disabled = true;
+        const ok = await deletePhoto(id);
+        if (!ok) {
+          b.disabled = false;
+          showToast('could not delete — run sql/gallery_admin.sql');
+        }
+      });
+      parent.appendChild(b);
+    }
+
+    async function deletePhoto(id) {
+      if (String(id).indexOf('local-') === 0) {
+        const list = readLocalPhotos().filter(p => String(p.id) !== String(id));
+        if (!saveLocalPhotos(list)) return false;
+        localPhotos = readLocalPhotos();
+        rebuildPhotoData();
+        showToast('photo removed');
+        return true;
+      }
+      try {
+        const { error } = await db.rpc('admin_delete_gallery_photo', {
+          p_secret: OWNER_HASH, p_id: Number(id)
+        });
+        if (error) throw error;
+        await loadPhotos();
+        showToast('photo deleted');
+        return true;
+      } catch (e) {
+        console.warn('delete photo:', e);
+        return false;
+      }
+    }
+
+    async function addPhoto(payload) {
+      let timer = 0;
+      try {
+        const ctrl = new AbortController();
+        timer = setTimeout(() => ctrl.abort(), 7000);
+        const { data, error } = await db.rpc('admin_add_gallery_photo', {
+          p_secret: OWNER_HASH,
+          p_scope: payload.scope,
+          p_title: payload.title,
+          p_caption: payload.desc,
+          p_cat: payload.cat,
+          p_image: payload.img
+        }).abortSignal(ctrl.signal);
+        if (error) throw error;
+        await loadPhotos();
+        return { ok: true, live: true, id: data };
+      } catch (e) {
+        console.warn('add photo (server):', e);
+      } finally {
+        clearTimeout(timer);
+      }
+      // Fallback: simpan di browser ini supaya fitur tetap jalan sebelum SQL dijalankan.
+      const entry = {
+        id: 'local-' + Date.now(),
+        scope: payload.scope,
+        title: payload.title,
+        desc: payload.desc,
+        cat: payload.cat,
+        img: payload.img,
+        sort_order: 9000000000000 + Date.now()
+      };
+      const list = readLocalPhotos();
+      list.push(entry);
+      if (!saveLocalPhotos(list)) return { ok: false, error: 'storage' };
+      localPhotos = readLocalPhotos();
+      rebuildPhotoData();
+      return { ok: true, live: false };
+    }
+
+    /* Kompres gambar di browser: hemat kuota Supabase + cepat di HP */
+    function compressImage(file, maxDim, maxB64) {
+      maxDim = maxDim || 1280;
+      maxB64 = maxB64 || 700000;
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          try {
+            let w = img.naturalWidth || img.width;
+            let h = img.naturalHeight || img.height;
+            if (!w || !h) throw new Error('empty');
+            const scale = Math.min(1, maxDim / Math.max(w, h));
+            w = Math.max(1, Math.round(w * scale));
+            h = Math.max(1, Math.round(h * scale));
+            const c = document.createElement('canvas');
+            const ctx = c.getContext('2d');
+            const paint = () => {
+              c.width = w;
+              c.height = h;
+              ctx.fillStyle = '#0a0a0c';
+              ctx.fillRect(0, 0, w, h);
+              ctx.drawImage(img, 0, 0, w, h);
+            };
+            paint();
+            let q = 0.84;
+            let out = c.toDataURL('image/jpeg', q);
+            while (out.length > maxB64 && q > 0.44) {
+              q -= 0.08;
+              out = c.toDataURL('image/jpeg', q);
+            }
+            while (out.length > maxB64 && w > 480) {
+              w = Math.round(w * 0.8);
+              h = Math.round(h * 0.8);
+              paint();
+              out = c.toDataURL('image/jpeg', 0.72);
+            }
+            URL.revokeObjectURL(url);
+            if (out.length > maxB64 * 1.7) reject(new Error('too large'));
+            else resolve(out);
+          } catch (e) {
+            URL.revokeObjectURL(url);
+            reject(e);
+          }
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error('read failed'));
+        };
+        img.src = url;
+      });
+    }
+
+    let photoScope = 'gallery';
+    let pendingPhotoFile = null;
+    let pendingPreviewUrl = '';
+
+    function setPhotoStatus(msg, kind) {
+      const el = $('photo-status');
+      if (!el) return;
+      el.textContent = msg || '';
+      el.className = 'photo-status' + (kind ? ' ' + kind : '');
+    }
+
+    function setPhotoPreview(src) {
+      const box = $('photo-preview');
+      const img = $('photo-preview-img');
+      if (!box || !img) return;
+      if (pendingPreviewUrl) {
+        URL.revokeObjectURL(pendingPreviewUrl);
+        pendingPreviewUrl = '';
+      }
+      if (!src) {
+        box.hidden = true;
+        img.removeAttribute('src');
+        return;
+      }
+      if (/^blob:/i.test(src)) pendingPreviewUrl = src;
+      img.src = src;
+      box.hidden = false;
+    }
+
+    function openPhotoModal(scope) {
+      if (!isOwner()) {
+        openOwn();
+        return;
+      }
+      photoScope = scope === 'secret' ? 'secret' : 'gallery';
+      $('photo-heading').textContent = photoScope === 'secret' ? 'Add hidden photo' : 'Add gallery photo';
+      $('photo-sub').textContent = photoScope === 'secret'
+        ? 'Only shows on the hidden page.'
+        : 'Shows in the public gallery — total photo count updates automatically.';
+      $('photo-cat-field').hidden = photoScope === 'secret';
+      $('photo-title').value = '';
+      $('photo-url').value = '';
+      $('photo-file').value = '';
+      $('photo-file-name').textContent = 'no file chosen';
+      pendingPhotoFile = null;
+      setPhotoPreview('');
+      setPhotoStatus('');
+      $('photo-overlay').classList.add('open');
+      setTimeout(() => $('photo-title').focus(), 60);
+    }
+
+    function closePhotoModal() {
+      $('photo-overlay').classList.remove('open');
+      pendingPhotoFile = null;
+      setPhotoPreview('');
+    }
+
+    function syncOwnerUI() {
+      const owner = isOwner();
+      document.body.classList.toggle('owner', owner);
+      document.querySelectorAll('[data-owner-only]').forEach(el => {
+        if (owner) el.removeAttribute('hidden');
+        else el.setAttribute('hidden', '');
+      });
+    }
+
+    if ($('gallery-add-photo')) $('gallery-add-photo').addEventListener('click', () => openPhotoModal('gallery'));
+    if ($('secret-add-photo')) $('secret-add-photo').addEventListener('click', () => openPhotoModal('secret'));
+    if ($('own-add-gallery')) $('own-add-gallery').addEventListener('click', () => openPhotoModal('gallery'));
+    if ($('own-add-secret')) $('own-add-secret').addEventListener('click', () => openPhotoModal('secret'));
+    if ($('photo-cancel')) $('photo-cancel').addEventListener('click', closePhotoModal);
+    $('photo-overlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closePhotoModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && $('photo-overlay').classList.contains('open')) closePhotoModal();
+    });
+
+    $('photo-file').addEventListener('change', () => {
+      const f = $('photo-file').files && $('photo-file').files[0];
+      pendingPhotoFile = f || null;
+      $('photo-file-name').textContent = f
+        ? f.name + ' (' + Math.round(f.size / 1024) + ' KB)'
+        : 'no file chosen';
+      if (f) {
+        $('photo-url').value = '';
+        setPhotoPreview(URL.createObjectURL(f));
+        setPhotoStatus('');
+      } else {
+        setPhotoPreview('');
+      }
+    });
+
+    $('photo-url').addEventListener('input', () => {
+      const url = $('photo-url').value.trim();
+      if (url) {
+        pendingPhotoFile = null;
+        $('photo-file').value = '';
+        $('photo-file-name').textContent = 'no file chosen';
+        setPhotoPreview(url);
+      } else {
+        setPhotoPreview('');
+      }
+      setPhotoStatus('');
+    });
+
+    $('photo-save').addEventListener('click', async () => {
+      const btn = $('photo-save');
+      if (btn.disabled) return;
+      const title = $('photo-title').value.trim();
+      const url = $('photo-url').value.trim();
+      const cat = $('photo-cat').value || 'people';
+
+      if (!pendingPhotoFile && !url) {
+        setPhotoStatus('Pick a file or paste an image URL first.', 'bad');
+        return;
+      }
+      if (url && !/^https?:\/\//i.test(url) && !/^data:image\//i.test(url)) {
+        setPhotoStatus('URL must start with http:// or https://', 'bad');
+        return;
+      }
+
+      btn.disabled = true;
+      try {
+        let img = url;
+        if (pendingPhotoFile) {
+          setPhotoStatus('Compressing image…');
+          img = await compressImage(pendingPhotoFile);
+        }
+        setPhotoStatus('Saving…');
+        const res = await addPhoto({
+          scope: photoScope,
+          title: title || 'Photo',
+          desc: '',
+          cat: photoScope === 'secret' ? 'people' : cat,
+          img: img
+        });
+        if (!res.ok) {
+          setPhotoStatus(res.error === 'storage'
+            ? 'Browser storage is full. Use an image URL instead.'
+            : 'Could not save. Try again.', 'bad');
+          return;
+        }
+        closePhotoModal();
+        showToast(res.live
+          ? 'photo added ✓'
+          : 'saved on this device — run sql/gallery_admin.sql to sync');
+      } catch (e) {
+        console.warn('save photo:', e);
+        setPhotoStatus('Could not read that image. Try another one.', 'bad');
+      } finally {
+        btn.disabled = false;
+      }
     });
 
     /* ===== KONTAK ===== */
@@ -6986,6 +7699,7 @@
           sessionStorage.setItem('rv-owner-v1', '1');
           navLogo.classList.add('owner-on');
           ownPass.value = '';
+          syncOwnerUI();
           showOwnPanel();
           return;
         }
@@ -7010,6 +7724,7 @@
     $('own-logout').addEventListener('click', () => {
       sessionStorage.removeItem('rv-owner-v1');
       navLogo.classList.remove('owner-on');
+      syncOwnerUI();
       ownPanel.hidden = true;
       ownLogin.hidden = false;
       $('own-heading').textContent = 'Owner Login';
@@ -7430,15 +8145,19 @@
     /* ===== SECRET PHOTOS ===== */
     function buildSecret() {
       const grid = $('secret-grid');
+      if (!grid) return;
       grid.innerHTML = '';
-      const items = [
-        { n: 1, src: 'img/3.jpg' },
-        { n: 2, src: 'img/10.jpg' },
-        { n: 3, src: 'img/2.jpg' },
-        { n: 4, src: 'img/12.jpg' },
-        { n: 5, src: 'img/9.jpg' },
-        { n: 6, src: 'img/11.jpg' }
-      ];
+      const items = SECRET_BASE.map(it => ({
+        n: it.n,
+        src: it.src,
+        remote: false
+      })).concat(secretPhotos.map((p, i) => ({
+        n: SECRET_BASE.length + i + 1,
+        src: p.img,
+        remote: true,
+        id: p.id,
+        title: p.title
+      })));
 
       items.forEach((it) => {
         const frame = document.createElement('div');
@@ -7465,14 +8184,21 @@
           frame.appendChild(v);
         } else {
           const img = document.createElement('img');
-          setMedia(img, it.src);
-          img.alt = 'Photo ' + it.n;
+          setPhoto(img, it.src);
+          img.alt = it.title || ('Photo ' + it.n);
           img.loading = 'lazy';
           img.decoding = 'async';
-          attachImgRetry(img, 6);
+          attachPhotoRetry(img, it.src, 6);
           frame.appendChild(ph);
           frame.appendChild(img);
+          if (it.title) {
+            const cap = document.createElement('span');
+            cap.className = 'secret-cap';
+            cap.textContent = it.title;
+            frame.appendChild(cap);
+          }
         }
+        if (it.id != null) addPhotoDelete(frame, it.id);
         grid.appendChild(frame);
       });
     }
@@ -7848,7 +8574,8 @@
     function buildHomeShots() {
       const wrap = $('home-shots');
       if (!wrap) return;
-      const picks = [0, 5, 3, 6, 10, 14];
+      const picks = [0, 5, 3, 6, 10, Math.max(14, GALLERY.length - 1)]
+        .filter((v, i, a) => a.indexOf(v) === i);
       wrap.innerHTML = '';
       picks.forEach(idx => {
         const item = GALLERY[idx];
@@ -7858,11 +8585,11 @@
         b.className = 'shot';
         b.setAttribute('data-reveal', '');
         const img = document.createElement('img');
-        setMedia(img, item.img);
+        setPhoto(img, item.img);
         img.alt = item.title;
         img.loading = 'lazy';
         img.decoding = 'async';
-        attachImgRetry(img);
+        attachPhotoRetry(img, item.img, 4);
         const tag = document.createElement('span');
         tag.className = 'shot-tag';
         tag.textContent = (CAT_LABEL[item.cat] || 'Photo').toUpperCase();
@@ -7882,6 +8609,47 @@
       });
       const cnt = $('shots-count');
       if (cnt) cnt.textContent = GALLERY.length;
+    }
+
+    /* --- marquee: diulang sampai memenuhi layar, lalu digandakan biar mulus --- */
+    function buildMarquee() {
+      const track = $('marquee-track');
+      if (!track) return;
+      const wrap = track.closest('.marquee') || track.parentElement;
+      const ITEM = 'Photography <i>✦</i> Languages <i>✦</i> Rubik\'s Cube <i>✦</i> ' +
+        'Games <i>✦</i> Drawing <i>✦</i> Bandung <i>✦</i> ';
+
+      const group = document.createElement('div');
+      group.className = 'marquee-half';
+      group.innerHTML = '<span>' + ITEM + '</span>';
+      track.innerHTML = '';
+      track.appendChild(group);
+
+      const unit = group.firstElementChild;
+      const unitW = unit ? unit.getBoundingClientRect().width : 600;
+      const viewW = Math.max(320, wrap ? wrap.clientWidth : window.innerWidth);
+      const copies = Math.max(1, Math.ceil(viewW / Math.max(200, unitW)) + 1);
+
+      let html = '';
+      for (let i = 0; i < copies; i++) html += '<span>' + ITEM + '</span>';
+      group.innerHTML = html;
+
+      const clone = group.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      track.appendChild(clone);
+
+      // Satu putaran = lebar satu half; kecepatan dibuat konsisten (~55px/s).
+      const halfW = group.getBoundingClientRect().width || viewW;
+      track.style.animationDuration = Math.max(16, Math.round(halfW / 55)) + 's';
+    }
+
+    let marqueeRaf = 0;
+    window.addEventListener('resize', () => {
+      cancelAnimationFrame(marqueeRaf);
+      marqueeRaf = requestAnimationFrame(buildMarquee);
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => buildMarquee()).catch(() => { });
     }
 
     /* --- tombol yang buka modal feedback --- */
@@ -8148,6 +8916,11 @@
             loadLeaderboard();
           })
           .subscribe();
+        db.channel('rv-gallery-photos')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery_photos' }, () => {
+            loadPhotos();
+          })
+          .subscribe();
       } catch (e) { }
     }
 
@@ -8179,19 +8952,21 @@
     document.querySelectorAll('.contact-icon').forEach(el => attachImgRetry(el, 6));
     document.querySelectorAll('img[data-local-src]').forEach(el => attachImgRetry(el, 6));
     buildTrackList();
-    buildGalleryFilters();
-    buildGallery();
-    buildHomeShots();
-    buildSecret();
+    rebuildPhotoData();
+    buildMarquee();
+    syncOwnerUI();
     updateLockBtn();
     route();
     observeReveals();
     loadLeaderboard();
     loadSiteContent();
+    loadPhotos();
     initRealtimeBoard();
     setInterval(() => { if (!editingText && !document.hidden) loadSiteContent(); }, 45000);
+    setInterval(() => { if (!document.hidden) loadPhotos(); }, 60000);
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && !editingText) loadSiteContent();
+      if (!document.hidden) loadPhotos();
     });
 
     // Player disiapkan langsung, tapi TIDAK autoplay: suara baru keluar
