@@ -6848,6 +6848,10 @@
 
         if (view === 'kontak' && typeof ensureRatingLoaded === 'function') ensureRatingLoaded();
 
+        // konten yang dibangun dinamis (grid foto, dll) bisa telat masuk;
+        // daftarin ulang tiap ganti view biar nggak nyangkut opacity 0.
+        if (typeof observeReveals === 'function') observeReveals();
+
         toggleSparkles(view === 'profil' || view === 'hobi');
         toggleCarFx(view === 'home');
       }
@@ -8979,6 +8983,10 @@
         });
         const cnt = $('shots-count');
         if (cnt) cnt.textContent = GALLERY.length;
+        // grid ini di-rebuild tiap data foto dari Supabase berubah, jadi item
+        // baru wajib didaftarkan lagi ke observer reveal — kalau nggak,
+        // kartunya tetap opacity 0 (foto kelihatan "hilang").
+        observeReveals(wrap);
       }
 
       /* --- marquee: diulang sampai memenuhi layar, lalu digandakan biar mulus --- */
