@@ -4576,6 +4576,164 @@
       color: var(--steel-dim);
     }
 
+    /* ===== RATING POPUP (slide dari kanan setelah 15 detik) ===== */
+    .rate-pop {
+      position: fixed;
+      top: 50%;
+      right: 18px;
+      z-index: 6500;
+      width: min(330px, calc(100vw - 36px));
+      padding: 22px 20px 18px;
+      background: linear-gradient(155deg, rgba(22, 22, 26, 0.98), rgba(10, 10, 12, 0.98));
+      border: 1px solid rgba(216, 180, 90, 0.35);
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+      box-shadow: -18px 22px 60px rgba(0, 0, 0, 0.68), 0 0 26px rgba(197, 48, 63, 0.18);
+      transform: translate(calc(100% + 44px), -50%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: transform 0.5s cubic-bezier(0.22, 0.9, 0.3, 1), opacity 0.3s ease, visibility 0.3s;
+    }
+
+    .rate-pop::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 64px;
+      height: 3px;
+      background: var(--grad-accent);
+    }
+
+    .rate-pop.show {
+      transform: translate(0, -50%);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .rate-pop-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: transparent;
+      color: var(--cream-dim);
+      font-size: 1.25rem;
+      line-height: 1;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .rate-pop-close:hover {
+      color: var(--gold-soft);
+      background: rgba(216, 180, 90, 0.1);
+    }
+
+    .rate-pop-badge {
+      font-size: 0.58rem;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      margin-bottom: 8px;
+    }
+
+    .rate-pop-title {
+      font-family: var(--font-display);
+      font-size: 1.22rem;
+      font-weight: 800;
+      line-height: 1.2;
+      padding-right: 24px;
+    }
+
+    .rate-pop-sub {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: var(--cream-dim);
+    }
+
+    .rate-pop-stars {
+      display: flex;
+      justify-content: space-between;
+      gap: 2px;
+      margin: 12px 0 4px;
+    }
+
+    .rate-pop-stars .star-btn {
+      font-size: 2.1rem;
+      padding: 4px 2px;
+      min-width: 40px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rate-pop-stars.locked .star-btn:hover,
+    .rate-pop-stars .star-btn:disabled:hover {
+      transform: none;
+    }
+
+    .rate-pop-status {
+      min-height: 1.1em;
+      font-size: 0.72rem;
+      color: var(--cream-dim);
+      text-align: center;
+    }
+
+    .rate-pop-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line-soft);
+    }
+
+    .rate-pop-meta b {
+      font-family: var(--font-hero);
+      font-size: 1.05rem;
+      color: var(--gold-soft);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .rate-pop-meta span {
+      font-size: 0.66rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--steel-dim);
+    }
+
+    .rate-pop-fb {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: transparent;
+      border: 1px solid rgba(255, 250, 245, 0.16);
+      color: var(--cream-dim);
+      font-family: inherit;
+      font-size: 0.64rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .rate-pop-fb:hover {
+      color: var(--gold-soft);
+      border-color: rgba(216, 180, 90, 0.45);
+    }
+
     /* ===== ADMIN TEXT EDITOR ===== */
     body.editing-text [data-edit] {
       outline: 2px dashed rgba(216, 180, 90, 0.6);
@@ -5076,6 +5234,42 @@
         font-size: 0.68rem;
         letter-spacing: 1px;
       }
+
+      /* rating popup: jadi kartu lebar di atas tombol back-to-top,
+         tetap slide dari kanan tapi nggak nutupin seluruh layar */
+      .rate-pop {
+        top: auto;
+        left: 12px;
+        right: 12px;
+        bottom: 156px;
+        width: auto;
+        max-width: none;
+        padding: 18px 16px 14px;
+        transform: translateX(calc(100% + 24px));
+        border-radius: 0;
+      }
+
+      .rate-pop.show {
+        transform: translateX(0);
+      }
+
+      .rate-pop-title {
+        font-size: 1.1rem;
+      }
+
+      .rate-pop-sub {
+        font-size: 0.74rem;
+      }
+
+      .rate-pop-stars .star-btn {
+        font-size: 1.9rem;
+        min-width: 36px;
+        min-height: 40px;
+      }
+
+      .rate-pop-fb {
+        padding: 9px 10px;
+      }
     }
 
     /* ===== MATIIN FX BERAT DI HP (biar nggak ngelag) =====
@@ -5213,7 +5407,7 @@
           <i class="hm-dot" aria-hidden="true"></i>
           <span>🕐 <b id="hero-clock">--:--</b> WIB</span>
           <i class="hm-dot" aria-hidden="true"></i>
-          <span>🎧 <b id="hero-track">on loop</b></span>
+          <span>🎧 <b id="hero-track">tap to play</b></span>
         </div>
         <button class="scroll-cue" id="scroll-cue" data-scroll-to="#home-stats" aria-label="Scroll down">
           <span class="scroll-cue-txt">scroll</span>
@@ -5680,6 +5874,26 @@
   <button class="to-top" id="to-top" aria-label="Back to top">↑</button>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <aside class="rate-pop" id="rate-pop" role="dialog" aria-labelledby="rate-pop-title" aria-hidden="true">
+    <button class="rate-pop-close" id="rate-pop-close" type="button" aria-label="Close rating">×</button>
+    <div class="rate-pop-badge">✦ Quick rating</div>
+    <h3 class="rate-pop-title" id="rate-pop-title">Enjoying the site?</h3>
+    <p class="rate-pop-sub">Tap a star — it takes two seconds and helps a lot.</p>
+    <div class="rate-pop-stars" id="rate-pop-stars" role="radiogroup" aria-label="Rate this site">
+      <button type="button" class="star-btn" data-score="1" aria-label="1 star">&#9733;</button>
+      <button type="button" class="star-btn" data-score="2" aria-label="2 stars">&#9733;</button>
+      <button type="button" class="star-btn" data-score="3" aria-label="3 stars">&#9733;</button>
+      <button type="button" class="star-btn" data-score="4" aria-label="4 stars">&#9733;</button>
+      <button type="button" class="star-btn" data-score="5" aria-label="5 stars">&#9733;</button>
+    </div>
+    <div class="rate-pop-status" id="rate-pop-status">Tap a star to rate</div>
+    <div class="rate-pop-meta">
+      <b id="rate-pop-avg">–</b>
+      <span id="rate-pop-count">0 votes</span>
+    </div>
+    <button class="rate-pop-fb" id="rate-pop-fb" type="button">Send feedback instead</button>
+  </aside>
+
   <div class="edit-bar" id="edit-bar" role="region" aria-label="Page text editor">
     <span class="edit-bar-txt">✎ Editing page text</span>
     <button class="edit-save" id="edit-save" type="button">Save</button>
@@ -5830,7 +6044,7 @@
     const GALLERY = [
       { title: 'Flower', desc: '', img: 'img/bunga.jpg', featured: true, cat: 'nature' },
       { title: 'Art Piece', desc: 'Creativity', img: 'img/lukiduk.jpg', cat: 'art' },
-      { title: 'larp', desc: '', img: 'img/saham.jpg', cat: 'art' },
+      { title: 'larp', desc: '', img: 'img/saham.jpg', cat: 'people' },
       { title: 'Le Pantry', desc: 'Eating out', img: 'img/makan.jpg', cat: 'food' },
       { title: 'Le Pantry', desc: 'Chilling at the cafe', img: 'img/me duduk.jpg', cat: 'people' },
       { title: 'Bandung', desc: 'Bandung in the afternoon', img: 'img/kota.jpg', cat: 'city' },
@@ -5842,10 +6056,10 @@
       { title: 'ROTI O', desc: '', img: 'img/rotio.jpg', cat: 'food' },
       { title: 'Flower', desc: '', img: 'img/bungakuning.jpg', cat: 'nature' },
       { title: 'Ice Cream', desc: '', img: 'img/aisekerimu.jpg', cat: 'food' },
-      { title: 'Loblok', desc: '', img: 'img/lawd.png', cat: 'city' }
+      { title: 'Loblok', desc: '', img: 'img/lawd.png', cat: 'game' }
     ];
 
-    const CAT_LABEL = { nature: 'Nature', art: 'Art', food: 'Food', people: 'People', city: 'City' };
+    const CAT_LABEL = { nature: 'Nature', art: 'Art', food: 'Food', people: 'People', city: 'City', game: 'Game' };
 
     const VIEWS = ['home', 'profil', 'hobi', 'galeri', 'kontak', 'zx7k9q'];
 
@@ -6046,9 +6260,9 @@
       mpBox.classList.toggle('playing', playing);
       $('mp-play').textContent = playing ? '❚❚' : '▶';
       $('mp-title').textContent = TRACKS[trackIndex].name;
-      $('mp-sub-text').textContent = playing ? 'Now playing' : 'Paused';
+      $('mp-sub-text').textContent = playing ? 'Now playing' : 'Tap to play';
       const heroTrack = $('hero-track');
-      if (heroTrack) heroTrack.textContent = playing ? TRACKS[trackIndex].name : 'on pause';
+      if (heroTrack) heroTrack.textContent = playing ? TRACKS[trackIndex].name : 'tap to play';
       document.querySelectorAll('#mp-list li').forEach((li, i) => {
         li.classList.toggle('active', i === trackIndex);
       });
@@ -6230,45 +6444,9 @@
       setRangeFill(mpVolume);
       updateVolIcon();
 
+      // Jangan autoplay: audio cuma bunyi setelah pengunjung pencet tombol play.
       loadTrack(0, false);
-
-      const p0 = audio.play();
-      if (p0 && typeof p0.then === 'function') {
-        p0.then(() => {
-          updateMpUI();
-        }).catch(() => {
-          audio.muted = true;
-          const pm = audio.play();
-          if (pm && typeof pm.then === 'function') {
-            pm.then(() => {
-              updateMpUI();
-              $('mp-sub-text').textContent = 'Tap for sound 🔇';
-            }).catch(() => {
-              $('mp-sub-text').textContent = 'Tap to play 🔇';
-            });
-          }
-        });
-      }
       updateMpUI();
-
-      const unlock = (e) => {
-        if (e && e.target && e.target.closest && e.target.closest('#mp')) return;
-        if (audio.muted) {
-          audio.muted = false;
-          mpVolume.value = audio.volume;
-          setRangeFill(mpVolume);
-          updateVolIcon();
-        }
-        if (!userPaused && audio.paused) {
-          userPaused = false;
-          safePlay(audio);
-        }
-        updateMpUI();
-        window.removeEventListener('pointerdown', unlock);
-        window.removeEventListener('keydown', unlock);
-      };
-      window.addEventListener('pointerdown', unlock);
-      window.addEventListener('keydown', unlock);
     }
 
     /* ===== VIDEO RUBIK DIHAPUS — DIGANTI LINK INSTAGRAM =====
@@ -6432,6 +6610,15 @@
     const ratingCount = $('rating-count');
     const ratingBarFill = $('rating-bar-fill');
 
+    /* elemen popup rating (slide dari kanan) */
+    const ratePop = $('rate-pop');
+    const ratePopStarsWrap = $('rate-pop-stars');
+    const ratePopStatus = $('rate-pop-status');
+    const ratePopBtns = ratePopStarsWrap
+      ? Array.prototype.slice.call(ratePopStarsWrap.querySelectorAll('.star-btn'))
+      : [];
+    const RATE_POP_KEY = 'rv-rate-pop-v1';
+
     let myScore = parseInt(localStorage.getItem(RATING_SCORE_KEY) || '', 10) || 0;
     let hasVoted = localStorage.getItem(RATING_KEY) === '1';
 
@@ -6460,10 +6647,21 @@
       });
     }
 
+    function paintPopStars(n, preview) {
+      ratePopBtns.forEach((b, i) => {
+        b.classList.toggle('on', i < n);
+        b.classList.toggle('hover', !!preview && i < n);
+      });
+    }
+
     function renderOverall(avg, count) {
       ratingAvg.textContent = count ? avg.toFixed(1) : '-';
       ratingCount.textContent = count + (count === 1 ? ' vote' : ' votes');
       ratingBarFill.style.width = ((avg / 5) * 100) + '%';
+      const popAvg = $('rate-pop-avg');
+      const popCount = $('rate-pop-count');
+      if (popAvg) popAvg.textContent = count ? avg.toFixed(1) : '–';
+      if (popCount) popCount.textContent = count + (count === 1 ? ' vote' : ' votes');
     }
 
     function lockRating(score, saveLocal) {
@@ -6476,7 +6674,11 @@
       starWrap.classList.add('locked');
       starBtns.forEach(b => b.disabled = true);
       paintStars(score);
+      if (ratePopStarsWrap) ratePopStarsWrap.classList.add('locked');
+      ratePopBtns.forEach(b => b.disabled = true);
+      paintPopStars(score);
       ratingStatus.textContent = 'You rated this ' + score + ' \u2605 \u2014 thanks!';
+      if (ratePopStatus) ratePopStatus.textContent = 'You rated this ' + score + ' \u2605 \u2014 thanks!';
     }
 
     async function loadRatingSummary() {
@@ -6486,18 +6688,18 @@
         const rows = data || [];
         if (!rows.length) {
           renderOverall(0, 0);
-          if (!hasVoted) ratingStatus.textContent = 'Be the first to rate!';
+          if (!hasVoted) setRatingStatus('Be the first to rate!');
           return;
         }
         const sum = rows.reduce((a, r) => a + (Number(r.score) || 0), 0);
         renderOverall(sum / rows.length, rows.length);
-        if (!hasVoted) ratingStatus.textContent = 'Tap a star to rate';
+        if (!hasVoted) setRatingStatus('Tap a star to rate');
         return rows;
       } catch (e) {
         // Tabel ratings belum dibuat / error jaringan -> tampilan tetap rapi
         console.warn('rating summary:', e);
         renderOverall(0, 0);
-        if (!hasVoted) ratingStatus.textContent = 'Rating is not available yet';
+        if (!hasVoted) setRatingStatus('Rating is not available yet');
       }
     }
 
@@ -6535,10 +6737,49 @@
       return 'ok';
     }
 
+    function setRatingStatus(text) {
+      ratingStatus.textContent = text;
+      if (ratePopStatus) ratePopStatus.textContent = text;
+    }
+
+    let ratingSending = false;
+
+    /* satu jalur kirim vote buat kartu kontak & popup */
+    async function sendRating(score) {
+      if (hasVoted || ratingSending) return;
+      ratingSending = true;
+      starBtns.forEach(x => x.disabled = true);
+      ratePopBtns.forEach(x => x.disabled = true);
+      setRatingStatus('Sending...');
+      try {
+        const ip = await getClientIp();
+        const res = await submitVote(score, ip);
+        if (res === 'dup') {
+          // udah vote dari IP ini -> kunci pakai skor asli dari server
+          const got = await checkIpVote();
+          if (!got) lockRating(score, true);
+        } else {
+          lockRating(score, true);
+          loadRatingSummary(); // refresh overall (server-side)
+        }
+        showToast('thanks for rating ' + score + ' ★');
+        if (ratePop && ratePop.classList.contains('show')) {
+          setTimeout(() => hideRatePop(), 900);
+        }
+      } catch (e) {
+        console.warn('rating submit:', e);
+        starBtns.forEach(x => x.disabled = false);
+        ratePopBtns.forEach(x => x.disabled = false);
+        setRatingStatus('Could not send rating, try again later');
+      } finally {
+        ratingSending = false;
+      }
+    }
+
     if (hasVoted) {
       lockRating(myScore, false);
     } else {
-      ratingStatus.textContent = 'Tap a star to rate';
+      setRatingStatus('Tap a star to rate');
       starBtns.forEach(b => {
         b.addEventListener('mouseenter', () => paintStars(parseInt(b.dataset.score, 10), true));
         b.addEventListener('mouseleave', () => paintStars(0));
@@ -6546,30 +6787,91 @@
     }
 
     starBtns.forEach(b => {
-      b.addEventListener('click', async () => {
+      b.addEventListener('click', () => {
         if (hasVoted) return;
-        const score = parseInt(b.dataset.score, 10);
-        starBtns.forEach(x => x.disabled = true);
-        ratingStatus.textContent = 'Sending...';
-        try {
-          const ip = await getClientIp();
-          const res = await submitVote(score, ip);
-          if (res === 'dup') {
-            // udah vote dari IP ini -> kunci pakai skor asli dari server
-            const got = await checkIpVote();
-            if (!got) lockRating(score, true);
-            return;
-          }
-          lockRating(score, true);
-          ratingStatus.textContent = 'You rated this ' + score + ' \u2605 \u2014 thanks!';
-          loadRatingSummary(); // refresh overall (server-side)
-        } catch (e) {
-          console.warn('rating submit:', e);
-          starBtns.forEach(x => x.disabled = false);
-          ratingStatus.textContent = 'Could not send rating, try again later';
-        }
+        sendRating(parseInt(b.dataset.score, 10));
       });
     });
+
+    /* --- popup rating: muncul dari kanan setelah 15 detik --- */
+    let ratePopShown = false;
+
+    function canShowRatePop() {
+      if (!ratePop || hasVoted || ratePopShown) return false;
+      if (document.body.classList.contains('editing-text')) return false;
+      if (document.body.dataset.view === 'zx7k9q') return false;
+      if (isOwner()) return false;
+      if (fbOverlay && fbOverlay.classList.contains('open')) return false;
+      if (ownOverlay && ownOverlay.classList.contains('open')) return false;
+      const lightboxEl = $('lightbox');
+      if (lightboxEl && lightboxEl.classList.contains('open')) return false;
+      const drawerBox = $('nav-drawer');
+      if (drawerBox && drawerBox.classList.contains('open')) return false;
+      const pwBox = $('pw-overlay');
+      if (pwBox && pwBox.classList.contains('open')) return false;
+      let snooze = 0;
+      try { snooze = Number(localStorage.getItem(RATE_POP_KEY) || 0); } catch (e) { }
+      return !(snooze && Date.now() < snooze);
+    }
+
+    function showRatePop() {
+      if (!canShowRatePop()) return;
+      ratePopShown = true;
+      ensureRatingLoaded();
+      if (!hasVoted) {
+        checkIpVote().then(voted => { if (voted) hideRatePop(); });
+      }
+      ratePop.classList.add('show');
+      ratePop.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideRatePop(days) {
+      if (!ratePop) return;
+      ratePop.classList.remove('show');
+      ratePop.setAttribute('aria-hidden', 'true');
+      if (days) {
+        try { localStorage.setItem(RATE_POP_KEY, String(Date.now() + days * 86400000)); } catch (e) { }
+      }
+    }
+
+    if (ratePopBtns.length) {
+      ratePopBtns.forEach(b => {
+        b.addEventListener('mouseenter', () => {
+          if (!hasVoted) paintPopStars(parseInt(b.dataset.score, 10), true);
+        });
+        b.addEventListener('mouseleave', () => paintPopStars(hasVoted ? myScore : 0));
+        b.addEventListener('click', () => {
+          if (hasVoted) return;
+          sendRating(parseInt(b.dataset.score, 10));
+        });
+      });
+    }
+
+    if ($('rate-pop-close')) {
+      $('rate-pop-close').addEventListener('click', () => hideRatePop(7));
+    }
+    if ($('rate-pop-fb')) {
+      $('rate-pop-fb').addEventListener('click', () => {
+        hideRatePop(7);
+        const openFb = $('fb-open');
+        if (openFb) openFb.click();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && ratePop && ratePop.classList.contains('show')) hideRatePop(7);
+    });
+
+    // hitung 15 detik waktu layar beneran kelihatan (tab hidden nggak dihitung)
+    let rateDwell = 0;
+    const rateDwellTimer = setInterval(() => {
+      if (ratePopShown) { clearInterval(rateDwellTimer); return; }
+      if (document.hidden) return;
+      rateDwell += 1;
+      if (rateDwell >= 15 && canShowRatePop()) {
+        clearInterval(rateDwellTimer);
+        showRatePop();
+      }
+    }, 1000);
 
     // Ambil ringkasan rating pas pertama kali buka halaman kontak
     let ratingLoaded = false;
@@ -7844,17 +8146,9 @@
       if (!document.hidden && !editingText) loadSiteContent();
     });
 
-    // Musik ditunda biar nggak rebutan bandwidth sama foto
-    // (tetap mulai otomatis, cuma nunggu foto dapet giliran duluan)
-    let musicStarted = false;
-    function startMusicSoon() {
-      if (musicStarted) return;
-      musicStarted = true;
-      initMusic();
-    }
-    if (document.readyState === 'complete') setTimeout(startMusicSoon, 1500);
-    else window.addEventListener('load', () => setTimeout(startMusicSoon, 1500));
-    setTimeout(startMusicSoon, 6000); // jaringan lambat -> tetap jalan maks 6 detik
+    // Player disiapkan langsung, tapi TIDAK autoplay: suara baru keluar
+    // setelah pengunjung pencet tombol play (preload="none", jadi hemat data).
+    initMusic();
   </script>
 </body>
 
