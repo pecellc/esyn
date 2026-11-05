@@ -3126,6 +3126,26 @@
       font-variant-numeric: tabular-nums;
     }
 
+    /* jam multi-zona: WIB / WITA / WIT */
+    .clock-zones {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2px 12px;
+    }
+
+    .clock-zones .cz {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .clock-zones .cz i {
+      font-style: normal;
+      color: var(--steel-dim);
+    }
+
     .hm-dot {
       width: 5px;
       height: 5px;
@@ -5374,7 +5394,11 @@
       <a href="#/kontak" data-nav="kontak">Contact</a>
       <span class="drawer-rule" aria-hidden="true"></span>
       <div class="drawer-meta">
-        <span class="drawer-clock"><i>🕐</i> <b id="drawer-clock">--:--</b> WIB</span>
+        <span class="drawer-clock clock-zones">
+          <span class="cz"><i>WIB</i> <b id="drawer-clock">--:--:--</b></span>
+          <span class="cz"><i>WITA</i> <b id="drawer-clock-wita">--:--:--</b></span>
+          <span class="cz"><i>WIT</i> <b id="drawer-clock-wit">--:--:--</b></span>
+        </span>
         <span class="drawer-loc">📍 Bandung, Indonesia</span>
       </div>
       <div class="drawer-socials">
@@ -5405,7 +5429,11 @@
         <div class="hero-meta">
           <span>📍 Bandung, Indonesia</span>
           <i class="hm-dot" aria-hidden="true"></i>
-          <span>🕐 <b id="hero-clock">--:--</b> WIB</span>
+          <span class="hero-clocks clock-zones">
+            <span class="cz"><i>WIB</i> <b id="hero-clock">--:--:--</b></span>
+            <span class="cz"><i>WITA</i> <b id="hero-clock-wita">--:--:--</b></span>
+            <span class="cz"><i>WIT</i> <b id="hero-clock-wit">--:--:--</b></span>
+          </span>
           <i class="hm-dot" aria-hidden="true"></i>
           <span>🎧 <b id="hero-track">tap to play</b></span>
         </div>
@@ -5859,7 +5887,11 @@
   <footer>
     <p>© 2026 <b>Excel Adila Putra</b> — Red Velvet Edition</p>
     <div class="footer-mid">
-      <span class="footer-clock">🕐 <b id="footer-clock">--:--</b> WIB</span>
+      <span class="footer-clock clock-zones">
+        <span class="cz"><i>WIB</i> <b id="footer-clock">--:--:--</b></span>
+        <span class="cz"><i>WITA</i> <b id="footer-clock-wita">--:--:--</b></span>
+        <span class="cz"><i>WIT</i> <b id="footer-clock-wit">--:--:--</b></span>
+      </span>
       <button type="button" class="footer-copy" data-copy="Exceladila123@gmail.com">copy email</button>
       <a class="footer-ig" href="https://www.instagram.com/couldrnt/" target="_blank" rel="noopener">@couldrnt</a>
     </div>
@@ -7671,24 +7703,40 @@
       requestAnimationFrame(step);
     }
 
-    /* --- jam WIB --- */
-    function tickClock() {
-      let s;
+    /* --- jam real-time WIB / WITA / WIT --- */
+    const INDO_ZONES = [
+      { key: 'wib', tz: 'Asia/Jakarta', offset: 7 },
+      { key: 'wita', tz: 'Asia/Makassar', offset: 8 },
+      { key: 'wit', tz: 'Asia/Jayapura', offset: 9 }
+    ];
+
+    function clockText(zone) {
       try {
-        s = new Date().toLocaleTimeString('en-GB', {
-          timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', hour12: false
+        return new Date().toLocaleTimeString('en-GB', {
+          timeZone: zone.tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
         });
       } catch (e) {
-        const d = new Date(Date.now() + (7 * 60 + new Date().getTimezoneOffset()) * 60000);
-        s = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+        const d = new Date(Date.now() + (zone.offset * 60 + new Date().getTimezoneOffset()) * 60000);
+        return String(d.getHours()).padStart(2, '0') + ':' +
+          String(d.getMinutes()).padStart(2, '0') + ':' +
+          String(d.getSeconds()).padStart(2, '0');
       }
-      ['hero-clock', 'footer-clock', 'drawer-clock'].forEach(id => {
-        const el = $(id);
-        if (el) el.textContent = s;
+    }
+
+    function tickClock() {
+      INDO_ZONES.forEach(zone => {
+        const s = clockText(zone);
+        const ids = zone.key === 'wib'
+          ? ['hero-clock', 'footer-clock', 'drawer-clock']
+          : ['hero-clock-' + zone.key, 'footer-clock-' + zone.key, 'drawer-clock-' + zone.key];
+        ids.forEach(id => {
+          const el = $(id);
+          if (el) el.textContent = s;
+        });
       });
     }
     tickClock();
-    setInterval(tickClock, 20000);
+    setInterval(tickClock, 1000);
 
     /* --- toast --- */
     let toastTimer = 0;
