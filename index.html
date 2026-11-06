@@ -40,7 +40,7 @@
         if (localStorage.getItem('rv-theme-v1') === 'matcha') {
           document.documentElement.setAttribute('data-theme', 'matcha');
           var meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', '#d8e4ca');
+          if (meta) meta.setAttribute('content', '#c9dcb0');
           var scheme = document.querySelector('meta[name="color-scheme"]');
           if (scheme) scheme.setAttribute('content', 'light');
           // Font Outfit cuma diunduh kalau tema matcha kepilih.
@@ -6195,16 +6195,16 @@
       --clover-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e'/%3E%3Cpath d='M16 18.6V29' stroke='%233f7d4e' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
 
       --page-bg:
-        radial-gradient(1200px 760px at 6% -12%, rgba(190, 216, 166, 0.55) 0%, transparent 60%),
-        radial-gradient(940px 640px at 104% 2%, rgba(240, 246, 224, 0.5) 0%, transparent 58%),
-        linear-gradient(178deg, #d8e4ca 0%, #c8d8b6 42%, #b9cda4 72%, #acc294 100%);
+        radial-gradient(1200px 760px at 6% -12%, rgba(163, 199, 130, 0.6) 0%, transparent 60%),
+        radial-gradient(940px 640px at 104% 2%, rgba(224, 238, 195, 0.5) 0%, transparent 58%),
+        linear-gradient(178deg, #c9dcb0 0%, #b2cb96 42%, #9cba7e 72%, #88a968 100%);
 
       /* rumput + semanggi: dekorasi statis, nggak ada animasi */
-      --grass-back: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='120' viewBox='0 0 180 120'%3E%3Cg fill='%2374a878' fill-opacity='0.24'%3E%3Cpath d='M4 120C1 94 7 66 16 42c-1 30 2 56 9 78Z'/%3E%3Cpath d='M24 120c-3-20 1-44 10-66 1 25 2 48 2 66Z'/%3E%3Cpath d='M42 120c-2-28 4-58 15-82-1 33-2 62 0 82Z'/%3E%3Cpath d='M64 120c-3-18 1-38 9-56 1 21 2 40 2 56Z'/%3E%3Cpath d='M82 120c-2-30 5-62 17-88 0 35-1 66 1 88Z'/%3E%3Cpath d='M106 120c-3-22 2-48 12-68 0 27 0 50 1 68Z'/%3E%3Cpath d='M126 120c-2-16 2-34 10-50 0 20 1 37 2 50Z'/%3E%3Cpath d='M144 120c-3-26 4-54 15-76-1 30-2 56 0 76Z'/%3E%3Cpath d='M166 120c-2-18 2-38 10-55 0 22 1 41 2 55Z'/%3E%3C/g%3E%3C/svg%3E");
+      --grass-back: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='120' viewBox='0 0 180 120'%3E%3Cg fill='%235f9767' fill-opacity='0.4'%3E%3Cpath d='M4 120C1 94 7 66 16 42c-1 30 2 56 9 78Z'/%3E%3Cpath d='M24 120c-3-20 1-44 10-66 1 25 2 48 2 66Z'/%3E%3Cpath d='M42 120c-2-28 4-58 15-82-1 33-2 62 0 82Z'/%3E%3Cpath d='M64 120c-3-18 1-38 9-56 1 21 2 40 2 56Z'/%3E%3Cpath d='M82 120c-2-30 5-62 17-88 0 35-1 66 1 88Z'/%3E%3Cpath d='M106 120c-3-22 2-48 12-68 0 27 0 50 1 68Z'/%3E%3Cpath d='M126 120c-2-16 2-34 10-50 0 20 1 37 2 50Z'/%3E%3Cpath d='M144 120c-3-26 4-54 15-76-1 30-2 56 0 76Z'/%3E%3Cpath d='M166 120c-2-18 2-38 10-55 0 22 1 41 2 55Z'/%3E%3C/g%3E%3C/svg%3E");
 
-      --grass-front: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='90' viewBox='0 0 140 90'%3E%3Cg fill='%232f5c3c' fill-opacity='0.5'%3E%3Cpath d='M2 90C0 70 5 52 12 34c-1 22 2 42 8 56Z'/%3E%3Cpath d='M16 90c-2-16 1-35 8-52 2 20 1 38-1 52Z'/%3E%3Cpath d='M30 90c-3-20 1-44 9-62 0 24 2 46 3 62Z'/%3E%3Cpath d='M45 90c-2-16 4-33 12-48-2 19-4 35-4 48Z'/%3E%3Cpath d='M60 90c-4-22 0-48 8-66 1 26 3 48 5 66Z'/%3E%3Cpath d='M76 90c-2-15 2-32 10-47-1 19-2 35-1 47Z'/%3E%3Cpath d='M90 90c-4-24 1-50 10-68 0 27 1 51 2 68Z'/%3E%3Cpath d='M106 90c-2-14 2-30 9-42 0 17-1 31 1 42Z'/%3E%3Cpath d='M120 90c-3-19 2-38 10-54 0 21 0 40 1 54Z'/%3E%3C/g%3E%3C/svg%3E");
+      --grass-front: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='90' viewBox='0 0 140 90'%3E%3Cg fill='%23285031' fill-opacity='0.62'%3E%3Cpath d='M2 90C0 70 5 52 12 34c-1 22 2 42 8 56Z'/%3E%3Cpath d='M16 90c-2-16 1-35 8-52 2 20 1 38-1 52Z'/%3E%3Cpath d='M30 90c-3-20 1-44 9-62 0 24 2 46 3 62Z'/%3E%3Cpath d='M45 90c-2-16 4-33 12-48-2 19-4 35-4 48Z'/%3E%3Cpath d='M60 90c-4-22 0-48 8-66 1 26 3 48 5 66Z'/%3E%3Cpath d='M76 90c-2-15 2-32 10-47-1 19-2 35-1 47Z'/%3E%3Cpath d='M90 90c-4-24 1-50 10-68 0 27 1 51 2 68Z'/%3E%3Cpath d='M106 90c-2-14 2-30 9-42 0 17-1 31 1 42Z'/%3E%3Cpath d='M120 90c-3-19 2-38 10-54 0 21 0 40 1 54Z'/%3E%3C/g%3E%3C/svg%3E");
 
-      --clover-field: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg fill='%233f7d4e' fill-opacity='0.07' stroke='%233f7d4e' stroke-opacity='0.07' stroke-width='2.4' stroke-linecap='round'%3E%3Cg transform='translate(24 30) scale(1.15)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z'/%3E%3Cpath d='M16 18.6V29' fill='none'/%3E%3C/g%3E%3Cg transform='translate(206 118) scale(0.7)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z'/%3E%3Cpath d='M16 18.6V29' fill='none'/%3E%3C/g%3E%3Cg transform='translate(110 232) scale(0.5)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z'/%3E%3Cpath d='M16 18.6V29' fill='none'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      --clover-field: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg fill='%232f6b40' fill-opacity='0.15' stroke='%232f6b40' stroke-opacity='0.15' stroke-width='2.4' stroke-linecap='round'%3E%3Cg transform='translate(18 24) scale(1.45) rotate(12 16 16)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z'/%3E%3Cpath d='M16 18.6V29' fill='none'/%3E%3C/g%3E%3Cg transform='translate(198 106) scale(0.95) rotate(-16 16 16)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z'/%3E%3Cpath d='M16 18.6V29' fill='none'/%3E%3C/g%3E%3Cg transform='translate(100 224) scale(0.75) rotate(22 16 16)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z'/%3E%3Cpath d='M16 18.6V29' fill='none'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 
       /* watermark clover, gantiin sarang lebah emas */
       --hex-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='96'%3E%3Cg transform='translate(12 32)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e' fill-opacity='0.12'/%3E%3C/g%3E%3C/svg%3E");
@@ -6250,12 +6250,44 @@
       position: absolute;
       top: -64px;
       right: -84px;
-      width: 360px;
-      height: 360px;
+      width: 420px;
+      height: 420px;
       background: var(--clover-icon) center / contain no-repeat;
       transform: rotate(14deg);
-      opacity: 0.055;
+      opacity: 0.1;
       pointer-events: none;
+    }
+
+    /* semanggi besar kedua di kiri bawah, biar dua sisi halaman seimbang */
+    html[data-theme="matcha"] main#app::after {
+      content: '';
+      position: absolute;
+      left: -130px;
+      bottom: 4%;
+      width: 430px;
+      height: 430px;
+      background: var(--clover-icon) center / contain no-repeat;
+      transform: rotate(-18deg);
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    /* di HP semanggi raksasa digeser keluar biar nggak nimpa teks hero */
+    @media (max-width: 760px) {
+      html[data-theme="matcha"] main#app::before {
+        width: 270px;
+        height: 270px;
+        top: -46px;
+        right: -120px;
+        opacity: 0.075;
+      }
+
+      html[data-theme="matcha"] main#app::after {
+        width: 270px;
+        height: 270px;
+        left: -130px;
+        opacity: 0.06;
+      }
     }
 
     /* gloss sweep putih di atas kertas terang cuma bikin kotor */
@@ -7249,7 +7281,7 @@
         <div class="hero-badge">✦ Welcome</div>
         <h1 class="hero-title" id="hero-title"><span class="accent">pecel</span></h1>
         <p class="hero-desc" data-edit="home.hero-desc">
-          Student by day, camera and cube by night. I chase languages, take way too many photos
+          Student by day, cube by night. I chase languages, take way too many photos
           of Bandung, and try to solve a Rubik's cube before my tea goes cold. anjay
         </p>
         <div class="hero-btns">
@@ -7286,7 +7318,8 @@
           </div>
           <div class="stat" data-reveal>
             <div class="stat-num stat-words">13.95s</div>
-            <div class="stat-label">Rubik personal best</div>
+            <div class="stat-label">Rubik personal best <br>
+            <placeholder>play since 1 september 2026</placeholder></div>
           </div>
           <div class="stat" data-reveal>
             <div class="stat-num" data-count="4">4</div>
@@ -10948,7 +10981,7 @@
       const THEME_KEY = 'rv-theme-v1';
       const THEME_USED_KEY = 'rv-theme-used-v1';
       const MATCHA_FONT_HREF = 'https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap';
-      const MATCHA_FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23d8e4ca'/%3E%3Cg transform='scale(2)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e'/%3E%3C/g%3E%3C/svg%3E";
+      const MATCHA_FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23c9dcb0'/%3E%3Cg transform='scale(2)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e'/%3E%3C/g%3E%3C/svg%3E";
       const ORNAMENT_SEL = '.hero-badge, .page-badge, .sec-eyebrow, .scramble-label, .rate-pop-badge';
       const themeSwitch = $('theme-switch');
       const themeMeta = document.querySelector('meta[name="theme-color"]');
@@ -11011,7 +11044,7 @@
             ? 'Theme: Matcha. Switch to Aventador'
             : 'Theme: Aventador. Switch to Matcha');
         }
-        if (themeMeta) themeMeta.setAttribute('content', t === 'matcha' ? '#d8e4ca' : '#0a0a0c');
+        if (themeMeta) themeMeta.setAttribute('content', t === 'matcha' ? '#c9dcb0' : '#0a0a0c');
         if (schemeMeta) schemeMeta.setAttribute('content', t === 'matcha' ? 'light' : 'dark');
         if (t === 'matcha') ensureMatchaFont();
         applyThemeCopy();
