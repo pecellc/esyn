@@ -40,7 +40,7 @@
         if (localStorage.getItem('rv-theme-v1') === 'matcha') {
           document.documentElement.setAttribute('data-theme', 'matcha');
           var meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', '#f4f1e4');
+          if (meta) meta.setAttribute('content', '#d8e4ca');
           var scheme = document.querySelector('meta[name="color-scheme"]');
           if (scheme) scheme.setAttribute('content', 'light');
           // Font Outfit cuma diunduh kalau tema matcha kepilih.
@@ -122,6 +122,10 @@
       --paper-3: #ecd0c5;
       --gold-pale: #fff3d6;
       --gold-deep: #8a6a20;
+
+      /* gutter nav: bikin posisi theme switch sama di kedua tema */
+      --nav-gutter: clamp(16px, 3.4vw, 46px);
+      --nav-inner: 14px;
 
       --page-bg:
         linear-gradient(112deg, rgba(var(--velvet-400-rgb), 0.16) 0%, transparent 34%),
@@ -366,7 +370,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 13px 5vw;
+      padding: 13px var(--nav-gutter);
+      padding-right: calc(var(--nav-gutter) + var(--nav-inner));
       background: rgba(var(--carbon-rgb), 0.88);
       border-bottom: 1px solid rgba(var(--gold-rgb), 0.16);
       flex-wrap: wrap;
@@ -4761,6 +4766,7 @@
       grid-template-columns: 30px minmax(0, 1fr) auto;
       align-items: center;
       gap: 12px;
+      row-gap: 2px;
       padding: 11px 8px;
       border-top: 1px solid rgba(var(--frost-rgb), 0.07);
     }
@@ -4844,6 +4850,28 @@
       font-size: 0.72rem;
       line-height: 1.6;
       color: var(--steel-dim);
+    }
+
+    /* scramble yang dipakai buat best solve (rank 1-10) */
+    .lb-scramble {
+      grid-column: 2 / -1;
+      font-size: 0.63rem;
+      line-height: 1.5;
+      letter-spacing: 0.2px;
+      color: var(--steel-dim);
+      overflow-wrap: anywhere;
+    }
+
+    .lb-scramble i {
+      display: inline-block;
+      margin-right: 6px;
+      font-style: normal;
+      font-size: 0.5rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--gold-soft);
+      opacity: 0.72;
     }
 
     /* ===== RATING POPUP (slide dari kanan setelah 15 detik) ===== */
@@ -5002,6 +5030,69 @@
     .rate-pop-fb:hover {
       color: var(--gold-soft);
       border-color: rgba(var(--gold-rgb), 0.45);
+    }
+
+    /* ===== TEMA POPUP (pakai kartu rate-pop, isinya info ganti tema) ===== */
+    .theme-pop {
+      z-index: 6501;
+    }
+
+    .theme-pop-cta {
+      width: 100%;
+      margin-top: 14px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #c5303f, #8f1f2c);
+      color: #fff7ee;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(156, 35, 49, 0.26);
+      transition: transform 0.18s, box-shadow 0.18s, filter 0.18s;
+    }
+
+    .theme-pop-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(156, 35, 49, 0.32);
+      filter: brightness(1.06);
+    }
+
+    .theme-pop-later {
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px;
+      border: none;
+      background: transparent;
+      color: var(--cream-faint);
+      font-family: inherit;
+      font-size: 0.68rem;
+      cursor: pointer;
+    }
+
+    .theme-pop-later:hover {
+      color: var(--cream);
+    }
+
+    html[data-theme="matcha"] .theme-pop-cta {
+      background: linear-gradient(180deg, #4c8a59, #3c7449);
+      color: #fbfaf1;
+      box-shadow: 0 8px 20px rgba(47, 82, 54, 0.18);
+    }
+
+    html[data-theme="matcha"] .theme-pop-cta:hover {
+      box-shadow: 0 12px 26px rgba(47, 82, 54, 0.24);
+      filter: none;
+    }
+
+    html[data-theme="matcha"] .theme-pop-later {
+      color: rgba(31, 50, 37, 0.5);
+    }
+
+    html[data-theme="matcha"] .theme-pop-later:hover {
+      color: #2f5236;
     }
 
     /* ===== ADMIN TEXT EDITOR ===== */
@@ -5347,7 +5438,8 @@
       }
 
       nav {
-        padding: 11px 4vw;
+        padding: 11px clamp(14px, 3.8vw, 26px);
+        padding-right: calc(clamp(14px, 3.8vw, 26px) + 10px);
       }
 
       .nav-logo {
@@ -6103,10 +6195,16 @@
       --clover-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e'/%3E%3Cpath d='M16 18.6V29' stroke='%233f7d4e' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
 
       --page-bg:
-        radial-gradient(1100px 720px at 8% -10%, rgba(140, 191, 142, 0.34) 0%, transparent 62%),
-        radial-gradient(900px 620px at 102% 8%, rgba(196, 214, 150, 0.28) 0%, transparent 60%),
-        repeating-linear-gradient(45deg, rgba(63, 125, 78, 0.016) 0 2px, transparent 2px 5px),
-        linear-gradient(180deg, #f7f4e8 0%, #f2efdf 55%, #ece9d8 100%);
+        radial-gradient(1200px 760px at 6% -12%, rgba(190, 216, 166, 0.55) 0%, transparent 60%),
+        radial-gradient(940px 640px at 104% 2%, rgba(240, 246, 224, 0.5) 0%, transparent 58%),
+        linear-gradient(178deg, #d8e4ca 0%, #c8d8b6 42%, #b9cda4 72%, #acc294 100%);
+
+      /* rumput + semanggi: dekorasi statis, nggak ada animasi */
+      --grass-back: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='120' viewBox='0 0 180 120'%3E%3Cg fill='%2374a878' fill-opacity='0.24'%3E%3Cpath d='M4 120C1 94 7 66 16 42c-1 30 2 56 9 78Z'/%3E%3Cpath d='M24 120c-3-20 1-44 10-66 1 25 2 48 2 66Z'/%3E%3Cpath d='M42 120c-2-28 4-58 15-82-1 33-2 62 0 82Z'/%3E%3Cpath d='M64 120c-3-18 1-38 9-56 1 21 2 40 2 56Z'/%3E%3Cpath d='M82 120c-2-30 5-62 17-88 0 35-1 66 1 88Z'/%3E%3Cpath d='M106 120c-3-22 2-48 12-68 0 27 0 50 1 68Z'/%3E%3Cpath d='M126 120c-2-16 2-34 10-50 0 20 1 37 2 50Z'/%3E%3Cpath d='M144 120c-3-26 4-54 15-76-1 30-2 56 0 76Z'/%3E%3Cpath d='M166 120c-2-18 2-38 10-55 0 22 1 41 2 55Z'/%3E%3C/g%3E%3C/svg%3E");
+
+      --grass-front: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='90' viewBox='0 0 140 90'%3E%3Cg fill='%232f5c3c' fill-opacity='0.5'%3E%3Cpath d='M2 90C0 70 5 52 12 34c-1 22 2 42 8 56Z'/%3E%3Cpath d='M16 90c-2-16 1-35 8-52 2 20 1 38-1 52Z'/%3E%3Cpath d='M30 90c-3-20 1-44 9-62 0 24 2 46 3 62Z'/%3E%3Cpath d='M45 90c-2-16 4-33 12-48-2 19-4 35-4 48Z'/%3E%3Cpath d='M60 90c-4-22 0-48 8-66 1 26 3 48 5 66Z'/%3E%3Cpath d='M76 90c-2-15 2-32 10-47-1 19-2 35-1 47Z'/%3E%3Cpath d='M90 90c-4-24 1-50 10-68 0 27 1 51 2 68Z'/%3E%3Cpath d='M106 90c-2-14 2-30 9-42 0 17-1 31 1 42Z'/%3E%3Cpath d='M120 90c-3-19 2-38 10-54 0 21 0 40 1 54Z'/%3E%3C/g%3E%3C/svg%3E");
+
+      --clover-field: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg fill='%233f7d4e' fill-opacity='0.07' stroke='%233f7d4e' stroke-opacity='0.07' stroke-width='2.4' stroke-linecap='round'%3E%3Cg transform='translate(24 30) scale(1.15)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z'/%3E%3Cpath d='M16 18.6V29' fill='none'/%3E%3C/g%3E%3Cg transform='translate(206 118) scale(0.7)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z'/%3E%3Cpath d='M16 18.6V29' fill='none'/%3E%3C/g%3E%3Cg transform='translate(110 232) scale(0.5)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z'/%3E%3Cpath d='M16 18.6V29' fill='none'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 
       /* watermark clover, gantiin sarang lebah emas */
       --hex-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='96'%3E%3Cg transform='translate(12 32)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e' fill-opacity='0.12'/%3E%3C/g%3E%3C/svg%3E");
@@ -6135,6 +6233,31 @@
       padding-top: 92px;
     }
 
+    /* grid Aventador dibuang; ganti rumput + semanggi yang diam di dasar layar */
+    html[data-theme="matcha"] body::before {
+      background-image:
+        var(--clover-field),
+        var(--grass-back),
+        var(--grass-front);
+      background-repeat: repeat, repeat-x, repeat-x;
+      background-position: 0 0, bottom center, bottom center;
+      background-size: 320px 320px, 180px 120px, 140px 90px;
+    }
+
+    /* semanggi besar samar di pojok, biar halaman nggak kerasa kosong */
+    html[data-theme="matcha"] main#app::before {
+      content: '';
+      position: absolute;
+      top: -64px;
+      right: -84px;
+      width: 360px;
+      height: 360px;
+      background: var(--clover-icon) center / contain no-repeat;
+      transform: rotate(14deg);
+      opacity: 0.055;
+      pointer-events: none;
+    }
+
     /* gloss sweep putih di atas kertas terang cuma bikin kotor */
     html[data-theme="matcha"] body::after {
       display: none;
@@ -6158,8 +6281,8 @@
     /* --- nav: pill krem mengambang --- */
     html[data-theme="matcha"] nav {
       top: 12px;
-      left: 14px;
-      right: 14px;
+      left: var(--nav-gutter);
+      right: var(--nav-gutter);
       width: auto;
       padding: 9px 14px 9px 18px;
       border: 1px solid rgba(63, 125, 78, 0.16);
@@ -6445,43 +6568,57 @@
       animation: textShimmer 6s linear infinite;
     }
 
-    /* --- tombol: pill, bukan angle --- */
-    html[data-theme="matcha"] .btn-primary {
+    /* --- tombol: lembut & kalem, bukan sirip Aventador --- */
+    html[data-theme="matcha"] .btn-primary,
+    html[data-theme="matcha"] .btn-outline,
+    html[data-theme="matcha"] .btn-ghost {
       clip-path: none;
-      border-radius: 999px;
-      background: linear-gradient(100deg, #2f5236, #3f7d4e 58%, #5f8f4a);
+      border-radius: 14px;
+      font-weight: 600;
+      letter-spacing: 0.1px;
+      text-transform: none;
+    }
+
+    html[data-theme="matcha"] .btn-primary {
+      padding: 13px 26px;
+      background: linear-gradient(180deg, #4c8a59, #3c7449);
       color: #fbfaf1;
-      letter-spacing: 1.2px;
-      box-shadow: 0 10px 26px rgba(47, 82, 54, 0.2);
+      font-size: 0.92rem;
+      box-shadow: 0 6px 16px rgba(47, 82, 54, 0.16);
+    }
+
+    html[data-theme="matcha"] .btn-primary::before,
+    html[data-theme="matcha"] .btn-outline::before {
+      display: none;
     }
 
     html[data-theme="matcha"] .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 32px rgba(47, 82, 54, 0.28);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(47, 82, 54, 0.22);
+      filter: none;
     }
 
     html[data-theme="matcha"] .btn-outline {
-      clip-path: none;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.55);
-      box-shadow: inset 0 0 0 1.5px rgba(63, 125, 78, 0.3);
+      padding: 13px 26px;
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: inset 0 0 0 1.5px rgba(63, 125, 78, 0.28);
       color: #2f5236;
-      letter-spacing: 1.2px;
+      font-size: 0.92rem;
     }
 
     html[data-theme="matcha"] .btn-outline:hover {
       background: #fff;
       color: #2f5236;
-      box-shadow: inset 0 0 0 1.5px #3f7d4e, 0 8px 22px rgba(63, 125, 78, 0.14);
-      transform: translateY(-3px);
+      box-shadow: inset 0 0 0 1.5px #3f7d4e, 0 8px 20px rgba(63, 125, 78, 0.12);
+      transform: translateY(-2px);
     }
 
     html[data-theme="matcha"] .btn-ghost {
-      clip-path: none;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.6);
-      box-shadow: inset 0 0 0 1.5px rgba(63, 125, 78, 0.22);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: inset 0 0 0 1.5px rgba(63, 125, 78, 0.2);
       color: #33553a;
+      font-size: 0.76rem;
     }
 
     html[data-theme="matcha"] .btn-ghost:hover {
@@ -6749,14 +6886,23 @@
 
     html[data-theme="matcha"] .timer-btn {
       clip-path: none;
-      border-radius: 999px;
-      background: linear-gradient(100deg, #2f5236, #3f7d4e 60%, #5f8f4a);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #4c8a59, #3c7449);
       color: #fbfaf1;
+      letter-spacing: 1.8px;
+      box-shadow: 0 8px 20px rgba(47, 82, 54, 0.16);
+    }
+
+    html[data-theme="matcha"] .timer-btn:hover {
+      transform: translateY(-1px);
+      filter: none;
+      box-shadow: 0 12px 26px rgba(47, 82, 54, 0.22);
     }
 
     html[data-theme="matcha"] .timer-btn.stop {
       background: #b3543f;
       color: #fff;
+      box-shadow: 0 8px 20px rgba(179, 84, 63, 0.18);
     }
 
     html[data-theme="matcha"] .timer-btn.armed {
@@ -6771,16 +6917,21 @@
     html[data-theme="matcha"] .scramble-btn,
     html[data-theme="matcha"] .tp-btn {
       clip-path: none;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.62);
       border-color: rgba(63, 125, 78, 0.22);
       color: #33553a;
+      letter-spacing: 0.4px;
+      text-transform: none;
+      font-weight: 600;
+      box-shadow: none;
     }
 
     html[data-theme="matcha"] .scramble-btn:hover,
     html[data-theme="matcha"] .tp-btn:hover {
       background: #fff;
       color: #2f5236;
+      filter: none;
     }
 
     html[data-theme="matcha"] .lb-status {
@@ -6792,6 +6943,15 @@
 
     html[data-theme="matcha"] .lb-row.lb-top1 .lb-time {
       color: #3f7d4e;
+    }
+
+    html[data-theme="matcha"] .lb-scramble {
+      color: rgba(31, 50, 37, 0.56);
+    }
+
+    html[data-theme="matcha"] .lb-scramble i {
+      color: #3f7d4e;
+      opacity: 0.9;
     }
 
     /* --- footer: kertas + watermark clover --- */
@@ -6875,6 +7035,10 @@
       background: #fbfaf1;
       border-color: rgba(63, 125, 78, 0.2);
       box-shadow: 0 22px 60px rgba(30, 51, 38, 0.2);
+    }
+
+    html[data-theme="matcha"] .theme-pop {
+      border-color: rgba(63, 125, 78, 0.26);
     }
 
     html[data-theme="matcha"] .mp {
@@ -7007,8 +7171,8 @@
     @media (max-width: 760px) {
       html[data-theme="matcha"] nav {
         top: 10px;
-        left: 10px;
-        right: 10px;
+        left: var(--nav-gutter);
+        right: var(--nav-gutter);
         padding: 8px 10px 8px 15px;
       }
 
@@ -7397,8 +7561,8 @@
           <ol class="lb-list" id="lb-list">
             <li class="lb-empty">Fetching times…</li>
           </ol>
-          <p class="lb-note">Only your personal best counts. Set a name above before you start — anyone can see
-            the board.</p>
+          <p class="lb-note">Only your personal best counts. Top 10 runs also show the scramble that was used. Set a
+            name above before you start — anyone can see the board.</p>
         </div>
       </div>
     </section>
@@ -7613,6 +7777,17 @@
       <span id="rate-pop-count">0 votes</span>
     </div>
     <button class="rate-pop-fb" id="rate-pop-fb" type="button">Send feedback instead</button>
+  </aside>
+
+  <aside class="rate-pop theme-pop" id="theme-pop" role="dialog" aria-labelledby="theme-pop-title"
+    aria-hidden="true">
+    <button class="rate-pop-close" id="theme-pop-close" type="button" aria-label="Close theme tip">×</button>
+    <div class="rate-pop-badge">✦ Theme tip</div>
+    <h3 class="rate-pop-title" id="theme-pop-title">Two flavors, one site</h3>
+    <p class="rate-pop-sub">Aventador keeps it dark. Matcha turns the page into a soft clover field. Switch anytime
+      from the little pill in the nav.</p>
+    <button class="theme-pop-cta" id="theme-pop-cta" type="button">Try Matcha theme</button>
+    <button class="theme-pop-later" id="theme-pop-later" type="button">Maybe later</button>
   </aside>
 
   <div class="edit-bar" id="edit-bar" role="region" aria-label="Page text editor">
@@ -9050,6 +9225,8 @@
         if (drawerBox && drawerBox.classList.contains('open')) return false;
         const pwBox = $('pw-overlay');
         if (pwBox && pwBox.classList.contains('open')) return false;
+        const themeBox = $('theme-pop');
+        if (themeBox && themeBox.classList.contains('show')) return false;
         let snooze = 0;
         try { snooze = Number(localStorage.getItem(RATE_POP_KEY) || 0); } catch (e) { }
         return !(snooze && Date.now() < snooze);
@@ -9742,7 +9919,8 @@
       const fxMatcha = () => document.documentElement.getAttribute('data-theme') === 'matcha';
 
       function toggleSparkles(on) {
-        if (HEAVY_FX_OFF) on = false;
+        /* Matcha nggak pakai FX melayang: identitasnya tenang, bukan pesta */
+        if (HEAVY_FX_OFF || fxMatcha()) on = false;
         if (on && !sparkleTimer) {
           sparkleTimer = setInterval(() => {
             if (document.hidden) return;
@@ -9791,7 +9969,8 @@
       }
 
       function toggleCarFx(on) {
-        if (HEAVY_FX_OFF) on = false;
+        /* Matcha: no cars, no cash rain */
+        if (HEAVY_FX_OFF || fxMatcha()) on = false;
         if (on && !carTimer) {
           carTimer = setInterval(() => {
             if (document.hidden) return;
@@ -10395,12 +10574,13 @@
         rbBtn.classList.remove('stop');
         rbBtn.classList.remove('armed');
         if (ms > 300) {
+          const usedScramble = currentScramble();
           rbSolves.push(Math.round(ms));
           if (rbSolves.length > 60) rbSolves.shift();
           try { localStorage.setItem(RB_KEY, JSON.stringify(rbSolves)); } catch (e) { }
           rbPaint();
           showToast('solve ' + fmtMs(ms) + ' saved');
-          submitScore(ms);
+          submitScore(ms, usedScramble);
           newScramble(true); // siapin scramble berikutnya, kayak csTimer
         }
       }
@@ -10485,6 +10665,8 @@
       let lbRows = [];
       let lbOffline = false;
       let lbLoaded = false;
+      let lbNoScramble = false;
+      const BENCH_SCRAMBLE = "R U2 F' L D2 R' B U' F2 D L2 U' R2 B' D2 F U2 L' B2 R'";
 
       function needName() {
         showToast('set your name first — leaderboard needs it');
@@ -10521,13 +10703,31 @@
         const list = $('lb-list');
         if (!list) return;
         try {
-          const { data, error } = await db.from('rubik_scores')
-            .select('player_id,name,best_ms')
-            .order('best_ms', { ascending: true })
-            .limit(50);
-          if (error) throw error;
-          lbRows = (data || []).map(r => ({
+          let res;
+          if (lbNoScramble) {
+            // sesi ini udah tahu kolomnya belum ada -> jangan spam request 400
+            res = await db.from('rubik_scores')
+              .select('player_id,name,best_ms')
+              .order('best_ms', { ascending: true })
+              .limit(50);
+          } else {
+            res = await db.from('rubik_scores')
+              .select('player_id,name,best_ms,scramble')
+              .order('best_ms', { ascending: true })
+              .limit(50);
+            // Kolom scramble belum ada -> tetap tampilkan board lama.
+            if (res.error && /scramble|PGRST204|column|schema cache/i.test(String(res.error.message || ''))) {
+              lbNoScramble = true;
+              res = await db.from('rubik_scores')
+                .select('player_id,name,best_ms')
+                .order('best_ms', { ascending: true })
+                .limit(50);
+            }
+          }
+          if (res.error) throw res.error;
+          lbRows = (res.data || []).map(r => ({
             player_id: r.player_id, name: r.name, best_ms: Number(r.best_ms) || 0,
+            scramble: r.scramble ? String(r.scramble) : '',
             virtual: false
           }));
           lbOffline = false;
@@ -10539,7 +10739,12 @@
         // Cek player_id, bukan nama — pemain lain boleh saja bernama "excel".
         const hasBench = lbRows.some(r => r.player_id === 'excel');
         if (!hasBench) lbRows.push({
-          player_id: 'excel', name: 'excel', best_ms: RB_BENCH_MS, virtual: true
+          player_id: 'excel', name: 'excel', best_ms: RB_BENCH_MS,
+          scramble: BENCH_SCRAMBLE, virtual: true
+        });
+        // baris benchmark dari DB lama boleh pakai scramble seed biar tampil lengkap
+        lbRows.forEach(r => {
+          if (r.player_id === 'excel' && !r.scramble && !lbNoScramble) r.scramble = BENCH_SCRAMBLE;
         });
         lbRows.sort((a, b) => a.best_ms - b.best_ms);
         lbLoaded = true;
@@ -10582,6 +10787,11 @@
           const cls = 'lb-row' + (mine ? ' lb-you' : '') + (rank === 1 ? ' lb-top1' : '') +
             (canDel ? ' has-del' : '');
           const isBench = r.player_id === 'excel';
+          const scrambleLine = rank <= 10
+            ? (r.scramble
+              ? '<span class="lb-scramble"><i>scramble</i>' + escHtml(r.scramble) + '</span>'
+              : (lbNoScramble ? '' : '<span class="lb-scramble"><i>scramble</i>not recorded yet</span>'))
+            : '';
           return '<li class="' + cls + '">' +
             '<span class="lb-rank">' + rank + '</span>' +
             '<span class="lb-name">' + escHtml(r.name) +
@@ -10595,6 +10805,7 @@
               escHtml(r.name).replace(/"/g, '&quot;') +
               '" title="Delete score" aria-label="Delete score">×</button>'
               : '') +
+            scrambleLine +
             '</li>';
         };
         lbRows.slice(0, 15).forEach((r, i) => {
@@ -10636,16 +10847,25 @@
         });
       }
 
-      async function submitScore(ms) {
+      async function submitScore(ms, scramble) {
         if (!player.name || !ms) return false;
+        const base = {
+          p_player_id: player.id,
+          p_name: player.name,
+          p_best_ms: Math.round(ms)
+        };
         try {
-          const { error } = await db.rpc('submit_rubik_score', {
-            p_player_id: player.id,
-            p_name: player.name,
-            p_best_ms: Math.round(ms),
+          let res = await db.rpc('submit_rubik_score', Object.assign({}, base, {
+            p_scramble: scramble ? String(scramble).slice(0, 80) : null,
             p_secret: isOwner() ? OWNER_HASH : null
-          });
-          if (error) throw error;
+          }));
+          // RPC lama (4 parameter) belum kenal p_scramble -> kirim ulang tanpa itu.
+          if (res.error && /scramble|PGRST202|could not find|schema cache|argument/i.test(String(res.error.message || ''))) {
+            res = await db.rpc('submit_rubik_score', Object.assign({}, base, {
+              p_secret: isOwner() ? OWNER_HASH : null
+            }));
+          }
+          if (res.error) throw res.error;
           await loadLeaderboard();
           return true;
         } catch (e) {
@@ -10707,8 +10927,9 @@
       /* ===== INIT ===== */
       /* --- tema: Aventador (default) / Matcha "clover" --- */
       const THEME_KEY = 'rv-theme-v1';
+      const THEME_USED_KEY = 'rv-theme-used-v1';
       const MATCHA_FONT_HREF = 'https://fonts.googleapis.com/css2?family=Outfit:wght@300..800&display=swap';
-      const MATCHA_FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23f4f1e4'/%3E%3Cg transform='scale(2)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e'/%3E%3C/g%3E%3C/svg%3E";
+      const MATCHA_FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23d8e4ca'/%3E%3Cg transform='scale(2)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e'/%3E%3C/g%3E%3C/svg%3E";
       const ORNAMENT_SEL = '.hero-badge, .page-badge, .sec-eyebrow, .scramble-label, .rate-pop-badge';
       const themeSwitch = $('theme-switch');
       const themeMeta = document.querySelector('meta[name="theme-color"]');
@@ -10759,7 +10980,7 @@
             ? 'Theme: Matcha. Switch to Aventador'
             : 'Theme: Aventador. Switch to Matcha');
         }
-        if (themeMeta) themeMeta.setAttribute('content', t === 'matcha' ? '#f4f1e4' : '#0a0a0c');
+        if (themeMeta) themeMeta.setAttribute('content', t === 'matcha' ? '#d8e4ca' : '#0a0a0c');
         if (schemeMeta) schemeMeta.setAttribute('content', t === 'matcha' ? 'light' : 'dark');
         if (t === 'matcha') ensureMatchaFont();
         applyThemeCopy();
@@ -10772,6 +10993,17 @@
         try { localStorage.setItem(THEME_KEY, t); } catch (e) { }
         syncThemeUI();
         remeasureNav();
+        // FX cuma hidup di Aventador; begitu balik lagi, nyalain sesuai view
+        try {
+          if (t === 'matcha') {
+            toggleSparkles(false);
+            toggleCarFx(false);
+          } else if (document.body) {
+            const v = document.body.dataset.view;
+            toggleSparkles(v === 'profil' || v === 'hobi');
+            toggleCarFx(v === 'home');
+          }
+        } catch (e) { }
         if (announce) {
           const lite = document.documentElement.classList.contains('perf-lite');
           const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -10787,11 +11019,99 @@
 
       if (themeSwitch) {
         themeSwitch.addEventListener('click', () => {
+          try { localStorage.setItem(THEME_USED_KEY, '1'); } catch (e) { }
           setTheme(currentTheme() === 'matcha' ? 'lambo' : 'matcha', true);
+          updateThemePopCopy();
+          hideThemePop(0);
           themeSwitch.blur(); // Space tetap dipakai timer rubik
         });
       }
       syncThemeUI();
+
+      /* --- popup tema: muncul 5 detik setelah halaman kelihatan --- */
+      const THEME_POP_KEY = 'rv-theme-pop-v1';
+      const themePop = $('theme-pop');
+      const themePopCta = $('theme-pop-cta');
+      let themePopShown = false;
+
+      function themeWasUsed() {
+        try { return localStorage.getItem(THEME_USED_KEY) === '1'; } catch (e) { return false; }
+      }
+
+      function themePopSnoozed() {
+        try {
+          const until = Number(localStorage.getItem(THEME_POP_KEY) || 0);
+          return !!(until && Date.now() < until);
+        } catch (e) { return false; }
+      }
+
+      function canShowThemePop() {
+        if (!themePop || themePopShown || themeWasUsed() || themePopSnoozed()) return false;
+        if (document.body.classList.contains('editing-text')) return false;
+        if (document.body.dataset.view === 'zx7k9q') return false;
+        if (isOwner()) return false;
+        const boxes = ['fb-overlay', 'own-overlay', 'pw-overlay', 'lightbox', 'nav-drawer', 'rate-pop'];
+        for (let i = 0; i < boxes.length; i++) {
+          const el = $(boxes[i]);
+          if (el && (el.classList.contains('open') || el.classList.contains('show'))) return false;
+        }
+        return true;
+      }
+
+      function updateThemePopCopy() {
+        if (!themePopCta) return;
+        themePopCta.textContent = currentTheme() === 'matcha'
+          ? 'Switch to Aventador'
+          : 'Try Matcha theme';
+      }
+
+      function showThemePop() {
+        if (!canShowThemePop()) return;
+        themePopShown = true;
+        updateThemePopCopy();
+        themePop.classList.add('show');
+        themePop.setAttribute('aria-hidden', 'false');
+      }
+
+      function hideThemePop(days) {
+        if (!themePop) return;
+        themePop.classList.remove('show');
+        themePop.setAttribute('aria-hidden', 'true');
+        if (days) {
+          try { localStorage.setItem(THEME_POP_KEY, String(Date.now() + days * 86400000)); } catch (e) { }
+        }
+      }
+
+      if (themePopCta) {
+        themePopCta.addEventListener('click', () => {
+          try { localStorage.setItem(THEME_USED_KEY, '1'); } catch (e) { }
+          setTheme(currentTheme() === 'matcha' ? 'lambo' : 'matcha', true);
+          hideThemePop(0);
+        });
+      }
+      if ($('theme-pop-close')) {
+        $('theme-pop-close').addEventListener('click', () => hideThemePop(7));
+      }
+      if ($('theme-pop-later')) {
+        $('theme-pop-later').addEventListener('click', () => hideThemePop(7));
+      }
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && themePop && themePop.classList.contains('show')) hideThemePop(7);
+      });
+
+      let themeDwell = 0;
+      const themeDwellTimer = setInterval(() => {
+        if (themePopShown || themeWasUsed() || themePopSnoozed()) {
+          clearInterval(themeDwellTimer);
+          return;
+        }
+        if (document.hidden) return;
+        themeDwell += 1;
+        if (themeDwell >= 5 && canShowThemePop()) {
+          clearInterval(themeDwellTimer);
+          showThemePop();
+        }
+      }, 1000);
 
       // Media statis di HTML juga dikasih jaring pengaman
       attachImgRetry($('avatar-img'), 6);
