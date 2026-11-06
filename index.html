@@ -8213,15 +8213,34 @@
          biar moveNavIndicator (baca offsetWidth/offsetTop = forced reflow)
          nggak jalan berulang-ulang */
       let navIndRaf = 0;
-      window.addEventListener('resize', () => {
+      function queueNavIndicator() {
         if (navIndRaf) return;
         navIndRaf = requestAnimationFrame(() => {
           navIndRaf = 0;
           moveNavIndicator();
         });
-      });
+      }
+      window.addEventListener('resize', queueNavIndicator);
       if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(moveNavIndicator);
+        document.fonts.ready.then(queueNavIndicator);
+      }
+      /* Ganti tema = font/padding/letter-spacing link ikut berubah dan masih
+         di-transition 0.22s. Kalau cuma diukur sekali di awal, pill-nya
+         nyangkut di ukuran lama (bisa nutupin tombol tema). Jadi ukur ulang
+         tiap geometri link benar-benar berubah. */
+      const navLinksEl = document.querySelector('.nav-links');
+      if (navLinksEl) {
+        if (window.ResizeObserver) {
+          const navRO = new ResizeObserver(queueNavIndicator);
+          navRO.observe(navLinksEl);
+          navLinksEl.querySelectorAll('a').forEach((el) => navRO.observe(el));
+        }
+        navLinksEl.addEventListener('transitionend', (e) => {
+          if (e.target && e.target.tagName === 'A') queueNavIndicator();
+        });
+      }
+      if (document.fonts && document.fonts.addEventListener) {
+        document.fonts.addEventListener('loadingdone', queueNavIndicator);
       }
 
       /* ===== CLICK SOUND (Meet Me) ===== */
@@ -10966,9 +10985,21 @@
       }
 
       function remeasureNav() {
-        if (typeof moveNavIndicator === 'function') requestAnimationFrame(moveNavIndicator);
-        if (document.fonts && document.fonts.ready) {
-          document.fonts.ready.then(() => requestAnimationFrame(moveNavIndicator));
+        const run = () => {
+          if (typeof queueNavIndicator === 'function') queueNavIndicator();
+          else if (typeof moveNavIndicator === 'function') moveNavIndicator();
+        };
+        run();
+        // link masih di-transition 0.22s waktu tema diganti -> ukur lagi
+        // setelah geometrinya diam, biar pill nggak nyangkut di ukuran lama
+        setTimeout(run, 280);
+        if (document.fonts) {
+          if (document.fonts.ready) document.fonts.ready.then(run);
+          // Outfit baru diunduh pas masuk matcha; tunggu font-nya benar-benar
+          // kepakai sebelum ngukur lebar link.
+          if (currentTheme() === 'matcha' && document.fonts.load) {
+            document.fonts.load('600 12px Outfit').then(run).catch(() => { });
+          }
         }
       }
 
