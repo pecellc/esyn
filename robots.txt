@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /build/
+Disallow: /sql/
+
+Sitemap: https://pecellc.github.io/esyn/sitemap.xml

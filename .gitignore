@@ -1,10 +1,11 @@
 serve.log
+*.log
 .vscode/
-profil.html
-galeri.html
-kontak.html
-css/
-js/
-sql/
-SETUP_GUIDE.md
+build/
+node_modules/
+.env
+.env.*
 _verify_*
+
+# Private photo seed: contains the actual hidden photos. Never commit.
+sql/secret_photos_seed.sql

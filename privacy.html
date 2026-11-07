@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Privacy notes for exyn — what this personal site stores, why, and how to ask for deletion.">
+  <meta name="theme-color" content="#0a0a0c">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://pecellc.github.io/esyn/privacy.html">
+  <title>Privacy — exyn</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --gold: #d8b45a;
+      --gold-soft: #f0d38e;
+      --cream: #f7e9de;
+      --dim: #b9bec6;
+      --line: rgba(216, 180, 90, .24);
+      --card: rgba(18, 18, 21, .68);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px 20px 80px;
+      background:
+        radial-gradient(80% 60% at 0% 10%, rgba(156, 35, 49, .22), transparent 60%),
+        #0a0a0c;
+      color: var(--cream);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      line-height: 1.75;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 34px;
+    }
+
+    .logo {
+      font-family: Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      font-style: italic;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .back {
+      color: var(--gold-soft);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-family: Georgia, serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      line-height: 1.15;
+    }
+
+    .updated {
+      margin: 0 0 30px;
+      color: var(--gold);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    section {
+      margin-bottom: 26px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card);
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 1.02rem;
+      color: var(--gold-soft);
+    }
+
+    p,
+    li {
+      color: var(--dim);
+      font-size: .93rem;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    li+li {
+      margin-top: 6px;
+    }
+
+    strong {
+      color: var(--cream);
+    }
+
+    a {
+      color: var(--gold-soft);
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div class="top">
+      <a class="logo" href="./">exyn</a>
+      <a class="back" href="./">← Back to site</a>
+    </div>
+
+    <h1>Privacy, in plain words</h1>
+    <p class="updated">Last updated: 7 November 2026</p>
+
+    <section>
+      <h2>Who runs this site</h2>
+      <p>This is the personal site of <strong>Excel Adila Putra</strong>. Questions or deletion requests can go to
+        <a href="mailto:Exceladila123@gmail.com">Exceladila123@gmail.com</a>.</p>
+    </section>
+
+    <section>
+      <h2>What is stored</h2>
+      <ul>
+        <li><strong>Contact messages</strong> — the name, optional email, optional subject, message text you submit,
+          and a one-way hash of the network address used to send it. The raw IP address is not stored. Messages are
+          visible only to the owner and stay until they are deleted.</li>
+        <li><strong>Site ratings</strong> — the star score and a one-way network hash, so one network cannot vote
+          repeatedly. No name or email is attached.</li>
+        <li><strong>Feedback</strong> — the message you type, shown as “Anonymous”. It can be sent more than once.</li>
+        <li><strong>Rubik leaderboard</strong> — the display name you choose, a random device ID, your best time, and
+          the scramble used for it. Everyone can see this board.</li>
+        <li><strong>Journal and gallery</strong> — posts and photo captions published by the owner.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>What stays on your device</h2>
+      <p>The site uses browser localStorage and sessionStorage, not advertising cookies, for things like:</p>
+      <ul>
+        <li>your theme choice;</li>
+        <li>your Rubik display name, random player ID, and local solve history;</li>
+        <li>whether you have already rated the site;</li>
+        <li>a short-lived secret-page access token, which expires automatically.</li>
+      </ul>
+      <p>Clearing site data in your browser removes these.</p>
+    </section>
+
+    <section>
+      <h2>The private photo page</h2>
+      <p>The hidden page is protected by a password checked on the server. Its photos are not public files and are
+        only returned after a correct password creates a temporary access token. The password itself is never stored
+        in the page or in the repository.</p>
+    </section>
+
+    <section>
+      <h2>Services used</h2>
+      <p>The site is hosted by <strong>GitHub Pages</strong>. Data such as messages, ratings, feedback, posts, and
+        leaderboard entries is stored in <strong>Supabase</strong>. Fonts, scripts, and images are served from this
+        site rather than third-party CDNs. There is no third-party analytics, advertising, or tracking pixel.</p>
+    </section>
+
+    <section>
+      <h2>Your choices</h2>
+      <ul>
+        <li>You can send a message without giving an email address.</li>
+        <li>You can use the site without rating it or joining the leaderboard.</li>
+        <li>You can ask the owner to delete a message, rating, feedback entry, or leaderboard entry by writing to the
+          email above. Include enough detail to identify the entry.</li>
+        <li>If you are under 13, please ask a parent or guardian before sending a message.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Changes</h2>
+      <p>If this policy changes, the date at the top will change too. The short version: the site collects what it
+        needs to run the guestbook, ratings, and leaderboard, and nothing else.</p>
+    </section>
+  </main>
+</body>
+
+</html>
