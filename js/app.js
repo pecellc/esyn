@@ -716,7 +716,7 @@
           const ok = await deletePhoto(id);
           if (!ok) {
             b.disabled = false;
-            showToast('could not delete — run sql/gallery_admin.sql');
+            showToast('could not delete — run sql/security_journal.sql');
           }
         });
         parent.appendChild(b);
