@@ -72,7 +72,7 @@
 
       const CAT_LABEL = { nature: 'Nature', art: 'Art', food: 'Food', people: 'People', city: 'City', game: 'Game' };
 
-      const VIEWS = ['home', 'profil', 'hobi', 'galeri', 'journal', 'kontak', 'zx7k9q'];
+      const VIEWS = ['home', 'profil', 'hobi', 'galeri', 'kontak', 'zx7k9q'];
 
       const $ = (id) => document.getElementById(id);
 
@@ -193,7 +193,6 @@
         _de.style.scrollBehavior = _prevSb;
 
         if (view === 'kontak' && typeof ensureRatingLoaded === 'function') ensureRatingLoaded();
-        if (view === 'journal') loadJournal(raw.split('/').slice(1).join('/'));
 
         // konten yang dibangun dinamis (grid foto, dll) bisa telat masuk;
         // daftarin ulang tiap ganti view biar nggak nyangkut opacity 0.
@@ -1431,7 +1430,7 @@
         ownLogin.hidden = true;
         ownPanel.hidden = false;
         $('own-heading').textContent = 'Owner Panel';
-        $('own-subheading').textContent = 'Inbox, journal, photos, secret page & live text.';
+        $('own-subheading').textContent = 'Inbox, photos, secret page & live text.';
         ownOverlay.classList.add('open');
         await loadOwnData();
       }
@@ -1439,14 +1438,6 @@
       function fmtShortDate(s) {
         try {
           return new Date(s).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: '2-digit' });
-        } catch (e) {
-          return '';
-        }
-      }
-
-      function fmtLongDate(s) {
-        try {
-          return new Date(s).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
         } catch (e) {
           return '';
         }
@@ -1556,121 +1547,22 @@
         });
       }
 
-      /* --- post editor --- */
-      let editingPost = null;
-
-      function setPostStatus(msg) {
-        const el = $('own-post-status');
-        if (el) el.textContent = msg || '';
-      }
-
-      function resetPostForm() {
-        editingPost = null;
-        ['own-post-id', 'own-post-title', 'own-post-slug', 'own-post-excerpt', 'own-post-body'].forEach(id => {
-          const el = $(id); if (el) el.value = '';
-        });
-        if ($('own-post-kind')) $('own-post-kind').value = 'journal';
-        if ($('own-post-published')) $('own-post-published').checked = false;
-        setPostStatus('');
-        const btn = $('own-post-save');
-        if (btn) btn.textContent = 'Publish / save post';
-      }
-
-      function editPost(p) {
-        editingPost = p;
-        $('own-post-id').value = p.id || '';
-        $('own-post-title').value = p.title || '';
-        $('own-post-slug').value = p.slug || '';
-        $('own-post-excerpt').value = p.excerpt || '';
-        $('own-post-body').value = p.body || '';
-        $('own-post-kind').value = p.kind === 'now' ? 'now' : 'journal';
-        $('own-post-published').checked = !!p.published;
-        setPostStatus('Editing: ' + p.title);
-        $('own-post-save').textContent = 'Update post';
-        $('own-post-title').focus();
-      }
-
-      async function savePost() {
-        if (!isOwner()) return;
-        const btn = $('own-post-save');
-        const title = $('own-post-title').value.trim();
-        if (!title) { setPostStatus('Title is required.'); return; }
-        btn.disabled = true;
-        setPostStatus('Saving…');
-        try {
-          const { error } = await db.rpc('admin_save_post', {
-            p_id: $('own-post-id').value.trim() || null,
-            p_slug: $('own-post-slug').value.trim(),
-            p_title: title,
-            p_excerpt: $('own-post-excerpt').value.trim(),
-            p_body: $('own-post-body').value,
-            p_kind: $('own-post-kind').value,
-            p_published: $('own-post-published').checked
-          });
-          if (error) throw error;
-          setPostStatus('Saved ✓');
-          resetPostForm();
-          await loadOwnData();
-          loadJournal();
-        } catch (e) {
-          console.warn('save post:', e);
-          setPostStatus('Failed: ' + (e.message || 'unknown error'));
-        } finally {
-          btn.disabled = false;
-        }
-      }
-
-      function renderPosts(rows) {
-        const box = $('own-posts');
-        const count = $('own-post-count');
-        if (count) count.textContent = rows.length + (rows.length === 1 ? ' post' : ' posts');
-        if (!box) return;
-        if (!rows.length) {
-          box.innerHTML = '<div class="own-empty">Belum ada post. Tulis yang pertama di atas.</div>';
-          return;
-        }
-        box.innerHTML = '';
-        rows.forEach((p) => {
-          const row = document.createElement('div');
-          row.className = 'own-row own-post-row';
-          row.innerHTML =
-            '<div class="own-post-info"><b>' + escHtml(p.title) + '</b>' +
-            '<span>' + escHtml(p.slug) + ' · ' + escHtml(p.kind) + ' · ' +
-            (p.published ? 'published' : 'draft') + '</span></div>' +
-            '<div class="own-row-actions">' +
-            '<button type="button" class="own-edit">Edit</button>' +
-            '<button type="button" class="own-del">Del</button></div>';
-          row.querySelector('.own-edit').addEventListener('click', () => editPost(p));
-          row.querySelector('.own-del').addEventListener('click', async () => {
-            if (!confirm('Delete post "' + p.title + '"?')) return;
-            const { error } = await db.rpc('admin_delete_post', { p_id: p.id });
-            if (error) { showToast('could not delete post'); return; }
-            if (editingPost && editingPost.id === p.id) resetPostForm();
-            await loadOwnData();
-            loadJournal();
-          });
-          box.appendChild(row);
-        });
-      }
-
       async function loadOwnData() {
         if (!isOwner()) return;
         const ratBox = $('own-ratings');
         const fbBox = $('own-feedback');
         const msgBox = $('own-messages');
-        const postBox = $('own-posts');
-        [ratBox, fbBox, msgBox, postBox].forEach(el => {
+        [ratBox, fbBox, msgBox].forEach(el => {
           if (el) el.innerHTML = '<div class="own-empty">Loading…</div>';
         });
-        ['own-rating-count', 'own-fb-count', 'own-msg-count', 'own-post-count'].forEach(id => {
+        ['own-rating-count', 'own-fb-count', 'own-msg-count'].forEach(id => {
           const el = $(id); if (el) el.textContent = '';
         });
 
-        const [rat, fb, msg, posts] = await Promise.all([
+        const [rat, fb, msg] = await Promise.all([
           db.rpc('admin_list_ratings'),
           db.rpc('admin_list_feedback'),
-          db.rpc('admin_list_messages'),
-          db.rpc('admin_list_posts')
+          db.rpc('admin_list_messages')
         ]);
 
         /* ratings */
@@ -1753,17 +1645,9 @@
         } else {
           renderMessages(msg.data || []);
         }
-
-        if (posts.error) {
-          if (postBox) postBox.innerHTML = '<div class="own-empty">Journal belum siap — jalankan SQL migrasi.</div>';
-        } else {
-          renderPosts(posts.data || []);
-        }
       }
 
       /* tombol-tombol panel */
-      if ($('own-post-save')) $('own-post-save').addEventListener('click', savePost);
-      if ($('own-post-new')) $('own-post-new').addEventListener('click', resetPostForm);
       if ($('own-secret-save')) {
         $('own-secret-save').addEventListener('click', async () => {
           if (!isOwner()) return;
@@ -3217,99 +3101,6 @@
           const dy = e.changedTouches[0].clientY - ty;
           if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) stepLightbox(dx < 0 ? 1 : -1);
         }, { passive: true });
-      }
-
-      /* ===== JOURNAL / NOW ===== */
-      let journalPosts = null;
-      let journalLoading = null;
-
-      function renderJournalBody(body) {
-        const safe = escHtml(body || '').trim();
-        if (!safe) return '';
-        return safe.split(/\n{2,}/).map(block =>
-          '<p>' + block.replace(/\n/g, '<br>') + '</p>'
-        ).join('');
-      }
-
-      function journalCard(p) {
-        return '<a class="journal-item" href="#/journal/' + encodeURIComponent(p.slug) + '">' +
-          '<span class="journal-date">' + fmtLongDate(p.published_at || p.updated_at || p.created_at) + '</span>' +
-          '<b>' + escHtml(p.title) + '</b>' +
-          '<small>' + escHtml(p.excerpt || 'Read the note →') + '</small>' +
-          '</a>';
-      }
-
-      async function fetchJournal() {
-        if (journalPosts) return journalPosts;
-        if (journalLoading) return journalLoading;
-        journalLoading = (async () => {
-          const { data, error } = await db.from('posts')
-            .select('id,slug,title,excerpt,body,kind,published_at,created_at,updated_at')
-            .eq('published', true)
-            .order('published_at', { ascending: false, nullsFirst: false })
-            .order('created_at', { ascending: false });
-          if (error) throw error;
-          journalPosts = data || [];
-          return journalPosts;
-        })();
-        try {
-          return await journalLoading;
-        } finally {
-          journalLoading = null;
-        }
-      }
-
-      async function loadJournal(slug) {
-        const nowBox = $('journal-now');
-        const listBox = $('journal-list');
-        const postBox = $('journal-post');
-        if (!listBox || !postBox) return;
-        listBox.innerHTML = '<div class="own-empty">Loading…</div>';
-        try {
-          const rows = await fetchJournal();
-          const now = rows.find(p => p.kind === 'now');
-          const notes = rows.filter(p => p.kind !== 'now');
-
-          if (nowBox) {
-            nowBox.innerHTML = now
-              ? '<div class="now-card"><span class="now-label">✦ Now</span>' +
-                '<h2>' + escHtml(now.title) + '</h2>' +
-                '<p>' + escHtml(now.excerpt || '').replace(/\n/g, '<br>') + '</p>' +
-                '<span class="now-date">updated ' + fmtLongDate(now.updated_at || now.published_at) + '</span></div>'
-              : '<div class="now-card"><span class="now-label">✦ Now</span><h2>What I\'m up to</h2>' +
-                '<p>This space is ready. The owner can publish a “Now” note from the admin panel.</p></div>';
-          }
-
-          if (slug) {
-            const post = rows.find(p => p.slug === decodeURIComponent(slug));
-            if (!post) {
-              postBox.innerHTML = '<div class="journal-empty">Post not found. <a href="#/journal">Back to journal</a></div>';
-              listBox.hidden = true;
-              postBox.hidden = false;
-              return;
-            }
-            document.title = post.title + ' — exyn';
-            postBox.innerHTML = '<article class="journal-article">' +
-              '<a class="journal-back" href="#/journal">← All notes</a>' +
-              '<span class="journal-date">' + fmtLongDate(post.published_at || post.updated_at) + '</span>' +
-              '<h1>' + escHtml(post.title) + '</h1>' +
-              '<div class="journal-body">' + renderJournalBody(post.body) + '</div>' +
-              '</article>';
-            listBox.hidden = true;
-            postBox.hidden = false;
-          } else {
-            document.title = 'Journal — exyn';
-            postBox.hidden = true;
-            listBox.hidden = false;
-            listBox.innerHTML = notes.length
-              ? notes.map(journalCard).join('')
-              : '<div class="journal-empty">No journal notes yet. The first one is coming soon.</div>';
-          }
-        } catch (e) {
-          console.warn('journal:', e);
-          listBox.innerHTML = '<div class="journal-empty">Journal is not available yet. Run the SQL migration.</div>';
-          if (nowBox) nowBox.innerHTML = '';
-        }
       }
 
       /* ===== INIT ===== */

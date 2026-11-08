@@ -7155,7 +7155,7 @@
     }
 
     /* ==========================================================
-       FIXES + JOURNAL / NOW + EXTRA STATS
+       FIXES + EXTRA STATS
        ========================================================== */
 
     [hidden] {
@@ -7265,181 +7265,7 @@
       margin-top: 12px;
     }
 
-    /* --- Journal / Now --- */
-    .journal-wrap {
-      max-width: 1060px;
-      margin: 0 auto;
-      padding: 34px 5vw 80px;
-    }
-
-    .journal-now {
-      margin-bottom: 34px;
-    }
-
-    .now-card {
-      position: relative;
-      padding: 28px 30px;
-      border: 1px solid var(--line-gold);
-      border-radius: var(--radius-m);
-      background:
-        radial-gradient(120% 140% at 0% 0%, rgba(var(--gold-rgb), 0.12), transparent 60%),
-        rgba(var(--carbon-2-rgb), 0.62);
-      clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
-    }
-
-    .now-label {
-      display: inline-block;
-      margin-bottom: 10px;
-      font-size: 0.66rem;
-      font-weight: 800;
-      letter-spacing: 2.4px;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-
-    .now-card h2 {
-      font-family: var(--font-display);
-      font-size: clamp(1.3rem, 2.4vw, 1.8rem);
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .now-card p {
-      color: var(--cream-dim);
-      line-height: 1.75;
-      font-size: 0.94rem;
-    }
-
-    .now-date {
-      display: block;
-      margin-top: 14px;
-      font-size: 0.7rem;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: var(--cream-faint);
-    }
-
-    .journal-columns {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 22px;
-    }
-
-    .journal-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .journal-item {
-      display: block;
-      padding: 18px 20px;
-      border: 1px solid var(--line-soft);
-      border-left: 3px solid var(--velvet-400);
-      border-radius: var(--radius-s);
-      background: rgba(var(--carbon-2-rgb), 0.5);
-      color: var(--cream);
-      text-decoration: none;
-      transition: border-color 0.2s, transform 0.2s, background 0.2s;
-    }
-
-    .journal-item:hover,
-    .journal-item:focus-visible {
-      border-color: var(--gold);
-      border-left-color: var(--gold);
-      background: rgba(var(--carbon-2-rgb), 0.82);
-      transform: translateX(4px);
-    }
-
-    .journal-item b {
-      display: block;
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .journal-item small {
-      display: block;
-      color: var(--cream-dim);
-      font-size: 0.85rem;
-      line-height: 1.6;
-    }
-
-    .journal-date {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 0.66rem;
-      font-weight: 700;
-      letter-spacing: 1.6px;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-
-    .journal-post {
-      max-width: 760px;
-    }
-
-    .journal-article h1 {
-      font-family: var(--font-display);
-      font-size: clamp(1.6rem, 3.4vw, 2.5rem);
-      font-weight: 800;
-      line-height: 1.15;
-      margin: 8px 0 18px;
-    }
-
-    .journal-body p {
-      margin-bottom: 18px;
-      color: var(--cream-dim);
-      font-size: 1rem;
-      line-height: 1.85;
-    }
-
-    .journal-back {
-      display: inline-block;
-      margin-bottom: 18px;
-      color: var(--gold-soft);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      text-decoration: none;
-    }
-
-    .journal-back:hover {
-      color: var(--gold);
-    }
-
-    .journal-empty {
-      padding: 26px 20px;
-      border: 1px dashed var(--line-soft);
-      border-radius: var(--radius-s);
-      color: var(--steel-dim);
-      font-size: 0.88rem;
-      line-height: 1.7;
-    }
-
-    .journal-empty a {
-      color: var(--gold-soft);
-    }
-
-    .journal-feed-note {
-      margin-top: 30px;
-      color: var(--steel-dim);
-      font-size: 0.78rem;
-    }
-
-    .journal-feed-note a {
-      color: var(--gold-soft);
-    }
-
-    @media (min-width: 900px) {
-      .journal-columns {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    /* --- Owner: inbox, journal editor, secret password --- */
+    /* --- Owner: inbox, secret password --- */
     .own-msg-row {
       display: block;
       padding: 12px 12px 10px;
@@ -7498,78 +7324,10 @@
       padding: 6px 8px;
     }
 
-    .own-post-row {
-      justify-content: space-between;
-    }
-
-    .own-post-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
-
-    .own-post-info b {
-      font-size: 0.84rem;
-      overflow-wrap: anywhere;
-    }
-
-    .own-post-info span {
-      font-size: 0.7rem;
-      color: var(--steel-dim);
-    }
-
-    .own-form {
-      margin: 10px 0 14px;
-      padding: 14px;
-      border: 1px solid var(--line-soft);
-      border-radius: var(--radius-s);
-      background: rgba(var(--carbon-rgb), 0.35);
-    }
-
     .own-form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-    }
-
-    .own-form .photo-field>label {
-      color: var(--steel-dim);
-    }
-
-    .own-form .pw-input,
-    .own-form select.pw-input {
-      margin-bottom: 0;
-      padding: 10px 12px;
-      font-size: 0.86rem;
-      letter-spacing: 0;
-      text-align: left;
-    }
-
-    .own-textarea {
-      resize: vertical;
-      line-height: 1.6;
-      min-height: 46px;
-    }
-
-    .own-form .photo-field {
-      margin-bottom: 10px;
-    }
-
-    .own-check {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 4px 0 12px;
-      font-size: 0.8rem;
-      color: var(--cream-dim);
-      cursor: pointer;
-    }
-
-    .own-check input {
-      width: 16px;
-      height: 16px;
-      accent-color: var(--gold);
     }
 
     .own-hint.bad {
@@ -7595,14 +7353,6 @@
     @media (max-width: 560px) {
       .own-form-row {
         grid-template-columns: 1fr;
-      }
-
-      .now-card {
-        padding: 22px 20px;
-      }
-
-      .journal-wrap {
-        padding: 26px 5vw 70px;
       }
     }
 

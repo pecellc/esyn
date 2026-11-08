@@ -76,7 +76,6 @@
       <li><a href="#/home" data-nav="home" class="active">Home</a></li>
       <li><a href="#/profil" data-nav="profil">Profile</a></li>
       <li><a href="#/galeri" data-nav="galeri">Gallery</a></li>
-      <li><a href="#/journal" data-nav="journal">Journal</a></li>
       <li><a href="#/kontak" data-nav="kontak">Contact</a></li>
       <li class="nav-indicator" aria-hidden="true"></li>
     </ul>
@@ -101,7 +100,6 @@
       <a href="#/home" data-nav="home">Home</a>
       <a href="#/profil" data-nav="profil">Profile</a>
       <a href="#/galeri" data-nav="galeri">Gallery</a>
-      <a href="#/journal" data-nav="journal">Journal</a>
       <a href="#/kontak" data-nav="kontak">Contact</a>
       <span class="drawer-rule" aria-hidden="true"></span>
       <div class="drawer-meta">
@@ -476,36 +474,6 @@
       </div>
     </section>
 
-    <section class="view" data-view="journal">
-      <div class="page-header" data-reveal>
-        <div class="page-badge">✦ Notes &amp; Now</div>
-        <h1>Journal <span>&amp; Now</span></h1>
-        <p>Short notes, small updates, and whatever I'm into right now</p>
-      </div>
-
-      <div class="journal-wrap">
-        <div id="journal-now" class="journal-now" data-reveal>
-          <div class="now-card">
-            <span class="now-label">✦ Now</span>
-            <h2>What I'm up to</h2>
-            <p>This space is ready. The owner can publish a “Now” note from the admin panel.</p>
-          </div>
-        </div>
-
-        <div class="journal-columns">
-          <div class="journal-list-wrap" data-reveal>
-            <div class="sec-eyebrow">✦ Journal</div>
-            <div id="journal-list" class="journal-list" aria-live="polite">
-              <div class="own-empty">Loading…</div>
-            </div>
-          </div>
-          <div id="journal-post" class="journal-post" hidden></div>
-        </div>
-
-        <p class="journal-feed-note">Prefer a reader? Subscribe with the <a href="feed.xml">RSS feed</a>.</p>
-      </div>
-    </section>
-
     <section class="view" data-view="kontak">
       <div class="page-header" data-reveal>
         <div class="page-badge">✦ Contact Me</div>
@@ -690,10 +658,8 @@
       <a href="#/home">Home</a>
       <a href="#/profil">Profile</a>
       <a href="#/galeri">Gallery</a>
-      <a href="#/journal">Journal</a>
       <a href="#/kontak">Contact</a>
       <a href="privacy.html">Privacy</a>
-      <a href="feed.xml">RSS</a>
     </div>
   </footer>
 
@@ -828,53 +794,6 @@
           <h4>Inbox <span class="own-count" id="own-msg-count"></span></h4>
           <p class="own-hint">Messages sent from the contact form. Mark them read or replied so nothing gets lost.</p>
           <div class="own-list" id="own-messages"></div>
-        </div>
-        <div class="own-sec">
-          <h4>Journal / Now <span class="own-count" id="own-post-count"></span></h4>
-          <p class="own-hint">Write a note or a “Now” update. Published posts appear on the Journal page and in the
-            RSS feed. Separate paragraphs with a blank line.</p>
-          <div class="own-form">
-            <input type="hidden" id="own-post-id">
-            <div class="own-form-row">
-              <div class="photo-field">
-                <label for="own-post-title">Title</label>
-                <input type="text" id="own-post-title" class="pw-input" maxlength="140" placeholder="Post title"
-                  autocomplete="off">
-              </div>
-              <div class="photo-field">
-                <label for="own-post-kind">Type</label>
-                <select id="own-post-kind" class="pw-input">
-                  <option value="journal">Journal</option>
-                  <option value="now">Now</option>
-                </select>
-              </div>
-            </div>
-            <div class="photo-field">
-              <label for="own-post-slug">Slug (optional)</label>
-              <input type="text" id="own-post-slug" class="pw-input" maxlength="120"
-                placeholder="auto-generated-from-title" autocomplete="off" spellcheck="false">
-            </div>
-            <div class="photo-field">
-              <label for="own-post-excerpt">Excerpt / short summary</label>
-              <textarea id="own-post-excerpt" class="pw-input own-textarea" rows="2" maxlength="300"
-                placeholder="One or two lines shown in the list"></textarea>
-            </div>
-            <div class="photo-field">
-              <label for="own-post-body">Body</label>
-              <textarea id="own-post-body" class="pw-input own-textarea" rows="7"
-                placeholder="Write the post here…"></textarea>
-            </div>
-            <label class="own-check">
-              <input type="checkbox" id="own-post-published">
-              <span>Published</span>
-            </label>
-            <div class="pw-actions">
-              <button class="btn-outline" id="own-post-new" type="button">New post</button>
-              <button class="btn-primary" id="own-post-save" type="button">Publish / save post</button>
-            </div>
-            <p class="own-hint" id="own-post-status" role="status" aria-live="polite"></p>
-          </div>
-          <div class="own-list" id="own-posts"></div>
         </div>
         <div class="own-sec">
           <h4>Secret page password</h4>
