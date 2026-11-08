@@ -1318,7 +1318,7 @@
         ownLogin.hidden = false;
         ownPanel.hidden = true;
         $('own-heading').textContent = 'Owner Login';
-        $('own-subheading').textContent = 'Password only — no email needed.';
+        $('own-subheading').textContent = 'Enter the owner password.';
         setOwnStatus('');
         ownOverlay.classList.add('open');
       }
@@ -1422,7 +1422,7 @@
         ownPanel.hidden = true;
         ownLogin.hidden = false;
         $('own-heading').textContent = 'Owner Login';
-        $('own-subheading').textContent = 'Password only — no email needed.';
+        $('own-subheading').textContent = 'Enter the owner password.';
         setOwnStatus('Signed out.');
       });
 
@@ -1678,6 +1678,7 @@
 
       /* ===== ADMIN TEXT EDITOR (copy langsung di halaman) ===== */
       let editingText = false;
+      const textOverrides = {};
 
       async function loadSiteContent() {
         if (editingText) return;
@@ -1687,6 +1688,7 @@
           (data || []).forEach(row => {
             const val = String(row.value == null ? '' : row.value).trim();
             if (!val) return;
+            if (row.key) textOverrides[row.key] = val;
             document.querySelectorAll('[data-edit]').forEach(el => {
               if (el.dataset.edit === row.key) el.textContent = val;
             });
@@ -1957,7 +1959,8 @@
 
         const hero = $('secret-photo-1');
         const heroPh = $('secret-hero-ph');
-        const heroCap = $('secret-hero-caption');
+        const titleEl = $('secret-hero-title');
+        const subEl = $('secret-hero-sub');
         const first = secretPhotos[0];
 
         if (first) {
@@ -1965,14 +1968,25 @@
           hero.alt = first.title || 'Special photo';
           hero.hidden = false;
           if (heroPh) heroPh.hidden = true;
-          if (heroCap) {
-            heroCap.innerHTML = escHtml(first.title || 'Special Photo') +
-              (first.desc ? '<small>' + escHtml(first.desc) + '</small>' : '');
+          if (titleEl) titleEl.textContent = textOverrides['secret.hero-title'] || first.title || 'Special Photo';
+          if (subEl) {
+            const sub = textOverrides['secret.hero-sub'] !== undefined
+              ? textOverrides['secret.hero-sub']
+              : (first.desc || '');
+            subEl.textContent = sub;
+            subEl.hidden = !sub;
           }
         } else {
           if (hero) { hero.hidden = true; hero.removeAttribute('src'); }
           if (heroPh) heroPh.hidden = false;
-          if (heroCap) heroCap.innerHTML = 'Special Photo<small>unlock to view</small>';
+          if (titleEl) titleEl.textContent = textOverrides['secret.hero-title'] || 'Special Photo';
+          if (subEl) {
+            const sub = textOverrides['secret.hero-sub'] !== undefined
+              ? textOverrides['secret.hero-sub']
+              : 'unlock to view';
+            subEl.textContent = sub;
+            subEl.hidden = !sub;
+          }
         }
 
         grid.innerHTML = '';
@@ -3063,6 +3077,7 @@
               if (!row || !row.key || editingText) return;
               const val = String(row.value == null ? '' : row.value).trim();
               if (!val) return;
+              textOverrides[row.key] = val;
               document.querySelectorAll('[data-edit]').forEach(el => {
                 if (el.dataset.edit === row.key) el.textContent = val;
               });

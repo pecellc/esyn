@@ -114,7 +114,6 @@
         <a href="https://www.instagram.com/couldrnt/" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
         <a href="https://www.tiktok.com/@couldrnt" target="_blank" rel="noopener" aria-label="TikTok">TT</a>
         <a href="https://discord.gg/ByZKnH97CA" target="_blank" rel="noopener" aria-label="Discord">DC</a>
-        <a href="mailto:Exceladila123@gmail.com" aria-label="Email">EM</a>
       </div>
     </div>
   </div>
@@ -206,7 +205,6 @@
           </div>
           <div class="about-actions">
             <a class="btn-primary" href="#/profil">Full profile</a>
-            <button type="button" class="btn-outline" data-copy="Exceladila123@gmail.com">Copy email</button>
           </div>
         </div>
       </div>
@@ -242,10 +240,6 @@
           <div class="cta-actions">
             <a class="btn-primary" href="#/kontak">Send a message</a>
             <button type="button" class="btn-outline cta-outline" id="cta-feedback">Give feedback</button>
-          </div>
-          <div class="cta-copy">
-            <span>or grab the email</span>
-            <button type="button" class="copy-chip" data-copy="Exceladila123@gmail.com">Exceladila123@gmail.com <i>⧉</i></button>
           </div>
         </div>
       </div>
@@ -318,10 +312,6 @@
               <div class="bio-item">
                 <div class="bio-label">Hobbies</div>
                 <div class="bio-value">Playing games, learning languages, Rubik's cube</div>
-              </div>
-              <div class="bio-item">
-                <div class="bio-label">Email</div>
-                <div class="bio-value">Exceladila123@gmail.com</div>
               </div>
             </div>
 
@@ -495,11 +485,9 @@
             <img src="img/email.webp" class="contact-icon" alt="" width="348" height="350" loading="lazy"
               decoding="async">
             <div>
-              <div class="contact-item-label">Email</div>
-              <div class="contact-item-val">Exceladila123@gmail.com</div>
+              <div class="contact-item-label">Messages</div>
+              <div class="contact-item-val">Use the form on this page</div>
             </div>
-            <button type="button" class="contact-copy" data-copy="Exceladila123@gmail.com"
-              aria-label="Copy email address">copy</button>
           </div>
 
           <div class="contact-item" data-reveal>
@@ -610,7 +598,7 @@
       <div class="page-header">
         <div class="page-badge">✦ You Got The Access!</div>
         <h1>Friend <span>Page</span></h1>
-        <p>(TTS)</p>
+        <p data-edit="secret.sub">(TTS)</p>
       </div>
 
       <div class="secret-wrap">
@@ -627,8 +615,8 @@
               src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
           </div>
           <div class="secret-hero-caption" id="secret-hero-caption">
-            Special Photo
-            <small>unlock to view</small>
+            <span id="secret-hero-title" data-edit="secret.hero-title">Special Photo</span>
+            <small id="secret-hero-sub" data-edit="secret.hero-sub">unlock to view</small>
           </div>
         </div>
 
@@ -651,7 +639,6 @@
         <span class="cz"><i>WITA</i> <b id="footer-clock-wita">--:--:--</b></span>
         <span class="cz"><i>WIT</i> <b id="footer-clock-wit">--:--:--</b></span>
       </span>
-      <button type="button" class="footer-copy" data-copy="Exceladila123@gmail.com">copy email</button>
       <a class="footer-ig" href="https://www.instagram.com/couldrnt/" target="_blank" rel="noopener">@couldrnt</a>
     </div>
     <div class="footer-links">
@@ -753,8 +740,7 @@
       <p id="own-subheading">Sign in as owner to edit rating &amp; feedback data</p>
 
       <div id="own-login">
-        <p class="own-hint">Enter the owner password for <b>Exceladila123@gmail.com</b>. The password is checked by
-          Supabase, never stored in this page.</p>
+        <p class="own-hint">Enter the owner password. It is checked by Supabase, never stored in this page.</p>
         <form id="own-login-form">
           <label class="own-field-label" for="own-pass">Password</label>
           <input type="password" id="own-pass" class="pw-input own-pass-input" autocomplete="current-password"
