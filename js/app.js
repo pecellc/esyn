@@ -1319,7 +1319,7 @@
         ownLogin.hidden = false;
         ownPanel.hidden = true;
         $('own-heading').textContent = 'Owner Login';
-        $('own-subheading').textContent = 'Magic link — no password stored on this site.';
+        $('own-subheading').textContent = 'Password only — no email needed.';
         setOwnStatus('');
         ownOverlay.classList.add('open');
       }
@@ -1364,41 +1364,56 @@
           showToast('signed out');
           if (!ownOverlay.classList.contains('open')) ownPanel.hidden = true;
         }
-        if (event === 'SIGNED_IN' && next) {
-          // Balik dari magic link (PKCE) -> langsung buka panel, lalu bersihkan URL.
-          const fromMagicLink = /[?&]code=/.test(location.search);
-          if (fromMagicLink) {
-            try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) { }
-          }
-          if (fromMagicLink || ownOverlay.classList.contains('open')) showOwnPanel();
+        if (event === 'SIGNED_IN' && next && ownOverlay.classList.contains('open')) {
+          showOwnPanel();
         }
       });
 
-      let magicLinkBusy = false;
-      async function sendMagicLink() {
-        if (magicLinkBusy) return;
-        magicLinkBusy = true;
+      let loginBusy = false;
+      async function loginOwner(event) {
+        if (event) event.preventDefault();
+        if (loginBusy) return;
+        const input = $('own-pass');
+        const password = input ? input.value : '';
+        if (!password) {
+          setOwnStatus('Enter your password.', true);
+          return;
+        }
+        loginBusy = true;
         const btn = $('own-login-btn');
         btn.disabled = true;
-        setOwnStatus('Sending magic link…');
+        setOwnStatus('Checking…');
         try {
-          const redirectTo = location.origin + location.pathname;
-          const { error } = await db.auth.signInWithOtp({
+          const { error } = await db.auth.signInWithPassword({
             email: OWNER_EMAIL,
-            options: { emailRedirectTo: redirectTo, shouldCreateUser: true }
+            password: password
           });
           if (error) throw error;
-          setOwnStatus('Link sent. Check ' + OWNER_EMAIL + ' (also spam folder).');
+          if (input) input.value = '';
+          setOwnStatus('');
         } catch (e) {
-          console.warn('magic link:', e);
-          setOwnStatus('Could not send the link. Check Supabase Auth URL settings.', true);
+          console.warn('owner login:', e);
+          const msg = String(e && e.message || '');
+          if (/invalid login credentials/i.test(msg)) {
+            setOwnStatus('Wrong password.', true);
+          } else if (/email not confirmed/i.test(msg)) {
+            setOwnStatus('This account is not confirmed yet. Confirm it in Supabase → Authentication → Users.', true);
+          } else {
+            setOwnStatus('Could not sign in: ' + (msg || 'unknown error'), true);
+          }
+          if (input) {
+            input.value = '';
+            input.focus();
+          }
         } finally {
           btn.disabled = false;
-          magicLinkBusy = false;
+          loginBusy = false;
         }
       }
 
-      $('own-login-btn').addEventListener('click', sendMagicLink);
+      const ownLoginForm = $('own-login-form');
+      if (ownLoginForm) ownLoginForm.addEventListener('submit', loginOwner);
+      if ($('own-login-btn')) $('own-login-btn').addEventListener('click', loginOwner);
 
       $('own-logout').addEventListener('click', async () => {
         try { await db.auth.signOut(); } catch (e) { }
@@ -1408,7 +1423,7 @@
         ownPanel.hidden = true;
         ownLogin.hidden = false;
         $('own-heading').textContent = 'Owner Login';
-        $('own-subheading').textContent = 'Magic link — no password stored on this site.';
+        $('own-subheading').textContent = 'Password only — no email needed.';
         setOwnStatus('Signed out.');
       });
 

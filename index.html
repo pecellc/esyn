@@ -787,12 +787,17 @@
       <p id="own-subheading">Sign in as owner to edit rating &amp; feedback data</p>
 
       <div id="own-login">
-        <p class="own-hint">This site sends a one-time magic link to <b>Exceladila123@gmail.com</b>. No password is
-          stored in the page.</p>
-        <div class="pw-actions">
-          <button type="button" class="btn-outline" id="own-cancel">Cancel</button>
-          <button type="button" class="btn-primary" id="own-login-btn">Email me a login link</button>
-        </div>
+        <p class="own-hint">Enter the owner password for <b>Exceladila123@gmail.com</b>. The password is checked by
+          Supabase, never stored in this page.</p>
+        <form id="own-login-form">
+          <label class="own-field-label" for="own-pass">Password</label>
+          <input type="password" id="own-pass" class="pw-input own-pass-input" autocomplete="current-password"
+            maxlength="72" minlength="6" required>
+          <div class="pw-actions">
+            <button type="button" class="btn-outline" id="own-cancel">Cancel</button>
+            <button type="submit" class="btn-primary" id="own-login-btn">Login</button>
+          </div>
+        </form>
         <p class="own-hint" id="own-login-status" role="status" aria-live="polite"></p>
       </div>
 

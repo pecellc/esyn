@@ -7576,6 +7576,22 @@
       color: #fca5a5;
     }
 
+    .own-field-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .own-pass-input {
+      margin-bottom: 14px;
+      letter-spacing: 2px;
+      text-align: left;
+    }
+
     @media (max-width: 560px) {
       .own-form-row {
         grid-template-columns: 1fr;
