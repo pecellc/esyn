@@ -2220,6 +2220,64 @@
       const CASH_ICONS = ['💰', '💸', '💵', '8', '2', '1', '2', '0', '1', '1', '5'];
       const CASH_LEAF = ['🍃', '🌿', '🍵', '✦', '✧'];
       const CASH_MC = ['💎', '🟢', '🍎', '🗡️', '⛏️', '🍞', '🔮', '🪙', '✨', '🍖', '🧱'];
+      const CASH_LAMBO = ['🔥', '⚡', '✦', 'V12', '770CV', '8500', 'CORSA', '355', 'SVJ', '🏁'];
+
+      const AVENTADOR_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 56" width="200" height="47" class="lambo-svg">
+        <defs>
+          <linearGradient id="lamboBody" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#3d0a13"/>
+            <stop offset="35%" stop-color="#9c2331"/>
+            <stop offset="70%" stop-color="#c5303f"/>
+            <stop offset="100%" stop-color="#e84055"/>
+          </linearGradient>
+          <linearGradient id="lamboCarbon" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#18181c"/>
+            <stop offset="100%" stop-color="#08080a"/>
+          </linearGradient>
+          <linearGradient id="lamboFlame" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#00f0ff"/>
+            <stop offset="30%" stop-color="#3b82f6"/>
+            <stop offset="70%" stop-color="#ff6b00"/>
+            <stop offset="100%" stop-color="#ffdd00"/>
+          </linearGradient>
+          <radialGradient id="lamboBeam" cx="0%" cy="50%" r="100%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.85)"/>
+            <stop offset="40%" stop-color="rgba(255,215,100,0.4)"/>
+            <stop offset="100%" stop-color="rgba(255,180,50,0)"/>
+          </radialGradient>
+        </defs>
+        <polygon points="214,35 240,28 240,42" fill="url(#lamboBeam)" opacity="0.65"/>
+        <g class="lambo-flame-burst">
+          <polygon points="18,34 -8,32 4,35 -14,36 2,37 -10,38 18,37" fill="url(#lamboFlame)"/>
+          <polygon points="18,34 -2,33 8,35 -6,36 6,36 -4,37 18,37" fill="#ffffff" opacity="0.8"/>
+        </g>
+        <path d="M26,14 L56,12 L54,15 L22,16 Z" fill="url(#lamboCarbon)"/>
+        <path d="M38,15 L36,25 L40,25 L42,15 Z" fill="#111"/>
+        <path d="M48,14 L46,25 L50,25 L52,14 Z" fill="#111"/>
+        <path d="M20,38 L24,28 L38,26 L64,24 L105,15 L144,14 L178,25 L212,33 L225,37 L226,42 L220,44 L198,44 A12,12 0 0,0 174,44 L80,44 A12,12 0 0,0 56,44 L28,44 L20,42 Z" fill="url(#lamboBody)" stroke="#d8b45a" stroke-width="0.6"/>
+        <path d="M108,17 L142,16 L172,25 L116,25 Z" fill="#0c0c10" stroke="#9c2331" stroke-width="0.5"/>
+        <path d="M16,42 L24,45 L56,45 L58,42 Z" fill="url(#lamboCarbon)"/>
+        <path d="M78,44 L176,44 L174,46 L80,46 Z" fill="url(#lamboCarbon)"/>
+        <path d="M198,44 L228,44 L232,41 L226,40 Z" fill="url(#lamboCarbon)"/>
+        <path d="M224,37 L230,34 L228,40 Z" fill="#d8b45a"/>
+        <polygon points="86,28 76,40 102,38" fill="#08080c" stroke="#c5303f" stroke-width="0.6"/>
+        <line x1="68" y1="21" x2="80" y2="23" stroke="#121216" stroke-width="1.2"/>
+        <line x1="84" y1="20" x2="96" y2="22" stroke="#121216" stroke-width="1.2"/>
+        <rect x="110" y="42.5" width="8" height="1.5" fill="#009246"/>
+        <rect x="118" y="42.5" width="8" height="1.5" fill="#ffffff"/>
+        <rect x="126" y="42.5" width="8" height="1.5" fill="#ce2b37"/>
+        <path d="M208,34 L216,36 L210,38" fill="none" stroke="#ffffff" stroke-width="1.6" filter="drop-shadow(0 0 3px #00f0ff)"/>
+        <path d="M25,32 L22,34 L25,36" fill="none" stroke="#ff1e42" stroke-width="1.5" filter="drop-shadow(0 0 3px #ff0033)"/>
+        <rect x="18" y="34.5" width="4" height="3" rx="1" fill="#2a2a30" stroke="#d8b45a" stroke-width="0.5"/>
+        <circle cx="68" cy="44" r="11" fill="#050507" stroke="#1f2228" stroke-width="1.8"/>
+        <circle cx="68" cy="44" r="8" fill="#141418"/>
+        <circle cx="68" cy="44" r="5" fill="#ff1e42"/>
+        <circle cx="68" cy="44" r="2.5" fill="#d8b45a"/>
+        <circle cx="186" cy="44" r="11" fill="#050507" stroke="#1f2228" stroke-width="1.8"/>
+        <circle cx="186" cy="44" r="8" fill="#141418"/>
+        <circle cx="186" cy="44" r="5" fill="#ff1e42"/>
+        <circle cx="186" cy="44" r="2.5" fill="#d8b45a"/>
+      </svg>`;
 
       const PHANTOM_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 18" width="76" height="38" shape-rendering="crispEdges">
         <rect x="0" y="3" width="10" height="3" fill="#1f2438"/>
@@ -2247,39 +2305,71 @@
           s.innerHTML = PHANTOM_SVG;
           s.style.top = (8 + Math.random() * 55) + 'vh';
           s.style.animationDuration = (2.2 + Math.random() * 1.4) + 's';
+        } else if (fxMatcha()) {
+          const MATCHA_LEAVES = ['🍃', '🍀', '🌿', '🍵', '🌸'];
+          s.className = 'car-fx matcha-leaf';
+          s.textContent = MATCHA_LEAVES[Math.floor(Math.random() * MATCHA_LEAVES.length)];
+          s.style.top = (8 + Math.random() * 72) + 'vh';
+          s.style.animationDuration = (6 + Math.random() * 3.5) + 's';
+          s.title = 'Zen Tea Leaf — Tap to swirl!';
+          s.addEventListener('click', (e) => {
+            e.stopPropagation();
+            s.classList.add('swirled');
+            try {
+              playWindChime();
+              showToast('✨ Zen tea leaf swirled!');
+            } catch (err) {}
+          });
         } else {
-          s.className = 'car-fx car';
-          s.textContent = fxMatcha() ? '🍃' : '🏎️';
-          s.style.top = (12 + Math.random() * 72) + 'vh';
-          s.style.animationDuration = (1.5 + Math.random() * 1.3) + 's';
+          s.className = 'car-fx car lambo-car';
+          s.innerHTML = AVENTADOR_SVG;
+          s.style.top = (10 + Math.random() * 64) + 'vh';
+          s.style.animationDuration = (1.1 + Math.random() * 0.9) + 's';
+          s.title = 'Aventador SVJ — Click to rev!';
+          s.addEventListener('click', (e) => {
+            e.stopPropagation();
+            s.classList.add('rev-boost');
+            try {
+              playLamboV12Rev(7800);
+              playLamboBackfirePop(0.1);
+              showToast('🔥 8,500 RPM REV-BOMB!');
+            } catch (err) {}
+          });
         }
         document.body.appendChild(s);
         setTimeout(() => s.remove(), 4000);
       }
 
       function spawnCash() {
+        let isLambo = false;
         let icons = CASH_ICONS;
         if (fxMinecraft()) icons = CASH_MC;
         else if (fxMatcha()) icons = CASH_LEAF;
+        else {
+          icons = CASH_LAMBO;
+          isLambo = true;
+        }
         const s = document.createElement('div');
-        s.className = 'car-fx cash' + (fxMinecraft() ? ' mc-item' : '');
+        s.className = 'car-fx cash' + (fxMinecraft() ? ' mc-item' : '') + (isLambo ? ' lambo-spark' : '');
         s.textContent = icons[Math.floor(Math.random() * icons.length)];
         s.style.left = (4 + Math.random() * 90) + 'vw';
         s.style.top = (12 + Math.random() * 68) + 'vh';
-        s.style.fontSize = (20 + Math.random() * 18) + 'px';
-        s.style.animationDuration = (1.3 + Math.random() * 0.9) + 's';
+        s.style.fontSize = isLambo ? '14px' : (20 + Math.random() * 18) + 'px';
+        s.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
         document.body.appendChild(s);
         setTimeout(() => s.remove(), 2600);
       }
 
       function toggleCarFx(on) {
-        /* Matcha: no cars, no cash rain */
-        if (HEAVY_FX_OFF || fxMatcha()) on = false;
+        if (HEAVY_FX_OFF) on = false;
         if (on && !carTimer) {
           carTimer = setInterval(() => {
             if (document.hidden) return;
-            if (Math.random() < 0.4) spawnCar();
-            else {
+            if (fxMatcha()) {
+              if (Math.random() < 0.6) spawnCar();
+            } else if (Math.random() < 0.4) {
+              spawnCar();
+            } else {
               spawnCash();
               if (Math.random() < 0.4) setTimeout(spawnCash, 260);
             }
@@ -3338,9 +3428,9 @@
         });
         const edition = $('footer-edition');
         if (edition) {
-          if (t === 'matcha') edition.textContent = 'Matcha Edition';
+          if (t === 'matcha') edition.textContent = 'Matcha Zen Edition 🍵';
           else if (t === 'minecraft') edition.textContent = 'Minecraft Edition';
-          else edition.textContent = 'Red Velvet Edition';
+          else edition.textContent = 'Aventador V12 Edition';
         }
         if (faviconEl && faviconLambo) {
           if (t === 'matcha') faviconEl.setAttribute('href', MATCHA_FAVICON);
@@ -3404,9 +3494,9 @@
         try { localStorage.setItem(THEME_KEY, t); } catch (e) { }
         syncThemeUI();
         remeasureNav();
-        // FX cuma hidup di Aventador; begitu balik lagi, nyalain sesuai view
+        // FX hidup di Aventador (supercar) & Matcha (gentle tea breeze)
         try {
-          if (t !== 'lambo') {
+          if (t === 'minecraft') {
             toggleSparkles(false);
             toggleCarFx(false);
           } else if (document.body) {
@@ -3424,8 +3514,8 @@
             document.body.classList.add('theme-swapping');
             setTimeout(() => document.body.classList.remove('theme-swapping'), 320);
           }
-          let toast = 'aventador theme';
-          if (t === 'matcha') toast = 'matcha theme';
+          let toast = '🏎️ Aventador V12 theme activated!';
+          if (t === 'matcha') toast = '🍵 Matcha Zen theme activated! Relax & enjoy.';
           else if (t === 'minecraft') toast = '⛏️ minecraft theme activated!';
           showToast(toast);
         }
@@ -3475,9 +3565,9 @@
       function updateThemePopCopy() {
         if (!themePopCta) return;
         const cur = currentTheme();
-        if (cur === 'lambo') themePopCta.textContent = 'Try Matcha theme';
+        if (cur === 'lambo') themePopCta.textContent = 'Try Matcha Zen theme 🍵';
         else if (cur === 'matcha') themePopCta.textContent = 'Try Minecraft theme';
-        else themePopCta.textContent = 'Switch to Aventador';
+        else themePopCta.textContent = 'Switch to Aventador V12';
       }
 
       function showThemePop() {
@@ -3559,5 +3649,545 @@
       // Player disiapkan langsung, tapi TIDAK autoplay: suara baru keluar
       // setelah pengunjung pencet tombol play (preload="none", jadi hemat data).
       initMusic();
+
+      /* ===== AVENTADOR COCKPIT TELEMETRY & V12 ENGINE SOUND ===== */
+      let lamboAudioCtx = null;
+      function getLamboAudioCtx() {
+        if (!lamboAudioCtx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) lamboAudioCtx = new AudioCtx();
+        }
+        if (lamboAudioCtx && lamboAudioCtx.state === 'suspended') {
+          lamboAudioCtx.resume().catch(() => {});
+        }
+        return lamboAudioCtx;
+      }
+
+      function playLamboClick(pitch = 1800) {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(pitch, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.035);
+          gain.gain.setValueAtTime(0.16, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.035);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.04);
+        } catch (e) {}
+      }
+
+      function playLamboBackfirePop(tOffset = 0) {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const t = ctx.currentTime + tOffset;
+          const bufferSize = Math.floor(ctx.sampleRate * 0.07);
+          const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+          }
+          const noise = ctx.createBufferSource();
+          noise.buffer = buffer;
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(900 + Math.random() * 500, t);
+          filter.Q.setValueAtTime(2.2, t);
+          const gain = ctx.createGain();
+          gain.gain.setValueAtTime(0.35, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          noise.start(t);
+        } catch (e) {}
+      }
+
+      function playLamboV12Rev(targetRpm = 6500) {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const dur = 0.85;
+          const baseFreq = (targetRpm / 60) * 3;
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const filter = ctx.createBiquadFilter();
+          const gain = ctx.createGain();
+
+          osc1.type = 'sawtooth';
+          osc2.type = 'sawtooth';
+          osc2.detune.setValueAtTime(14, now);
+
+          osc1.frequency.setValueAtTime(baseFreq * 0.45, now);
+          osc1.frequency.exponentialRampToValueAtTime(baseFreq, now + 0.32);
+          osc1.frequency.exponentialRampToValueAtTime(baseFreq * 0.4, now + dur);
+
+          osc2.frequency.setValueAtTime(baseFreq * 0.46, now);
+          osc2.frequency.exponentialRampToValueAtTime(baseFreq * 1.01, now + 0.32);
+          osc2.frequency.exponentialRampToValueAtTime(baseFreq * 0.41, now + dur);
+
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(baseFreq * 1.2, now);
+          filter.frequency.linearRampToValueAtTime(baseFreq * 3.2, now + 0.32);
+          filter.frequency.linearRampToValueAtTime(baseFreq * 1.5, now + dur);
+          filter.Q.setValueAtTime(2.5, now);
+
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.linearRampToValueAtTime(0.28, now + 0.2);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+          osc1.connect(filter);
+          osc2.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc1.start(now);
+          osc2.start(now);
+          osc1.stop(now + dur + 0.05);
+          osc2.stop(now + dur + 0.05);
+
+          playLamboBackfirePop(dur * 0.65);
+        } catch (e) {}
+      }
+
+      function playLamboV12Ignition() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+
+          const starterOsc = ctx.createOscillator();
+          const starterGain = ctx.createGain();
+          starterOsc.type = 'sawtooth';
+          starterOsc.frequency.setValueAtTime(130, now);
+          starterOsc.frequency.linearRampToValueAtTime(270, now + 0.32);
+          starterGain.gain.setValueAtTime(0.12, now);
+          starterGain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+          starterOsc.connect(starterGain);
+          starterGain.connect(ctx.destination);
+          starterOsc.start(now);
+          starterOsc.stop(now + 0.35);
+
+          const subOsc = ctx.createOscillator();
+          const subGain = ctx.createGain();
+          subOsc.type = 'triangle';
+          subOsc.frequency.setValueAtTime(45, now + 0.3);
+          subOsc.frequency.linearRampToValueAtTime(90, now + 0.7);
+          subOsc.frequency.exponentialRampToValueAtTime(48, now + 1.8);
+          subGain.gain.setValueAtTime(0.001, now + 0.3);
+          subGain.gain.linearRampToValueAtTime(0.35, now + 0.45);
+          subGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+          subOsc.connect(subGain);
+          subGain.connect(ctx.destination);
+          subOsc.start(now + 0.3);
+          subOsc.stop(now + 1.85);
+
+          const v12Osc1 = ctx.createOscillator();
+          const v12Osc2 = ctx.createOscillator();
+          const v12Filter = ctx.createBiquadFilter();
+          const v12Gain = ctx.createGain();
+          v12Osc1.type = 'sawtooth';
+          v12Osc2.type = 'sawtooth';
+          v12Osc2.detune.setValueAtTime(16, now);
+
+          v12Osc1.frequency.setValueAtTime(190, now + 0.32);
+          v12Osc1.frequency.exponentialRampToValueAtTime(700, now + 0.82);
+          v12Osc1.frequency.exponentialRampToValueAtTime(240, now + 1.8);
+
+          v12Osc2.frequency.setValueAtTime(194, now + 0.32);
+          v12Osc2.frequency.exponentialRampToValueAtTime(710, now + 0.82);
+          v12Osc2.frequency.exponentialRampToValueAtTime(244, now + 1.8);
+
+          v12Filter.type = 'lowpass';
+          v12Filter.frequency.setValueAtTime(500, now + 0.32);
+          v12Filter.frequency.linearRampToValueAtTime(2200, now + 0.82);
+          v12Filter.frequency.linearRampToValueAtTime(700, now + 1.8);
+          v12Filter.Q.setValueAtTime(2.8, now);
+
+          v12Gain.gain.setValueAtTime(0.001, now + 0.32);
+          v12Gain.gain.linearRampToValueAtTime(0.3, now + 0.5);
+          v12Gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+
+          v12Osc1.connect(v12Filter);
+          v12Osc2.connect(v12Filter);
+          v12Filter.connect(v12Gain);
+          v12Gain.connect(ctx.destination);
+
+          v12Osc1.start(now + 0.32);
+          v12Osc2.start(now + 0.32);
+          v12Osc1.stop(now + 1.85);
+          v12Osc2.stop(now + 1.85);
+
+          playLamboBackfirePop(1.05);
+          playLamboBackfirePop(1.25);
+          playLamboBackfirePop(1.42);
+
+          try {
+            if (clickSfx) {
+              clickSfx.currentTime = 0;
+              safePlay(clickSfx);
+            }
+          } catch (err) {}
+        } catch (e) {}
+      }
+
+      function initLamboCockpit() {
+        const hud = $('lambo-cockpit-hud');
+        if (!hud) return;
+
+        const revFill = $('lambo-rev-fill');
+        const rpmVal = $('lambo-rpm-val');
+        const gearBadge = $('lambo-gear-badge');
+        const flipGuard = $('lambo-flip-guard');
+        const ignBtn = $('lambo-ignition-btn');
+        const fireL = $('lambo-fire-l');
+        const fireR = $('lambo-fire-r');
+        const tachoUnit = $('lambo-tacho-unit');
+        const shiftLights = $('lambo-shift-lights');
+        const ySign = $('y-sign');
+
+        let activeMode = 'strada';
+        let currentRpm = 1200;
+        let revAnimTimer = null;
+        let isEngineStarting = false;
+
+        function updateShiftLights(rpm) {
+          if (!shiftLights) return;
+          const leds = shiftLights.querySelectorAll('.lambo-led');
+          const pct = Math.min(1, Math.max(0, (rpm - 1000) / 7500));
+          const litCount = Math.round(pct * 10);
+          leds.forEach((led, idx) => {
+            if (idx < litCount) led.classList.add('lit');
+            else led.classList.remove('lit');
+          });
+        }
+
+        function setRPM(rpm) {
+          currentRpm = Math.round(rpm);
+          if (rpmVal) rpmVal.textContent = currentRpm.toLocaleString();
+          const pct = Math.min(100, Math.max(10, (currentRpm / 8500) * 100));
+          if (revFill) revFill.style.setProperty('--lambo-rev-pct', pct + '%');
+          updateShiftLights(currentRpm);
+        }
+
+        function getModeIdle(mode) {
+          if (mode === 'corsa') return { rpm: 4200, gear: 'C1' };
+          if (mode === 'sport') return { rpm: 2600, gear: 'S5' };
+          return { rpm: 1200, gear: 'D7' };
+        }
+
+        function selectMode(mode) {
+          activeMode = mode;
+          playLamboClick(1400);
+          hud.querySelectorAll('.lambo-mode-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.mode === mode);
+          });
+          const info = getModeIdle(mode);
+          if (gearBadge) gearBadge.textContent = info.gear;
+          setRPM(info.rpm);
+          if (mode === 'corsa') {
+            showToast('🔥 CORSA MODE: 8,500 RPM TRACK ACTIVE');
+          } else if (mode === 'sport') {
+            showToast('⚡ SPORT MODE: SHARP THROTTLE');
+          } else {
+            showToast('🏎️ STRADA MODE: TOURING CRUISING');
+          }
+        }
+
+        hud.querySelectorAll('.lambo-mode-btn').forEach(btn => {
+          btn.addEventListener('click', () => selectMode(btn.dataset.mode));
+        });
+
+        if (flipGuard) {
+          flipGuard.addEventListener('click', (e) => {
+            e.stopPropagation();
+            flipGuard.classList.toggle('flipped');
+            playLamboClick(1200);
+          });
+        }
+
+        function triggerIgnition() {
+          if (isEngineStarting) return;
+          isEngineStarting = true;
+          if (flipGuard) flipGuard.classList.add('flipped');
+          if (ignBtn) ignBtn.classList.add('active');
+
+          playLamboV12Ignition();
+
+          hud.classList.add('rumble');
+          if (fireL) fireL.classList.add('burst');
+          if (fireR) fireR.classList.add('burst');
+
+          let startT = performance.now();
+          const duration = 1800;
+
+          if (revAnimTimer) cancelAnimationFrame(revAnimTimer);
+
+          function step(now) {
+            const elapsed = now - startT;
+            if (elapsed < 350) {
+              setRPM(1200 + (elapsed / 350) * 1200);
+            } else if (elapsed < 850) {
+              const p = (elapsed - 350) / 500;
+              setRPM(2400 + Math.pow(p, 0.7) * 6100);
+            } else if (elapsed < 1400) {
+              const bounce = Math.sin((elapsed - 850) * 0.05) * 400;
+              setRPM(8300 + bounce);
+            } else if (elapsed < duration) {
+              const p = (elapsed - 1400) / (duration - 1400);
+              const target = getModeIdle(activeMode).rpm;
+              setRPM(8300 - p * (8300 - target));
+            } else {
+              setRPM(getModeIdle(activeMode).rpm);
+              hud.classList.remove('rumble');
+              if (ignBtn) ignBtn.classList.remove('active');
+              if (fireL) fireL.classList.remove('burst');
+              if (fireR) fireR.classList.remove('burst');
+              isEngineStarting = false;
+              return;
+            }
+            revAnimTimer = requestAnimationFrame(step);
+          }
+          revAnimTimer = requestAnimationFrame(step);
+          showToast('🏎️ V12 6.5L IGNITION: 770 CV UNLEASHED!');
+        }
+
+        if (ignBtn) {
+          ignBtn.addEventListener('click', triggerIgnition);
+        }
+
+        function blipThrottle() {
+          if (isEngineStarting) return;
+          playLamboV12Rev(6400);
+          if (fireR) fireR.classList.add('burst');
+          setTimeout(() => fireR && fireR.classList.remove('burst'), 400);
+          setRPM(6400);
+          setTimeout(() => setRPM(getModeIdle(activeMode).rpm), 650);
+        }
+
+        if (tachoUnit) {
+          tachoUnit.addEventListener('click', blipThrottle);
+          tachoUnit.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              blipThrottle();
+            }
+          });
+        }
+
+        if (ySign) {
+          ySign.addEventListener('click', () => {
+            if (currentTheme() === 'lambo') {
+              ySign.classList.remove('flash');
+              void ySign.offsetWidth;
+              ySign.classList.add('flash');
+              playLamboClick(2200);
+              setTimeout(() => ySign.classList.remove('flash'), 600);
+            }
+          });
+          ySign.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              if (currentTheme() === 'lambo') {
+                e.preventDefault();
+                ySign.click();
+              }
+            }
+          });
+        }
+
+        setRPM(1200);
+      }
+
+      /* ===== MATCHA TEA CEREMONY & ZEN SOUND SYNTHESIZER ===== */
+      function playZenBell(pitch = 528) {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const gain1 = ctx.createGain();
+          const gain2 = ctx.createGain();
+
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(pitch, now);
+          gain1.gain.setValueAtTime(0.22, now);
+          gain1.gain.exponentialRampToValueAtTime(0.0005, now + 2.5);
+
+          osc2.type = 'sine';
+          osc2.frequency.setValueAtTime(pitch * 2.005, now);
+          gain2.gain.setValueAtTime(0.07, now);
+          gain2.gain.exponentialRampToValueAtTime(0.0005, now + 1.8);
+
+          osc1.connect(gain1);
+          gain1.connect(ctx.destination);
+          osc2.connect(gain2);
+          gain2.connect(ctx.destination);
+
+          osc1.start(now);
+          osc2.start(now);
+          osc1.stop(now + 2.6);
+          osc2.stop(now + 2.6);
+        } catch (e) {}
+      }
+
+      function playTeaWhisk() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const bufferSize = Math.floor(ctx.sampleRate * 0.18);
+          const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.sin((i / bufferSize) * Math.PI);
+          }
+          const noise = ctx.createBufferSource();
+          noise.buffer = buffer;
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(1400, now);
+          filter.Q.setValueAtTime(1.8, now);
+          const gain = ctx.createGain();
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          noise.start(now);
+        } catch (e) {}
+      }
+
+      function playWindChime() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const notes = [784, 1046, 1318];
+          notes.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            const t = now + idx * 0.08;
+            osc.frequency.setValueAtTime(freq, t);
+            gain.gain.setValueAtTime(0.12, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 1.2);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(t);
+            osc.stop(t + 1.25);
+          });
+        } catch (e) {}
+      }
+
+      function initMatchaZenBar() {
+        const bar = $('matcha-zen-bar');
+        if (!bar) return;
+
+        const froth = $('matcha-froth');
+        const statusTitle = $('matcha-status-title');
+        const quoteEl = $('matcha-zen-quote');
+        const whiskBtn = $('matcha-whisk-btn');
+        const bowlUnit = $('matcha-bowl-unit');
+        const ySign = $('y-sign');
+
+        let activeBrew = 'uji';
+        const BREWS = {
+          uji: {
+            title: 'Ceremonial Uji',
+            quote: '"Peace in every sip, calm in every breath."',
+            temp: '80°C · Ceremonial Grade',
+            color: 'radial-gradient(circle at 45% 45%, #60a86b 0%, #3f7d4e 65%, #2a5634 100%)',
+            pitch: 528
+          },
+          latte: {
+            title: 'Matcha Oat Latte',
+            quote: '"Gentle, creamy, and slow. Savor the sweet moment."',
+            temp: '65°C · Creamy Oat Foam',
+            color: 'radial-gradient(circle at 45% 45%, #92c99a 0%, #6aa974 65%, #497d51 100%)',
+            pitch: 432
+          },
+          genmai: {
+            title: 'Toasted Genmaicha',
+            quote: '"Toasted warmth of the hearth and autumn tea fields."',
+            temp: '85°C · Toasted Rice Aroma',
+            color: 'radial-gradient(circle at 45% 45%, #7ea865 0%, #548740 65%, #3c632c 100%)',
+            pitch: 396
+          }
+        };
+
+        function selectBrew(style) {
+          if (!BREWS[style]) return;
+          activeBrew = style;
+          bar.querySelectorAll('.matcha-brew-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.brew === style);
+          });
+          const b = BREWS[style];
+          if (froth) froth.style.background = b.color;
+          if (statusTitle) statusTitle.textContent = b.title;
+          const tempBadge = bar.querySelector('.matcha-temp-badge');
+          if (tempBadge) tempBadge.textContent = b.temp;
+          if (quoteEl) quoteEl.textContent = b.quote;
+          playZenBell(b.pitch);
+          showToast('🍵 Selected ' + b.title);
+        }
+
+        bar.querySelectorAll('.matcha-brew-btn').forEach(btn => {
+          btn.addEventListener('click', () => selectBrew(btn.dataset.brew));
+        });
+
+        function whiskAction() {
+          if (froth) {
+            froth.classList.remove('swirl');
+            void froth.offsetWidth;
+            froth.classList.add('swirl');
+            setTimeout(() => froth.classList.remove('swirl'), 700);
+          }
+          playTeaWhisk();
+          setTimeout(() => playZenBell(BREWS[activeBrew].pitch), 150);
+          showToast('🍵 Whisked freshly with bamboo chasen! Take a mindful sip.');
+        }
+
+        if (whiskBtn) whiskBtn.addEventListener('click', whiskAction);
+        if (bowlUnit) {
+          bowlUnit.addEventListener('click', whiskAction);
+          bowlUnit.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              whiskAction();
+            }
+          });
+        }
+
+        if (ySign) {
+          ySign.addEventListener('click', () => {
+            if (currentTheme() === 'matcha') {
+              ySign.classList.remove('clover-bloom');
+              void ySign.offsetWidth;
+              ySign.classList.add('clover-bloom');
+              playWindChime();
+              showToast('🍀 Lucky 4-Leaf Clover Found! Wishing you peace & happiness.');
+              setTimeout(() => ySign.classList.remove('clover-bloom'), 700);
+            }
+          });
+          ySign.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              if (currentTheme() === 'matcha') {
+                e.preventDefault();
+                ySign.click();
+              }
+            }
+          });
+        }
+      }
+
+      initLamboCockpit();
+      initMatchaZenBar();
     });
   

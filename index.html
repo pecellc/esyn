@@ -135,7 +135,7 @@
 
     <section class="view" data-view="home">
       <div class="hero">
-        <div class="y-sign" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="y-sign" id="y-sign" role="button" tabindex="0" aria-label="Aventador Y-LED signature (Click to flash)" title="Click to flash Aventador Y-LED headlights"><i></i><i></i><i></i></div>
         <div class="hero-badge">✦ Welcome</div>
         <h1 class="hero-title" id="hero-title"><span class="accent">pecel</span></h1>
         <div class="mc-hud-bar" aria-hidden="true">
@@ -145,6 +145,98 @@
             <span class="mc-xp-lvl">16</span>
           </div>
           <span class="mc-food" title="Food: 20/20">🍗🍗🍗🍗🍗🍗🍗🍗🍗🍗</span>
+        </div>
+        <!-- ===== AVENTADOR COCKPIT TELEMETRY & V12 START UNIT ===== -->
+        <div class="lambo-cockpit-hud" id="lambo-cockpit-hud" aria-label="Lamborghini Aventador Cockpit Telemetry">
+          <div class="lambo-hud-inner">
+            <!-- ANIMA Drive Mode Switcher -->
+            <div class="lambo-mode-bar" role="group" aria-label="Drive Mode Selector">
+              <span class="lambo-mode-label">ANIMA</span>
+              <button type="button" class="lambo-mode-btn active" id="lambo-mode-strada" data-mode="strada" title="Strada (Street Mode)">STRADA</button>
+              <button type="button" class="lambo-mode-btn" id="lambo-mode-sport" data-mode="sport" title="Sport Mode">SPORT</button>
+              <button type="button" class="lambo-mode-btn" id="lambo-mode-corsa" data-mode="corsa" title="Corsa (Track Mode)">CORSA</button>
+            </div>
+
+            <!-- Tachometer Gauge Cluster -->
+            <div class="lambo-tacho-unit" id="lambo-tacho-unit" role="button" tabindex="0" aria-label="Aventador Tachometer (Tap to rev throttle)" title="Tap to rev throttle!">
+              <div class="lambo-shift-lights" id="lambo-shift-lights" aria-hidden="true">
+                <span class="lambo-led g"></span><span class="lambo-led g"></span><span class="lambo-led g"></span><span class="lambo-led g"></span>
+                <span class="lambo-led a"></span><span class="lambo-led a"></span><span class="lambo-led a"></span>
+                <span class="lambo-led r"></span><span class="lambo-led r"></span><span class="lambo-led r"></span>
+              </div>
+              <div class="lambo-rev-track">
+                <div class="lambo-rev-fill" id="lambo-rev-fill"></div>
+                <div class="lambo-rev-ticks" aria-hidden="true">
+                  <span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span class="redline">8.5</span>
+                </div>
+              </div>
+              <div class="lambo-hud-readouts">
+                <div class="lambo-rpm-display">
+                  <b id="lambo-rpm-val">1,200</b> <small>RPM</small>
+                </div>
+                <div class="lambo-gear-badge" id="lambo-gear-badge" title="Active Gear">D7</div>
+                <div class="lambo-spec-tag">6.5L V12 · 770 CV</div>
+              </div>
+            </div>
+
+            <!-- Fighter Jet Red Flip Cover START ENGINE Button -->
+            <div class="lambo-start-unit" id="lambo-start-unit">
+              <button type="button" class="lambo-flip-guard" id="lambo-flip-guard" aria-label="Flip red engine cover" title="Click to flip missile switch cover">
+                <span class="lambo-guard-stripe"></span>
+                <span class="lambo-guard-text">START</span>
+              </button>
+              <button type="button" class="lambo-ignition-btn" id="lambo-ignition-btn" aria-label="Start V12 Supercar Engine" title="Press to start / rev V12 engine">
+                <span class="lambo-ign-core">START<br>ENGINE<br>STOP</span>
+              </button>
+            </div>
+          </div>
+          <!-- Dual Exhaust Flame Backfire Emitters -->
+          <div class="lambo-backfire left" id="lambo-fire-l" aria-hidden="true"></div>
+          <div class="lambo-backfire right" id="lambo-fire-r" aria-hidden="true"></div>
+        </div>
+        <!-- ===== MATCHA TEA CEREMONY & ZEN BAR ===== -->
+        <div class="matcha-zen-bar" id="matcha-zen-bar" aria-label="Kyoto Matcha Zen Tea Lounge">
+          <div class="matcha-zen-inner">
+            <!-- Tea Mood / Brew Style Selector -->
+            <div class="matcha-brew-selector" role="group" aria-label="Matcha Brew Style">
+              <span class="matcha-brew-label">BREW</span>
+              <button type="button" class="matcha-brew-btn active" id="matcha-brew-uji" data-brew="uji" title="Ceremonial Uji Matcha">Uji</button>
+              <button type="button" class="matcha-brew-btn" id="matcha-brew-latte" data-brew="latte" title="Creamy Oat Matcha Latte">Latte</button>
+              <button type="button" class="matcha-brew-btn" id="matcha-brew-genmai" data-brew="genmai" title="Toasted Genmaicha">Genmai</button>
+            </div>
+
+            <!-- Steaming Ceramic Chawan Tea Bowl -->
+            <div class="matcha-bowl-unit" id="matcha-bowl-unit" role="button" tabindex="0" aria-label="Whisk Steaming Matcha Bowl" title="Tap to whisk matcha froth!">
+              <div class="matcha-steam-wrap" aria-hidden="true">
+                <span class="matcha-steam s1"></span>
+                <span class="matcha-steam s2"></span>
+                <span class="matcha-steam s3"></span>
+              </div>
+              <div class="matcha-chawan">
+                <div class="matcha-froth" id="matcha-froth">
+                  <span class="matcha-bubble b1"></span>
+                  <span class="matcha-bubble b2"></span>
+                  <span class="matcha-bubble b3"></span>
+                  <span class="matcha-leaf-art">🍃</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Zen Wisdom & Status -->
+            <div class="matcha-zen-info">
+              <div class="matcha-zen-title">
+                <b id="matcha-status-title">Ceremonial Uji</b>
+                <span class="matcha-temp-badge">80°C · Freshly Whisked</span>
+              </div>
+              <p class="matcha-zen-quote" id="matcha-zen-quote">"Peace in every sip, calm in every breath."</p>
+            </div>
+
+            <!-- Whisk Tea Button -->
+            <button type="button" class="matcha-whisk-btn" id="matcha-whisk-btn" aria-label="Whisk Fresh Matcha" title="Click to whisk fresh matcha foam!">
+              <span class="matcha-whisk-icon" aria-hidden="true">🍵</span>
+              <span>Whisk</span>
+            </button>
+          </div>
         </div>
         <p class="hero-desc" data-edit="home.hero-desc">
           Student by day, cube by night. I chase languages, take way too many photos
