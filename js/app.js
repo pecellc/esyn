@@ -1802,18 +1802,25 @@
         try {
           const { data, error } = await db.from('site_content').select('key,value');
           if (error) throw error;
-          let featuredChanged = false;
+          let nextGallery = '';
+          let nextSecret = '';
           (data || []).forEach(row => {
             const val = String(row.value == null ? '' : row.value).trim();
-            if (row.key === 'featured.gallery') { featuredGalleryId = val; featuredChanged = true; }
-            if (row.key === 'featured.secret') { featuredSecretId = val; featuredChanged = true; }
+            if (row.key === 'featured.gallery') nextGallery = val;
+            if (row.key === 'featured.secret') nextSecret = val;
             if (!val) return;
             if (row.key) textOverrides[row.key] = val;
             document.querySelectorAll('[data-edit]').forEach(el => {
               if (el.dataset.edit === row.key) el.textContent = val;
             });
           });
-          if (featuredChanged) rebuildPhotoData();
+          // rebuild cuma kalau foto bintang benar-benar berubah (hindari flicker
+          // tiap polling 90 detik karena baris featured.* selalu ikut kebaca)
+          if (nextGallery !== featuredGalleryId || nextSecret !== featuredSecretId) {
+            featuredGalleryId = nextGallery;
+            featuredSecretId = nextSecret;
+            rebuildPhotoData();
+          }
         } catch (e) { /* tabel belum dibuat — teks asli tetap dipakai */ }
       }
 
