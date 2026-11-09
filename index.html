@@ -22,7 +22,8 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="exyn — Excel Adila Putra">
-  <meta name="twitter:description" content="Student, photo taker, language nerd and Rubik's cube speedcuber from Bandung.">
+  <meta name="twitter:description"
+    content="Student, photo taker, language nerd and Rubik's cube speedcuber from Bandung.">
   <meta name="twitter:image" content="https://pecellc.github.io/esyn/img/og.jpg">
   <link rel="icon"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a070c'/%3E%3Cpath d='M32 10 L52 32 L32 54 L12 32 Z' fill='%23d8b45a'/%3E%3Cpath d='M32 20 L44 32 L32 44 L20 32 Z' fill='%239c2331'/%3E%3C/svg%3E">
@@ -30,6 +31,11 @@
   <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
   <link rel="preload" href="fonts/files/k3kQo8UDI-1M0wlSfdnoLg.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/files/sA88c7O9yZ4KMCoOg4Ko20yw.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&display=swap"
+    rel="stylesheet">
   <script>
     document.documentElement.className += ' js';
     (function () {
@@ -47,15 +53,20 @@
         }
       } catch (e) { }
     })();
-    // Tema dibaca sebelum paint biar nggak ada kedip Aventador -> Matcha.
+    // Tema dibaca sebelum paint biar nggak ada kedip Aventador -> Matcha -> Minecraft.
     (function () {
       try {
-        if (localStorage.getItem('rv-theme-v1') === 'matcha') {
+        var t = localStorage.getItem('rv-theme-v1');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        var scheme = document.querySelector('meta[name="color-scheme"]');
+        if (t === 'matcha') {
           document.documentElement.setAttribute('data-theme', 'matcha');
-          var meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', '#c9dcb0');
-          var scheme = document.querySelector('meta[name="color-scheme"]');
           if (scheme) scheme.setAttribute('content', 'light');
+        } else if (t === 'minecraft') {
+          document.documentElement.setAttribute('data-theme', 'minecraft');
+          if (meta) meta.setAttribute('content', '#629ced');
+          if (scheme) scheme.setAttribute('content', 'dark');
         }
       } catch (e) { }
     })();
@@ -81,14 +92,16 @@
     </ul>
     <div class="nav-right">
       <button class="theme-switch" id="theme-switch" type="button" role="switch" aria-checked="false"
-        aria-label="Theme: Aventador. Switch to Matcha" title="Switch theme: Aventador / Matcha">
+        aria-label="Theme: Aventador. Switch to Matcha" title="Switch theme: Aventador / Matcha / Minecraft">
         <span class="ts-track" aria-hidden="true">
-          <span class="ts-half ts-lambo"></span>
-          <span class="ts-half ts-matcha"></span>
+          <span class="ts-half ts-lambo" title="Aventador"></span>
+          <span class="ts-half ts-matcha" title="Matcha"></span>
+          <span class="ts-half ts-mc" title="Minecraft"></span>
           <span class="ts-knob"></span>
         </span>
       </button>
-      <button type="button" class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
+      <button type="button" class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false"
+        aria-controls="nav-drawer">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -125,6 +138,14 @@
         <div class="y-sign" aria-hidden="true"><i></i><i></i><i></i></div>
         <div class="hero-badge">✦ Welcome</div>
         <h1 class="hero-title" id="hero-title"><span class="accent">pecel</span></h1>
+        <div class="mc-hud-bar" aria-hidden="true">
+          <span class="mc-hearts" title="Health: 20/20">❤❤❤❤❤❤❤❤❤❤</span>
+          <div class="mc-xp-track">
+            <div class="mc-xp-fill"></div>
+            <span class="mc-xp-lvl">16</span>
+          </div>
+          <span class="mc-food" title="Food: 20/20">🍗🍗🍗🍗🍗🍗🍗🍗🍗🍗</span>
+        </div>
         <p class="hero-desc" data-edit="home.hero-desc">
           Student by day, cube by night. I chase languages, take way too many photos
           of Bandung, and try to solve a Rubik's cube before my tea goes cold. anjay
@@ -164,7 +185,8 @@
           <div class="stat" data-reveal>
             <div class="stat-num stat-words">13.95s</div>
             <div class="stat-label">Rubik personal best <br>
-              <span class="stat-note">playing since 1 September 2026</span></div>
+              <span class="stat-note">playing since 1 September 2026</span>
+            </div>
           </div>
           <div class="stat" data-reveal>
             <div class="stat-num" data-count="4">4</div>
@@ -365,7 +387,8 @@
           </a>
 
           <div class="video-side">
-            <button type="button" class="lock-btn" id="lock-btn" title="Hidden page" aria-label="Hidden page">🔒</button>
+            <button type="button" class="lock-btn" id="lock-btn" title="Hidden page"
+              aria-label="Hidden page">🔒</button>
             <span class="lock-label" id="lock-label">Secret</span>
           </div>
         </div>
@@ -384,12 +407,10 @@
               <div class="scramble-actions">
                 <button class="scramble-btn" id="rb-scramble-new" type="button"
                   title="Reset / generate a new scramble">↻ Reset</button>
-                <button class="scramble-btn" id="rb-scramble-copy" type="button"
-                  title="Copy scramble">⧉ Copy</button>
+                <button class="scramble-btn" id="rb-scramble-copy" type="button" title="Copy scramble">⧉ Copy</button>
               </div>
             </div>
-            <button class="scramble-text" id="rb-scramble" type="button"
-              title="Click to copy the scramble">…</button>
+            <button class="scramble-text" id="rb-scramble" type="button" title="Click to copy the scramble">…</button>
           </div>
 
           <div class="timer-player">
@@ -599,9 +620,8 @@
             </div>
             <img id="secret-photo-1" alt="Special photo" hidden
               src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-            <button type="button" id="secret-hero-star" class="photo-star hero-star" hidden
-              aria-pressed="false" title="Make this the special photo"
-              aria-label="Make this the special photo">★</button>
+            <button type="button" id="secret-hero-star" class="photo-star hero-star" hidden aria-pressed="false"
+              title="Make this the special photo" aria-label="Make this the special photo">★</button>
           </div>
           <div class="secret-hero-caption" id="secret-hero-caption">
             <span id="secret-hero-title" data-edit="secret.hero-title">Special Photo</span>
@@ -635,7 +655,6 @@
       <a href="#/profil">Profile</a>
       <a href="#/galeri">Gallery</a>
       <a href="#/kontak">Contact</a>
-      <a href="privacy.html">Privacy</a>
     </div>
   </footer>
 
@@ -665,8 +684,9 @@
   <aside class="rate-pop theme-pop" id="theme-pop" role="dialog" aria-labelledby="theme-pop-title" inert>
     <button class="rate-pop-close" id="theme-pop-close" type="button" aria-label="Close theme tip">×</button>
     <div class="rate-pop-badge">✦ Theme tip</div>
-    <h3 class="rate-pop-title" id="theme-pop-title">Two flavors, one site</h3>
-    <p class="rate-pop-sub">Aventador keeps it dark. Matcha turns the page into a soft clover field. Switch anytime
+    <h3 class="rate-pop-title" id="theme-pop-title">Three flavors, one site</h3>
+    <p class="rate-pop-sub">Aventador keeps it dark. Matcha goes leafy green. Minecraft turns the site into 8-bit blocks
+      &amp; stone buttons! Switch anytime
       from the little pill in the nav.</p>
     <button class="theme-pop-cta" id="theme-pop-cta" type="button">Try Matcha theme</button>
     <button class="theme-pop-later" id="theme-pop-later" type="button">Maybe later</button>
@@ -853,8 +873,8 @@
       <div class="pw-lock-badge">💬</div>
       <h3 id="fb-title">Give me feedback</h3>
       <p>Say anything about this site — posted as <b>Anonymous</b>, you can send many times.</p>
-      <textarea id="fb-text" class="fb-input" rows="4" maxlength="1000"
-        placeholder="Your feedback about this site..." aria-label="Your feedback about this site"></textarea>
+      <textarea id="fb-text" class="fb-input" rows="4" maxlength="1000" placeholder="Your feedback about this site..."
+        aria-label="Your feedback about this site"></textarea>
       <div class="pw-error" id="fb-error">Write something first</div>
       <div class="pw-actions">
         <button type="button" class="btn-outline" id="fb-cancel">Cancel</button>
@@ -868,8 +888,8 @@
       <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
       <button type="button" class="lightbox-nav lb-prev" id="lb-prev" aria-label="Previous photo">‹</button>
       <button type="button" class="lightbox-nav lb-next" id="lb-next" aria-label="Next photo">›</button>
-      <img id="lightbox-img"
-        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
+      <img id="lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        alt="">
       <div class="lightbox-caption">
         <span class="lightbox-count" id="lightbox-count">1 / 15</span>
         <h3 id="lightbox-title">Photo</h3>

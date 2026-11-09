@@ -256,8 +256,10 @@
       if (meetBtn) {
         meetBtn.addEventListener('click', () => {
           try {
-            clickSfx.currentTime = 0;
-            safePlay(clickSfx);
+            if (currentTheme() === 'lambo') {
+              clickSfx.currentTime = 0;
+              safePlay(clickSfx);
+            }
           } catch (e) { }
         });
       }
@@ -2183,10 +2185,11 @@
       /* ===== SPARKLES ===== */
       let sparkleTimer = null;
       const SPARKLE_ICONS = ['✦', '✧', '✩', '✨', '✵'];
-      /* Matcha punya FX sendiri: daun & teh, bukan mobil & duit.
-         Dipilih saat spawn, jadi ganti tema langsung kerasa tanpa reload. */
+      /* Matcha: daun & teh. Minecraft: XP orbs & gem glints. */
       const SPARKLE_LEAF = ['✦', '✧', '🍃', '🍵', '✵'];
+      const SPARKLE_MC = ['💎', '✨', '🟢', '❇️', '✦', '🔮'];
       const fxMatcha = () => document.documentElement.getAttribute('data-theme') === 'matcha';
+      const fxMinecraft = () => document.documentElement.getAttribute('data-theme') === 'minecraft';
 
       function toggleSparkles(on) {
         /* Matcha nggak pakai FX melayang: identitasnya tenang, bukan pesta */
@@ -2194,13 +2197,15 @@
         if (on && !sparkleTimer) {
           sparkleTimer = setInterval(() => {
             if (document.hidden) return;
-            const icons = fxMatcha() ? SPARKLE_LEAF : SPARKLE_ICONS;
+            let icons = SPARKLE_ICONS;
+            if (fxMinecraft()) icons = SPARKLE_MC;
+            else if (fxMatcha()) icons = SPARKLE_LEAF;
             const s = document.createElement('div');
-            s.className = 'sparkle-fx';
+            s.className = 'sparkle-fx' + (fxMinecraft() ? ' mc-sparkle' : '');
             s.textContent = icons[Math.floor(Math.random() * icons.length)];
             s.style.left = Math.random() * window.innerWidth + 'px';
             s.style.top = Math.random() * window.innerHeight + 'px';
-            s.style.fontSize = (11 + Math.random() * 16) + 'px';
+            s.style.fontSize = (12 + Math.random() * 16) + 'px';
             document.body.appendChild(s);
             setTimeout(() => s.remove(), 1600);
           }, 1400);
@@ -2214,25 +2219,54 @@
       let carTimer = null;
       const CASH_ICONS = ['💰', '💸', '💵', '8', '2', '1', '2', '0', '1', '1', '5'];
       const CASH_LEAF = ['🍃', '🌿', '🍵', '✦', '✧'];
+      const CASH_MC = ['💎', '🟢', '🍎', '🗡️', '⛏️', '🍞', '🔮', '🪙', '✨', '🍖', '🧱'];
+
+      const PHANTOM_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 18" width="76" height="38" shape-rendering="crispEdges">
+        <rect x="0" y="3" width="10" height="3" fill="#1f2438"/>
+        <rect x="2" y="6" width="9" height="3" fill="#2c334e"/>
+        <rect x="5" y="9" width="7" height="2" fill="#3a4468"/>
+        <rect x="26" y="3" width="10" height="3" fill="#1f2438"/>
+        <rect x="25" y="6" width="9" height="3" fill="#2c334e"/>
+        <rect x="24" y="9" width="7" height="2" fill="#3a4468"/>
+        <rect x="13" y="4" width="10" height="8" fill="#252b42"/>
+        <rect x="14" y="3" width="8" height="10" fill="#2e3652"/>
+        <rect x="15" y="5" width="6" height="7" fill="#3d476c"/>
+        <rect x="15" y="7" width="6" height="1" fill="#8896b8"/>
+        <rect x="16" y="9" width="4" height="1" fill="#8896b8"/>
+        <rect x="14" y="1" width="8" height="4" fill="#1f2438"/>
+        <rect x="15" y="2" width="2" height="1" fill="#55ff55"/>
+        <rect x="19" y="2" width="2" height="1" fill="#55ff55"/>
+        <rect x="16" y="13" width="4" height="3" fill="#252b42"/>
+        <rect x="17" y="16" width="2" height="2" fill="#1f2438"/>
+      </svg>`;
 
       function spawnCar() {
         const s = document.createElement('div');
-        s.className = 'car-fx car';
-        s.textContent = fxMatcha() ? '🍃' : '🏎️';
-        s.style.top = (12 + Math.random() * 72) + 'vh';
-        s.style.animationDuration = (1.5 + Math.random() * 1.3) + 's';
+        if (fxMinecraft()) {
+          s.className = 'car-fx car phantom';
+          s.innerHTML = PHANTOM_SVG;
+          s.style.top = (8 + Math.random() * 55) + 'vh';
+          s.style.animationDuration = (2.2 + Math.random() * 1.4) + 's';
+        } else {
+          s.className = 'car-fx car';
+          s.textContent = fxMatcha() ? '🍃' : '🏎️';
+          s.style.top = (12 + Math.random() * 72) + 'vh';
+          s.style.animationDuration = (1.5 + Math.random() * 1.3) + 's';
+        }
         document.body.appendChild(s);
-        setTimeout(() => s.remove(), 3000);
+        setTimeout(() => s.remove(), 4000);
       }
 
       function spawnCash() {
-        const icons = fxMatcha() ? CASH_LEAF : CASH_ICONS;
+        let icons = CASH_ICONS;
+        if (fxMinecraft()) icons = CASH_MC;
+        else if (fxMatcha()) icons = CASH_LEAF;
         const s = document.createElement('div');
-        s.className = 'car-fx cash';
+        s.className = 'car-fx cash' + (fxMinecraft() ? ' mc-item' : '');
         s.textContent = icons[Math.floor(Math.random() * icons.length)];
         s.style.left = (4 + Math.random() * 90) + 'vw';
         s.style.top = (12 + Math.random() * 68) + 'vh';
-        s.style.fontSize = (18 + Math.random() * 20) + 'px';
+        s.style.fontSize = (20 + Math.random() * 18) + 'px';
         s.style.animationDuration = (1.3 + Math.random() * 0.9) + 's';
         document.body.appendChild(s);
         setTimeout(() => s.remove(), 2600);
@@ -3261,11 +3295,12 @@
       }
 
       /* ===== INIT ===== */
-      /* --- tema: Aventador (default) / Matcha "clover" --- */
+      /* --- tema: Aventador (default) / Matcha "clover" / Minecraft --- */
       const THEME_KEY = 'rv-theme-v1';
       const THEME_USED_KEY = 'rv-theme-used-v1';
       const MATCHA_FONT_HREF = '';
       const MATCHA_FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23c9dcb0'/%3E%3Cg transform='scale(2)'%3E%3Cpath d='M16 15.4C13.6 10 5.6 10.6 5.6 15.2c0 2.3 1.8 4.1 4.1 4.1-2.3 0-4.1 1.8-4.1 4.1 0 4.6 8 5.2 10.4-.2 2.4 5.4 10.4 4.8 10.4.2 0-2.3-1.8-4.1-4.1-4.1 2.3 0 4.1-1.8 4.1-4.1 0-4.6-8-5.2-10.4.2Z' fill='%233f7d4e'/%3E%3C/g%3E%3C/svg%3E";
+      const MINECRAFT_FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='4' fill='%231e1e1e'/%3E%3Cpath d='M4 4h56v20H48v8H36v-8H24v12H12v-12H4z' fill='%235ea82d'/%3E%3Crect x='4' y='4' width='56' height='6' fill='%237bc93a'/%3E%3Cpath d='M4 24h8v8h12v-8h12v8h12v-8h12v36H4z' fill='%23866043'/%3E%3Crect x='10' y='36' width='8' height='8' fill='%235e402b'/%3E%3Crect x='30' y='44' width='8' height='8' fill='%235e402b'/%3E%3Crect x='46' y='38' width='8' height='8' fill='%23a17554'/%3E%3C/svg%3E";
       const ORNAMENT_SEL = '.hero-badge, .page-badge, .sec-eyebrow, .scramble-label, .rate-pop-badge';
       const themeSwitch = $('theme-switch');
       const themeMeta = document.querySelector('meta[name="theme-color"]');
@@ -3274,25 +3309,43 @@
       const faviconLambo = faviconEl ? faviconEl.getAttribute('href') : '';
 
       function currentTheme() {
-        return document.documentElement.getAttribute('data-theme') === 'matcha' ? 'matcha' : 'lambo';
+        const t = document.documentElement.getAttribute('data-theme');
+        if (t === 'matcha') return 'matcha';
+        if (t === 'minecraft') return 'minecraft';
+        return 'lambo';
+      }
+
+      function nextThemeName() {
+        const cur = currentTheme();
+        if (cur === 'lambo') return 'matcha';
+        if (cur === 'matcha') return 'minecraft';
+        return 'lambo';
       }
 
       function ensureMatchaFont() {
         // Font matcha memakai Plus Jakarta Sans yang sudah self-hosted.
       }
 
-      /* Badge pakai ikon clover CSS di matcha, jadi glyph ✦ dibuang.
+      /* Badge pakai ikon clover CSS di matcha, pickaxe di minecraft, glyph ✦ di aventador.
          Footer dapat edisi yang sesuai tema. */
       function applyThemeCopy() {
-        const matcha = currentTheme() === 'matcha';
+        const t = currentTheme();
         document.querySelectorAll(ORNAMENT_SEL).forEach((el) => {
-          const rest = el.textContent.replace(/^\s*[✦☘🍀]\s*/, '');
-          el.textContent = matcha ? rest : '✦ ' + rest;
+          const rest = el.textContent.replace(/^\s*[✦☘🍀⛏🟩💎]\s*/, '');
+          if (t === 'matcha') el.textContent = rest;
+          else if (t === 'minecraft') el.textContent = '⛏ ' + rest;
+          else el.textContent = '✦ ' + rest;
         });
         const edition = $('footer-edition');
-        if (edition) edition.textContent = matcha ? 'Matcha Edition' : 'Red Velvet Edition';
+        if (edition) {
+          if (t === 'matcha') edition.textContent = 'Matcha Edition';
+          else if (t === 'minecraft') edition.textContent = 'Minecraft Edition';
+          else edition.textContent = 'Red Velvet Edition';
+        }
         if (faviconEl && faviconLambo) {
-          faviconEl.setAttribute('href', matcha ? MATCHA_FAVICON : faviconLambo);
+          if (t === 'matcha') faviconEl.setAttribute('href', MATCHA_FAVICON);
+          else if (t === 'minecraft') faviconEl.setAttribute('href', MINECRAFT_FAVICON);
+          else faviconEl.setAttribute('href', faviconLambo);
         }
       }
 
@@ -3311,27 +3364,49 @@
       function syncThemeUI() {
         const t = currentTheme();
         if (themeSwitch) {
-          themeSwitch.setAttribute('aria-checked', t === 'matcha' ? 'true' : 'false');
-          themeSwitch.setAttribute('aria-label', t === 'matcha'
-            ? 'Theme: Matcha. Switch to Aventador'
-            : 'Theme: Aventador. Switch to Matcha');
+          themeSwitch.setAttribute('aria-checked', t !== 'lambo' ? 'true' : 'false');
+          if (t === 'lambo') {
+            themeSwitch.setAttribute('aria-label', 'Theme: Aventador. Switch to Matcha');
+            themeSwitch.setAttribute('title', 'Theme: Aventador (Next: Matcha)');
+          } else if (t === 'matcha') {
+            themeSwitch.setAttribute('aria-label', 'Theme: Matcha. Switch to Minecraft');
+            themeSwitch.setAttribute('title', 'Theme: Matcha (Next: Minecraft)');
+          } else {
+            themeSwitch.setAttribute('aria-label', 'Theme: Minecraft. Switch to Aventador');
+            themeSwitch.setAttribute('title', 'Theme: Minecraft (Next: Aventador)');
+          }
         }
-        if (themeMeta) themeMeta.setAttribute('content', t === 'matcha' ? '#c9dcb0' : '#0a0a0c');
-        if (schemeMeta) schemeMeta.setAttribute('content', t === 'matcha' ? 'light' : 'dark');
+        if (themeMeta) {
+          if (t === 'matcha') themeMeta.setAttribute('content', '#c9dcb0');
+          else if (t === 'minecraft') themeMeta.setAttribute('content', '#629ced');
+          else themeMeta.setAttribute('content', '#0a0a0c');
+        }
+        if (schemeMeta) {
+          schemeMeta.setAttribute('content', t === 'matcha' ? 'light' : 'dark');
+        }
         if (t === 'matcha') ensureMatchaFont();
         applyThemeCopy();
       }
 
       function setTheme(name, announce) {
-        const t = name === 'matcha' ? 'matcha' : 'lambo';
-        if (t === 'matcha') document.documentElement.setAttribute('data-theme', 'matcha');
-        else document.documentElement.removeAttribute('data-theme');
+        let t = 'lambo';
+        if (name === 'matcha') t = 'matcha';
+        else if (name === 'minecraft') t = 'minecraft';
+
+        if (t === 'matcha') {
+          document.documentElement.setAttribute('data-theme', 'matcha');
+        } else if (t === 'minecraft') {
+          document.documentElement.setAttribute('data-theme', 'minecraft');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+        }
+
         try { localStorage.setItem(THEME_KEY, t); } catch (e) { }
         syncThemeUI();
         remeasureNav();
         // FX cuma hidup di Aventador; begitu balik lagi, nyalain sesuai view
         try {
-          if (t === 'matcha') {
+          if (t !== 'lambo') {
             toggleSparkles(false);
             toggleCarFx(false);
           } else if (document.body) {
@@ -3349,14 +3424,17 @@
             document.body.classList.add('theme-swapping');
             setTimeout(() => document.body.classList.remove('theme-swapping'), 320);
           }
-          showToast(t === 'matcha' ? 'matcha theme' : 'aventador theme');
+          let toast = 'aventador theme';
+          if (t === 'matcha') toast = 'matcha theme';
+          else if (t === 'minecraft') toast = '⛏️ minecraft theme activated!';
+          showToast(toast);
         }
       }
 
       if (themeSwitch) {
         themeSwitch.addEventListener('click', () => {
           try { localStorage.setItem(THEME_USED_KEY, '1'); } catch (e) { }
-          setTheme(currentTheme() === 'matcha' ? 'lambo' : 'matcha', true);
+          setTheme(nextThemeName(), true);
           updateThemePopCopy();
           hideThemePop(0);
           themeSwitch.blur(); // Space tetap dipakai timer rubik
@@ -3396,9 +3474,10 @@
 
       function updateThemePopCopy() {
         if (!themePopCta) return;
-        themePopCta.textContent = currentTheme() === 'matcha'
-          ? 'Switch to Aventador'
-          : 'Try Matcha theme';
+        const cur = currentTheme();
+        if (cur === 'lambo') themePopCta.textContent = 'Try Matcha theme';
+        else if (cur === 'matcha') themePopCta.textContent = 'Try Minecraft theme';
+        else themePopCta.textContent = 'Switch to Aventador';
       }
 
       function showThemePop() {
@@ -3423,7 +3502,7 @@
       if (themePopCta) {
         themePopCta.addEventListener('click', () => {
           try { localStorage.setItem(THEME_USED_KEY, '1'); } catch (e) { }
-          setTheme(currentTheme() === 'matcha' ? 'lambo' : 'matcha', true);
+          setTheme(nextThemeName(), true);
           hideThemePop(0);
         });
       }
