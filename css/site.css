@@ -407,28 +407,27 @@
       --hex-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='96'%3E%3Cg fill='none' stroke='%23d8b45a' stroke-opacity='0.35' stroke-width='1.4'%3E%3Cpath d='M28 -16 L56 0 L56 32 L28 48 L0 32 L0 0 Z'/%3E%3Cpath d='M0 32 L28 48 L28 80 L0 96 L-28 80 L-28 48 Z'/%3E%3Cpath d='M56 32 L84 48 L84 80 L56 96 L28 80 L28 48 Z'/%3E%3C/g%3E%3C/svg%3E");
     }
 
-    html {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(var(--gold-rgb), 0.7) var(--ink-deep);
+    /* Sembunyikan scrollbar permanen di SEMUA browser & SEMUA tema */
+    html,
+    body,
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
     }
 
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      width: 0 !important;
+      height: 0 !important;
+      display: none !important;
+      background: transparent !important;
     }
 
-    ::-webkit-scrollbar-track {
-      background: var(--ink-deep);
-    }
-
+    ::-webkit-scrollbar-track,
     ::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, var(--velvet-600), var(--gold));
-      border-radius: 8px;
-      border: 2px solid var(--ink-deep);
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      filter: brightness(1.2);
+      display: none !important;
+      background: transparent !important;
     }
 
     ::selection {
@@ -6974,22 +6973,9 @@
     }
 
     /* --- base kertas + dekorasi --- */
-    html[data-theme="matcha"] {
-      scrollbar-color: rgba(79, 139, 92, 0.7) #ece8d8;
-    }
-
     html[data-theme="matcha"] ::selection {
       background: #3f7d4e;
       color: #f7f5ea;
-    }
-
-    html[data-theme="matcha"] ::-webkit-scrollbar-track {
-      background: #ece8d8;
-    }
-
-    html[data-theme="matcha"] ::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, #8cbf8e, #4f8b5c);
-      border-color: #ece8d8;
     }
 
     html[data-theme="matcha"] body {
@@ -8554,7 +8540,6 @@
 
       --mc-plains: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='200' viewBox='0 0 480 200' shape-rendering='crispEdges'%3E%3Cg fill='%23457723'%3E%3Crect y='100' width='260' height='100'/%3E%3Crect x='40' y='80' width='180' height='20'/%3E%3Crect x='80' y='64' width='100' height='16'/%3E%3Crect x='280' y='110' width='200' height='90'/%3E%3Crect x='340' y='92' width='120' height='18'/%3E%3C/g%3E%3Cg id='oak1'%3E%3Crect x='124' y='40' width='8' height='28' fill='%23573c22'/%3E%3Crect x='106' y='12' width='44' height='22' fill='%233a691b'/%3E%3Crect x='114' y='2' width='28' height='10' fill='%234c8524'/%3E%3Crect x='106' y='26' width='44' height='8' fill='%23284913'/%3E%3C/g%3E%3Cg id='oak2'%3E%3Crect x='396' y='60' width='8' height='34' fill='%23573c22'/%3E%3Crect x='380' y='32' width='40' height='24' fill='%233a691b'/%3E%3Crect x='388' y='22' width='24' height='10' fill='%234c8524'/%3E%3Crect x='380' y='48' width='40' height='8' fill='%23284913'/%3E%3C/g%3E%3Crect y='156' width='480' height='44' fill='%23725032'/%3E%3Cg fill='%23563920'%3E%3Crect x='18' y='168' width='8' height='6'/%3E%3Crect x='76' y='180' width='10' height='8'/%3E%3Crect x='164' y='172' width='8' height='6'/%3E%3Crect x='260' y='184' width='12' height='6'/%3E%3Crect x='360' y='170' width='8' height='6'/%3E%3Crect x='440' y='182' width='10' height='6'/%3E%3C/g%3E%3Crect y='146' width='480' height='12' fill='%235b8731'/%3E%3Crect y='146' width='480' height='3' fill='%2374ac38'/%3E%3Cg fill='%235b8731'%3E%3Crect x='8' y='158' width='6' height='8'/%3E%3Crect x='28' y='158' width='4' height='5'/%3E%3Crect x='64' y='158' width='8' height='7'/%3E%3Crect x='96' y='158' width='6' height='9'/%3E%3Crect x='140' y='158' width='5' height='6'/%3E%3Crect x='180' y='158' width='8' height='8'/%3E%3Crect x='220' y='158' width='6' height='7'/%3E%3Crect x='270' y='158' width='8' height='9'/%3E%3Crect x='320' y='158' width='5' height='6'/%3E%3Crect x='370' y='158' width='7' height='8'/%3E%3Crect x='420' y='158' width='6' height='7'/%3E%3Crect x='460' y='158' width='8' height='8'/%3E%3C/g%3E%3Cg id='poppy1'%3E%3Crect x='51' y='132' width='2' height='14' fill='%233d6b1d'/%3E%3Crect x='47' y='126' width='10' height='8' fill='%23e61c1c'/%3E%3Crect x='49' y='128' width='6' height='4' fill='%23ff4444'/%3E%3Crect x='51' y='130' width='2' height='2' fill='%233b0000'/%3E%3C/g%3E%3Cg id='dandelion1'%3E%3Crect x='139' y='136' width='2' height='10' fill='%233d6b1d'/%3E%3Crect x='135' y='130' width='10' height='7' fill='%23ffee22'/%3E%3Crect x='137' y='132' width='6' height='3' fill='%23ffc800'/%3E%3C/g%3E%3Cg id='poppy2'%3E%3Crect x='243' y='134' width='2' height='12' fill='%233d6b1d'/%3E%3Crect x='239' y='128' width='10' height='8' fill='%23e61c1c'/%3E%3Crect x='241' y='130' width='6' height='4' fill='%23ff4444'/%3E%3Crect x='243' y='132' width='2' height='2' fill='%233b0000'/%3E%3C/g%3E%3Cg id='dandelion2'%3E%3Crect x='343' y='137' width='2' height='9' fill='%233d6b1d'/%3E%3Crect x='339' y='131' width='10' height='7' fill='%23ffee22'/%3E%3Crect x='341' y='133' width='6' height='3' fill='%23ffc800'/%3E%3C/g%3E%3Cg id='tallgrass'%3E%3Crect x='430' y='136' width='3' height='10' fill='%235b8731'/%3E%3Crect x='434' y='132' width='3' height='14' fill='%2372a838'/%3E%3Crect x='438' y='135' width='3' height='11' fill='%235b8731'/%3E%3C/g%3E%3C/svg%3E");
 
-      scrollbar-color: #635e58 #252220;
       image-rendering: pixelated;
     }
 
