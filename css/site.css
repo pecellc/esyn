@@ -307,11 +307,11 @@
       align-items: center;
       justify-content: space-between;
       padding: 13px var(--nav-gutter);
-      padding-right: calc(var(--nav-gutter) + var(--nav-inner));
       background: rgba(var(--carbon-rgb), 0.88);
       border-bottom: 1px solid rgba(var(--gold-rgb), 0.16);
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 8px;
+      box-sizing: border-box;
     }
 
     nav::after {
@@ -6086,7 +6086,7 @@
 
       nav {
         padding: 11px clamp(14px, 3.8vw, 26px);
-        padding-right: calc(clamp(14px, 3.8vw, 26px) + 10px);
+        box-sizing: border-box;
       }
 
       .nav-logo {
@@ -8691,22 +8691,45 @@
 
     /* --- Navigasi: Minecraft Hotbar HUD (Logo Kepala Creeper) --- */
     html[data-theme="minecraft"] nav {
+      top: 12px;
+      left: var(--nav-gutter);
+      right: var(--nav-gutter);
+      width: auto;
+      max-width: 1300px;
+      margin: 0 auto;
+      box-sizing: border-box;
       background: #2b2825;
       border: 3px solid #000000;
       box-shadow:
         inset 2px 2px 0 #5c5752,
         inset -2px -2px 0 #151413,
         0 6px 0 rgba(0, 0, 0, 0.7);
-      padding: 6px 14px;
+      padding: 7px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+    }
+
+    html[data-theme="minecraft"] nav::before,
+    html[data-theme="minecraft"] nav::after {
+      display: none !important;
+    }
+
+    html[data-theme="minecraft"] body {
+      padding-top: 92px;
     }
 
     html[data-theme="minecraft"] .nav-logo {
       display: inline-flex;
       align-items: center;
       gap: 9px;
+      transform: none !important;
       font-family: 'Press Start 2P', 'Silkscreen', monospace;
       font-size: 0.85rem;
       color: #ffffff !important;
+      background: none;
+      -webkit-text-fill-color: currentColor;
       text-shadow: 2px 2px 0 #3a3a3d, 3px 3px 0 #000;
       border: 2px solid transparent;
       padding: 6px 10px;
@@ -8730,20 +8753,26 @@
     }
 
     html[data-theme="minecraft"] .nav-links {
+      display: flex;
       gap: 6px;
+      align-items: center;
+      margin-left: auto;
     }
 
     html[data-theme="minecraft"] .nav-links a {
+      clip-path: none !important;
+      transform: none !important;
+      border-radius: 0 !important;
       font-family: 'Silkscreen', monospace;
       font-size: 0.78rem;
       letter-spacing: 0.5px;
       color: #e4e4e4 !important;
-      padding: 8px 13px;
+      padding: 8px 14px;
       background: #3c3834;
       border: 2px solid #161514;
       box-shadow: inset 1px 1px 0 #635e58, inset -1px -1px 0 #201e1c;
       text-shadow: 1px 1px 0 #1b1b1c;
-      transition: none;
+      transition: background 0.12s ease;
     }
 
     html[data-theme="minecraft"] .nav-links a:hover {
@@ -8765,6 +8794,99 @@
 
     html[data-theme="minecraft"] .nav-indicator {
       display: none !important;
+    }
+
+    html[data-theme="minecraft"] .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    html[data-theme="minecraft"] .theme-switch {
+      clip-path: none !important;
+      transform: none !important;
+      border-radius: 0 !important;
+      border: 2px solid #000000 !important;
+      background: #383431 !important;
+      box-shadow: inset 1px 1px 0 #5c554e, inset -1px -1px 0 #1c1a18 !important;
+    }
+
+    html[data-theme="minecraft"] .theme-switch:hover,
+    html[data-theme="minecraft"] .theme-switch:focus-visible {
+      border-color: #55ff55 !important;
+      background: #4a4541 !important;
+    }
+
+    html[data-theme="minecraft"] .nav-burger {
+      clip-path: none !important;
+      transform: none !important;
+      border-radius: 0 !important;
+      border: 2px solid #000000 !important;
+      background: #4e4a46 !important;
+      box-shadow: inset 2px 2px 0 #7e7872, inset -2px -2px 0 #282624, 0 3px 0 #000 !important;
+      width: 42px;
+      height: 36px;
+    }
+
+    html[data-theme="minecraft"] .nav-burger span {
+      background: #ffffff !important;
+      box-shadow: 0 1px 0 #000000;
+      border-radius: 0 !important;
+      height: 3px !important;
+    }
+
+    html[data-theme="minecraft"] .nav-burger:hover {
+      background: #68625d !important;
+    }
+
+    /* --- Drawer HP Minecraft: Dark Stone Inventory Frame --- */
+    html[data-theme="minecraft"] .nav-drawer {
+      background: rgba(28, 26, 24, 0.985);
+      backdrop-filter: blur(8px);
+    }
+
+    html[data-theme="minecraft"] .drawer-inner>a {
+      font-family: 'Silkscreen', monospace;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      color: #e4e4e4;
+      text-shadow: 2px 2px 0 #000;
+      text-transform: uppercase;
+      clip-path: none;
+      transform: none;
+    }
+
+    html[data-theme="minecraft"] .drawer-inner>a:hover,
+    html[data-theme="minecraft"] .drawer-inner>a.active {
+      color: #ffff55;
+      text-shadow: 2px 2px 0 #000, 0 0 10px rgba(255, 255, 85, 0.5);
+    }
+
+    html[data-theme="minecraft"] .drawer-rule {
+      background: #3f3934;
+      border-top: 2px solid #141312;
+      border-bottom: 2px solid #5a524a;
+    }
+
+    html[data-theme="minecraft"] .drawer-meta {
+      color: #aaaaaa;
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.75rem;
+    }
+
+    html[data-theme="minecraft"] .drawer-socials a {
+      clip-path: none;
+      font-family: 'Silkscreen', monospace;
+      border: 2px solid #000;
+      border-radius: 0;
+      background: #4e4a46;
+      color: #f0f0f0;
+      box-shadow: inset 1px 1px 0 #7e7872, inset -1px -1px 0 #282624, 0 2px 0 #000;
+    }
+
+    html[data-theme="minecraft"] .drawer-socials a:hover {
+      background: #68625d;
+      color: #ffff55;
     }
 
     /* --- Tombol: Minecraft Stone Buttons (Beveled 3D) --- */
@@ -8885,19 +9007,32 @@
       to { transform: rotate(-12deg) scale(1.08); }
     }
 
-    /* HUD Bar: Health (Hearts), XP Level Bar, & Hunger Food */
+    /* HUD Bar: Health (Hearts), XP Level Bar, Hunger Food & Interactive 9-Slot Hotbar */
     html[data-theme="minecraft"] .mc-hud-bar {
       display: flex !important;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 16px;
+      gap: 10px;
       margin: 18px auto 8px auto;
-      padding: 7px 16px;
-      background: rgba(28, 26, 24, 0.9);
-      border: 2px solid #4a4540;
-      box-shadow: inset 1px 1px 0 #6e6760, inset -1px -1px 0 #151413, 0 4px 0 #000;
+      padding: 10px 14px;
+      background: rgba(28, 26, 24, 0.95);
+      border: 3px solid #000000;
+      box-shadow:
+        inset 2px 2px 0 #5c554e,
+        inset -2px -2px 0 #1c1a18,
+        0 6px 0 rgba(0, 0, 0, 0.75);
       width: fit-content;
       max-width: 100%;
+      user-select: none;
+    }
+
+    html[data-theme="minecraft"] .mc-hud-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      width: 100%;
     }
 
     html[data-theme="minecraft"] .mc-hearts {
@@ -8905,23 +9040,63 @@
       font-size: 0.95rem;
       letter-spacing: 2px;
       text-shadow: 1px 1px 0 #550000;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+      outline: none;
+    }
+
+    html[data-theme="minecraft"] .mc-hearts:hover {
+      transform: scale(1.05);
+    }
+
+    html[data-theme="minecraft"] .mc-hearts.hurt {
+      animation: mcHeartDamage 0.4s ease-out;
+    }
+
+    @keyframes mcHeartDamage {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-4px); }
+      40%, 80% { transform: translateX(4px); }
     }
 
     html[data-theme="minecraft"] .mc-food {
       font-size: 0.95rem;
       letter-spacing: 2px;
       filter: drop-shadow(1px 1px 0 #4a2500);
+      cursor: pointer;
+      transition: transform 0.1s ease;
+      outline: none;
+    }
+
+    html[data-theme="minecraft"] .mc-food:hover {
+      transform: scale(1.05);
+    }
+
+    html[data-theme="minecraft"] .mc-food.chew {
+      animation: mcFoodChew 0.35s ease-out;
+    }
+
+    @keyframes mcFoodChew {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15) rotate(5deg); }
     }
 
     html[data-theme="minecraft"] .mc-xp-track {
       position: relative;
-      width: 130px;
-      height: 8px;
+      width: 140px;
+      height: 10px;
       background: #141312;
       border: 1px solid #544f49;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+      outline: none;
+    }
+
+    html[data-theme="minecraft"] .mc-xp-track:hover {
+      transform: scale(1.04);
     }
 
     html[data-theme="minecraft"] .mc-xp-fill {
@@ -8929,9 +9104,10 @@
       left: 0;
       top: 0;
       bottom: 0;
-      width: 80%;
+      width: var(--mc-xp-pct, 80%);
       background: #55ff55;
       box-shadow: 0 0 6px #55ff55;
+      transition: width 0.25s ease;
     }
 
     html[data-theme="minecraft"] .mc-xp-lvl {
@@ -8941,7 +9117,115 @@
       font-size: 0.65rem;
       color: #55ff55 !important;
       text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-      top: -8px;
+      top: -10px;
+    }
+
+    /* --- Iconic 9-Slot Hotbar --- */
+    html[data-theme="minecraft"] .mc-hotbar {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      background: #8f8f8f;
+      border: 2px solid #373737;
+      box-shadow: inset 1px 1px 0 #dbdbdb, inset -1px -1px 0 #555555, 0 3px 0 #000;
+      padding: 3px;
+      border-radius: 0;
+    }
+
+    html[data-theme="minecraft"] .mc-slot {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      background: #8b8b8b;
+      border: 2px solid #373737;
+      box-shadow: inset -2px -2px 0 #dbdbdb, inset 2px 2px 0 #555555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      border-radius: 0;
+      transition: background 0.1s;
+    }
+
+    html[data-theme="minecraft"] .mc-slot:hover {
+      background: #a0a0a0;
+    }
+
+    html[data-theme="minecraft"] .mc-slot.active {
+      border: 3px solid #ffffff !important;
+      box-shadow: inset -2px -2px 0 #ffffff, inset 2px 2px 0 #ffffff, 0 0 8px rgba(255, 255, 255, 0.8) !important;
+      transform: scale(1.08);
+      z-index: 2;
+    }
+
+    html[data-theme="minecraft"] .mc-item-icon {
+      font-size: 1.15rem;
+      line-height: 1;
+      filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.7));
+    }
+
+    html[data-theme="minecraft"] .mc-slot-num,
+    html[data-theme="minecraft"] .mc-slot-count {
+      position: absolute;
+      bottom: 1px;
+      right: 2px;
+      font-family: 'VT323', monospace;
+      font-size: 0.85rem;
+      color: #ffffff;
+      text-shadow: 1px 1px 0 #000;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    html[data-theme="minecraft"] .mc-slot-num {
+      top: 1px;
+      left: 2px;
+      bottom: auto;
+      right: auto;
+      font-size: 0.65rem;
+      color: #aaaaaa;
+    }
+
+    /* Steve Hurt animation on #y-sign */
+    html[data-theme="minecraft"] .y-sign.steve-hurt {
+      animation: mcSteveHurt 0.4s ease-out !important;
+    }
+
+    @keyframes mcSteveHurt {
+      0% { transform: rotate(0deg); filter: brightness(1); }
+      20% { transform: rotate(-15deg); filter: sepia(1) saturate(5) hue-rotate(-50deg); }
+      50% { transform: rotate(10deg); filter: sepia(1) saturate(5) hue-rotate(-50deg); }
+      100% { transform: rotate(0deg); filter: brightness(1); }
+    }
+
+    /* Screen shake on TNT explosion */
+    body.mc-tnt-boom {
+      animation: mcScreenShake 0.4s ease-out;
+    }
+
+    @keyframes mcScreenShake {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-4px, 4px); }
+      40% { transform: translate(4px, -3px); }
+      60% { transform: translate(-3px, -2px); }
+      80% { transform: translate(2px, 3px); }
+    }
+
+    /* Totem of Undying screen flash */
+    .mc-totem-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background: radial-gradient(circle at center, rgba(85, 255, 85, 0.4) 0%, rgba(255, 215, 0, 0.3) 50%, transparent 80%);
+      animation: mcTotemFade 1.2s ease-out forwards;
+    }
+
+    @keyframes mcTotemFade {
+      0% { opacity: 0; transform: scale(0.8); }
+      25% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 0; transform: scale(1.2); }
     }
 
     html[data-theme="minecraft"] .hero-meta {
@@ -9508,19 +9792,69 @@
 
     @media (max-width: 760px) {
       html[data-theme="minecraft"] nav {
-        top: 8px;
+        top: 10px;
         left: var(--nav-gutter);
         right: var(--nav-gutter);
-        padding: 6px 10px;
+        width: auto;
+        box-sizing: border-box;
+        padding: 8px 12px;
+      }
+
+      html[data-theme="minecraft"] body {
+        padding-top: 86px;
       }
 
       html[data-theme="minecraft"] .mc-hud-bar {
-        gap: 8px;
-        padding: 5px 8px;
+        gap: 7px;
+        padding: 6px 8px;
+        max-width: calc(100vw - 20px);
+        box-sizing: border-box;
+      }
+
+      html[data-theme="minecraft"] .mc-hud-stats {
+        gap: 6px;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      html[data-theme="minecraft"] .mc-hearts,
+      html[data-theme="minecraft"] .mc-food {
+        font-size: clamp(0.68rem, 2.3vw, 0.88rem);
+        letter-spacing: clamp(0.5px, 0.3vw, 1.5px);
       }
 
       html[data-theme="minecraft"] .mc-xp-track {
-        width: 80px;
+        width: clamp(50px, 15vw, 85px);
+        height: 8px;
+      }
+
+      html[data-theme="minecraft"] .mc-xp-lvl {
+        font-size: 0.58rem;
+        top: -9px;
+      }
+
+      html[data-theme="minecraft"] .mc-hotbar {
+        gap: clamp(1px, 0.6vw, 3px);
+        padding: 2px;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+
+      html[data-theme="minecraft"] .mc-slot {
+        width: clamp(28px, 8.8vw, 36px);
+        height: clamp(28px, 8.8vw, 36px);
+      }
+
+      html[data-theme="minecraft"] .mc-item-icon {
+        font-size: clamp(0.85rem, 3vw, 1.15rem);
+      }
+
+      html[data-theme="minecraft"] .mc-slot-num {
+        font-size: clamp(0.5rem, 1.8vw, 0.65rem);
+      }
+
+      html[data-theme="minecraft"] .mc-slot-count {
+        font-size: clamp(0.6rem, 2.2vw, 0.85rem);
       }
     }
 

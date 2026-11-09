@@ -2305,6 +2305,18 @@
           s.innerHTML = PHANTOM_SVG;
           s.style.top = (8 + Math.random() * 55) + 'vh';
           s.style.animationDuration = (2.2 + Math.random() * 1.4) + 's';
+          s.title = 'Phantom — Click to shoot / slay!';
+          s.style.pointerEvents = 'auto';
+          s.style.cursor = 'pointer';
+          s.addEventListener('click', (e) => {
+            e.stopPropagation();
+            s.remove();
+            try {
+              playMcSwordSwing();
+              playMcXpOrb(4);
+              showToast('🏹 Phantom Slain! +50 XP');
+            } catch (err) {}
+          });
         } else if (fxMatcha()) {
           const MATCHA_LEAVES = ['🍃', '🍀', '🌿', '🍵', '🌸'];
           s.className = 'car-fx matcha-leaf';
@@ -4086,6 +4098,254 @@
         } catch (e) {}
       }
 
+      /* ===== MINECRAFT RETRO SOUND SYNTHESIZER (WEB AUDIO API) ===== */
+      function playMcOof() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(140, now);
+          osc.frequency.exponentialRampToValueAtTime(65, now + 0.12);
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.14);
+        } catch (e) {}
+      }
+
+      function playMcEat() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          for (let i = 0; i < 3; i++) {
+            const t = now + i * 0.08;
+            const bufferSize = Math.floor(ctx.sampleRate * 0.04);
+            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let j = 0; j < bufferSize; j++) {
+              data[j] = (Math.random() * 2 - 1) * Math.exp(-j / (bufferSize * 0.3));
+            }
+            const noise = ctx.createBufferSource();
+            noise.buffer = buffer;
+            const filter = ctx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(1600 + i * 200, t);
+            filter.Q.setValueAtTime(3.0, t);
+            const gain = ctx.createGain();
+            gain.gain.setValueAtTime(0.2, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(ctx.destination);
+            noise.start(t);
+            noise.stop(t + 0.05);
+          }
+          const popOsc = ctx.createOscillator();
+          const popGain = ctx.createGain();
+          const popT = now + 0.26;
+          popOsc.type = 'sine';
+          popOsc.frequency.setValueAtTime(320, popT);
+          popOsc.frequency.exponentialRampToValueAtTime(540, popT + 0.06);
+          popGain.gain.setValueAtTime(0.15, popT);
+          popGain.gain.exponentialRampToValueAtTime(0.001, popT + 0.07);
+          popOsc.connect(popGain);
+          popGain.connect(ctx.destination);
+          popOsc.start(popT);
+          popOsc.stop(popT + 0.08);
+        } catch (e) {}
+      }
+
+      function playMcXpOrb(count = 1) {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const n = Math.min(Math.max(count, 1), 5);
+          for (let i = 0; i < n; i++) {
+            const t = now + i * 0.06;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            const baseF = 750 + (i * 120);
+            osc.frequency.setValueAtTime(baseF, t);
+            osc.frequency.exponentialRampToValueAtTime(baseF * 1.6, t + 0.07);
+            gain.gain.setValueAtTime(0.18, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.09);
+          }
+        } catch (e) {}
+      }
+
+      function playMcLevelUp() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const notes = [392, 523.25, 659.25, 783.99];
+          notes.forEach((freq, idx) => {
+            const t = now + idx * 0.09;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(freq, t);
+            const dur = idx === notes.length - 1 ? 0.6 : 0.18;
+            gain.gain.setValueAtTime(0.12, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(t);
+            osc.stop(t + dur + 0.05);
+          });
+        } catch (e) {}
+      }
+
+      function playMcSwordSwing() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const bufferSize = Math.floor(ctx.sampleRate * 0.12);
+          const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let j = 0; j < bufferSize; j++) {
+            data[j] = (Math.random() * 2 - 1) * Math.sin((j / bufferSize) * Math.PI);
+          }
+          const noise = ctx.createBufferSource();
+          noise.buffer = buffer;
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(2400, now);
+          filter.frequency.exponentialRampToValueAtTime(400, now + 0.11);
+          const gain = ctx.createGain();
+          gain.gain.setValueAtTime(0.22, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          noise.start(now);
+          noise.stop(now + 0.13);
+        } catch (e) {}
+      }
+
+      function playMcBlockMine() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(280, now);
+          osc.frequency.exponentialRampToValueAtTime(90, now + 0.09);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.1);
+        } catch (e) {}
+      }
+
+      function playMcBowShot() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.exponentialRampToValueAtTime(200, now + 0.09);
+          gain.gain.setValueAtTime(0.22, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.11);
+        } catch (e) {}
+      }
+
+      function playMcTotem() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const freqs = [523.25, 659.25, 783.99, 1046.5];
+          freqs.forEach((f) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(f, now);
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.08, now + 0.2);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 1.25);
+          });
+        } catch (e) {}
+      }
+
+      function playMcExplosion() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const bufferSize = Math.floor(ctx.sampleRate * 0.7);
+          const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let j = 0; j < bufferSize; j++) {
+            data[j] = (Math.random() * 2 - 1) * Math.exp(-j / (bufferSize * 0.22));
+          }
+          const noise = ctx.createBufferSource();
+          noise.buffer = buffer;
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(700, now);
+          filter.frequency.exponentialRampToValueAtTime(60, now + 0.65);
+          const gain = ctx.createGain();
+          gain.gain.setValueAtTime(0.35, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.68);
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          noise.start(now);
+          noise.stop(now + 0.7);
+        } catch (e) {}
+      }
+
+      function playMcPotion() {
+        try {
+          const ctx = getLamboAudioCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const notes = [600, 800, 1100, 1400];
+          notes.forEach((f, idx) => {
+            const t = now + idx * 0.05;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(f, t);
+            gain.gain.setValueAtTime(0.12, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.11);
+          });
+        } catch (e) {}
+      }
+
       function initMatchaZenBar() {
         const bar = $('matcha-zen-bar');
         if (!bar) return;
@@ -4187,7 +4447,222 @@
         }
       }
 
+      /* ===== MINECRAFT INTERACTIVE HUD & HOTBAR CONTROLLER ===== */
+      function initMinecraftInteractions() {
+        const hud = $('mc-hud-bar');
+        if (!hud) return;
+
+        const heartsEl = $('mc-hearts');
+        const xpTrack = $('mc-xp-track');
+        const xpFill = $('mc-xp-fill');
+        const xpLvl = $('mc-xp-lvl');
+        const foodEl = $('mc-food');
+        const hotbar = $('mc-hotbar');
+        const ySign = $('y-sign');
+
+        let hp = 10; // 10 hearts = 20 HP
+        let xp = 35;
+        let lvl = 16;
+        let isDead = false;
+
+        function renderHearts() {
+          if (!heartsEl) return;
+          const fullHearts = '❤'.repeat(Math.max(0, hp));
+          const emptyHearts = '🖤'.repeat(Math.max(0, 10 - hp));
+          heartsEl.textContent = fullHearts + emptyHearts;
+          heartsEl.setAttribute('aria-label', `Health: ${hp * 2}/20. Click to take damage.`);
+          heartsEl.title = `Click to take damage! (Health: ${hp * 2}/20)`;
+        }
+
+        function triggerTotemResurrection() {
+          playMcTotem();
+          const overlay = document.createElement('div');
+          overlay.className = 'mc-totem-overlay';
+          document.body.appendChild(overlay);
+          setTimeout(() => overlay.remove(), 1250);
+          hp = 10;
+          isDead = false;
+          renderHearts();
+          showToast('🪙 Totem of Undying Activated! Second life granted!');
+        }
+
+        function takeDamage(amount = 2) {
+          if (isDead) return;
+          hp = Math.max(0, hp - amount);
+          renderHearts();
+          playMcOof();
+
+          if (heartsEl) {
+            heartsEl.classList.remove('hurt');
+            void heartsEl.offsetWidth;
+            heartsEl.classList.add('hurt');
+          }
+
+          if (ySign) {
+            ySign.classList.remove('steve-hurt');
+            void ySign.offsetWidth;
+            ySign.classList.add('steve-hurt');
+            setTimeout(() => ySign.classList.remove('steve-hurt'), 400);
+          }
+
+          if (hp === 0) {
+            isDead = true;
+            showToast('💀 Steve took lethal damage!');
+            setTimeout(() => {
+              triggerTotemResurrection();
+            }, 300);
+          } else {
+            showToast(`💥 Oof! Health: ${hp * 2}/20`);
+          }
+        }
+
+        function eatFood() {
+          playMcEat();
+          if (foodEl) {
+            foodEl.classList.remove('chew');
+            void foodEl.offsetWidth;
+            foodEl.classList.add('chew');
+            setTimeout(() => foodEl.classList.remove('chew'), 400);
+          }
+          hp = 10;
+          isDead = false;
+          renderHearts();
+          showToast('🍗 Consumed food & restored all 20 Health!');
+        }
+
+        function gainXp(amount = 25) {
+          xp += amount;
+          playMcXpOrb(2);
+          if (xp >= 100) {
+            xp = xp % 100;
+            lvl += 1;
+            playMcLevelUp();
+            showToast(`⭐ LEVEL UP! You reached Level ${lvl}!`);
+          } else {
+            showToast(`✨ +${amount} XP (${xp}%)`);
+          }
+          if (xpFill) xpFill.style.width = xp + '%';
+          if (xpLvl) xpLvl.textContent = lvl;
+        }
+
+        if (heartsEl) {
+          heartsEl.addEventListener('click', () => takeDamage(2));
+          heartsEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              takeDamage(2);
+            }
+          });
+        }
+
+        if (foodEl) {
+          foodEl.addEventListener('click', eatFood);
+          foodEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              eatFood();
+            }
+          });
+        }
+
+        if (xpTrack) {
+          xpTrack.addEventListener('click', () => gainXp(25));
+          xpTrack.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              gainXp(25);
+            }
+          });
+        }
+
+        if (hotbar) {
+          const slots = hotbar.querySelectorAll('.mc-slot');
+          slots.forEach(slot => {
+            slot.addEventListener('click', () => {
+              slots.forEach(s => s.classList.remove('active'));
+              slot.classList.add('active');
+
+              const item = slot.dataset.item;
+              switch (item) {
+                case 'sword':
+                  playMcSwordSwing();
+                  showToast('🗡️ Sharpness V Diamond Sword swung! -12 Attack Damage');
+                  break;
+                case 'pickaxe':
+                  playMcBlockMine();
+                  showToast('⛏️ Mined Ancient Debris with Efficiency V!');
+                  break;
+                case 'gapple':
+                  playMcEat();
+                  hp = 10;
+                  renderHearts();
+                  showToast('🍏 Enchanted Golden Apple consumed! +Absorption & Regeneration II');
+                  break;
+                case 'bow':
+                  playMcBowShot();
+                  showToast('🏹 Flame Bow fired! Bullseye on target!');
+                  break;
+                case 'bread':
+                  playMcEat();
+                  hp = 10;
+                  renderHearts();
+                  showToast('🍞 Freshly baked bread eaten! Restored hunger & hearts.');
+                  break;
+                case 'totem':
+                  triggerTotemResurrection();
+                  break;
+                case 'tnt':
+                  playMcExplosion();
+                  document.body.classList.remove('mc-tnt-boom');
+                  void document.body.offsetWidth;
+                  document.body.classList.add('mc-tnt-boom');
+                  setTimeout(() => document.body.classList.remove('mc-tnt-boom'), 450);
+                  showToast('🧨 Sssss... BOOM! Explosive blast wave!');
+                  break;
+                case 'potion':
+                  playMcPotion();
+                  showToast('🧪 Splash Potion of Swiftness & Strength smashed!');
+                  break;
+                case 'gem':
+                  playMcXpOrb(3);
+                  showToast('💎 Found 16 Rare Diamonds! Clinking with fortune!');
+                  break;
+                default:
+                  playMcBlockMine();
+              }
+            });
+          });
+        }
+
+        // Steve Head click on avatar
+        if (ySign) {
+          ySign.addEventListener('click', () => {
+            if (currentTheme() === 'minecraft') {
+              takeDamage(1);
+            }
+          });
+        }
+
+        // Keyboard hotkeys: 1-9 to trigger corresponding hotbar slot
+        window.addEventListener('keydown', (e) => {
+          if (currentTheme() !== 'minecraft') return;
+          const activeTag = (document.activeElement && document.activeElement.tagName) || '';
+          if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable)) {
+            return;
+          }
+          const num = parseInt(e.key, 10);
+          if (num >= 1 && num <= 9) {
+            const targetSlot = hud.querySelector(`.mc-slot[data-slot="${num}"]`);
+            if (targetSlot) {
+              e.preventDefault();
+              targetSlot.click();
+            }
+          }
+        });
+      }
+
       initLamboCockpit();
       initMatchaZenBar();
+      initMinecraftInteractions();
     });
   
