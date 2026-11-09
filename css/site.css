@@ -124,6 +124,45 @@
       max-width: 100%;
     }
 
+    /* Cegah cursor I-beam (text) yang mengganggu pada elemen visual, pop-up, dan animasi */
+    .y-sign,
+    .hero-badge,
+    .page-badge,
+    .sec-eyebrow,
+    .car-fx,
+    .sparkle-fx,
+    .rate-pop,
+    .theme-pop,
+    .lambo-cockpit-hud,
+    .matcha-zen-bar,
+    .mc-hud-bar,
+    .nav-logo,
+    .theme-switch,
+    .nav-burger,
+    .nav-links a {
+      user-select: none !important;
+      -webkit-user-select: none !important;
+    }
+
+    .y-sign,
+    .hero-badge,
+    .theme-switch,
+    .nav-burger,
+    .mc-slot,
+    .mc-hearts,
+    .mc-food,
+    .mc-xp-track,
+    .car-fx.car,
+    .car-fx.matcha-leaf {
+      cursor: pointer !important;
+    }
+
+    .car-fx,
+    .sparkle-fx {
+      pointer-events: none;
+      cursor: default !important;
+    }
+
     button,
     input,
     textarea {
@@ -2628,19 +2667,12 @@
     }
 
     /* ===== MUSIC PLAYER ===== */
-    .mp {
-      position: fixed;
-      bottom: 18px;
-      left: 18px;
-      z-index: 6000;
-      width: auto;
-      transform-origin: left bottom;
-      background: rgba(var(--carbon-rgb), 0.9);
-      border: 1px solid rgba(var(--gold-rgb), 0.25);
-      border-radius: 6px;
-      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
-      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7), 0 0 22px rgba(var(--velvet-400-rgb), 0.2);
-      overflow: hidden;
+    /* Pemutar lagu di kiri bawah beserta menunya disembunyikan sesuai permintaan */
+    .mp,
+    #mp,
+    .mp-main,
+    .mp-list {
+      display: none !important;
     }
 
     /* --- mode mini: cuma icon, menu keluar pas dipencet --- */
@@ -5083,28 +5115,39 @@
       display: none;
       position: relative;
       z-index: 1002;
-      width: 46px;
+      width: 44px;
       height: 38px;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 5px;
-      background: rgba(var(--carbon-2-rgb), 0.7);
-      border: 1px solid rgba(var(--gold-rgb), 0.32);
-      clip-path: polygon(9px 0, 100% 0, calc(100% - 9px) 100%, 0 100%);
+      background: linear-gradient(135deg, rgba(35, 20, 24, 0.95), rgba(15, 14, 18, 0.95));
+      border: 1px solid rgba(var(--gold-rgb), 0.45);
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(var(--coral-rgb), 0.25);
       cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .nav-burger:hover {
+      border-color: rgba(var(--gold-rgb), 0.85);
+      box-shadow: 0 4px 18px rgba(var(--coral-rgb), 0.45), inset 0 0 12px rgba(var(--gold-rgb), 0.35);
     }
 
     .nav-burger span {
       display: block;
       width: 21px;
-      height: 2px;
-      background: var(--gold-soft);
+      height: 2.5px;
+      border-radius: 1px;
+      background: linear-gradient(90deg, var(--gold-soft), #ffffff, var(--gold-soft));
+      box-shadow: 0 0 6px rgba(var(--gold-rgb), 0.6);
       transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.2s;
     }
 
     .nav-burger.on span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
+      transform: translateY(7.5px) rotate(45deg);
     }
 
     .nav-burger.on span:nth-child(2) {
@@ -5112,7 +5155,7 @@
     }
 
     .nav-burger.on span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
+      transform: translateY(-7.5px) rotate(-45deg);
     }
 
     .nav-drawer {
@@ -5898,15 +5941,36 @@
 
     @media (max-width: 760px) {
 
-      /* nav lama dipaksa bungk, ganti burger + drawer */
-      .nav-links {
-        display: none;
+      /* nav links di HP disembunyikan di SEMUA tema, gunakan burger (garis 3) */
+      .nav-links,
+      html[data-theme="matcha"] .nav-links,
+      html[data-theme="minecraft"] .nav-links {
+        display: none !important;
       }
 
-      .nav-burger {
-        display: flex;
+      .nav-burger,
+      html[data-theme="matcha"] .nav-burger,
+      html[data-theme="minecraft"] .nav-burger {
+        display: flex !important;
         margin-left: auto;
       }
+    }
+
+    @media (min-width: 761px) {
+
+      /* Di mode PC, tidak perlu garis 3, tampilkan nav-links horizontal */
+      .nav-burger,
+      html[data-theme="matcha"] .nav-burger,
+      html[data-theme="minecraft"] .nav-burger {
+        display: none !important;
+      }
+
+      .nav-links,
+      html[data-theme="matcha"] .nav-links,
+      html[data-theme="minecraft"] .nav-links {
+        display: flex !important;
+      }
+    }
 
       .home-block {
         padding: 44px 5vw;
@@ -7082,14 +7146,29 @@
     }
 
     html[data-theme="matcha"] .nav-burger {
-      clip-path: none;
-      border-radius: 13px;
-      background: rgba(255, 255, 255, 0.7);
-      border-color: rgba(63, 125, 78, 0.22);
+      clip-path: none !important;
+      border-radius: 999px !important;
+      width: 42px !important;
+      height: 38px !important;
+      background: rgba(255, 255, 255, 0.88) !important;
+      border: 1.5px solid rgba(63, 125, 78, 0.38) !important;
+      box-shadow: 0 4px 14px rgba(44, 61, 42, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.9) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    html[data-theme="matcha"] .nav-burger:hover {
+      background: #ffffff !important;
+      border-color: rgba(63, 125, 78, 0.65) !important;
+      box-shadow: 0 4px 18px rgba(63, 125, 78, 0.25) !important;
+      transform: scale(1.04);
     }
 
     html[data-theme="matcha"] .nav-burger span {
-      background: #3f6a45;
+      background: #3f7d4e !important;
+      border-radius: 999px !important;
+      height: 2.5px !important;
+      width: 19px !important;
+      box-shadow: none !important;
     }
 
     html[data-theme="matcha"] .theme-switch {
@@ -7189,8 +7268,10 @@
       }
     }
 
-    html[data-theme="matcha"] .y-sign i {
-      display: none;
+    html[data-theme="matcha"] .y-sign i,
+    html[data-theme="matcha"] .y-sign::before,
+    html[data-theme="matcha"] .y-sign::after {
+      display: none !important;
     }
 
     /* garis vertikal ala supercar nggak cocok di kertas bersih */
@@ -8753,7 +8834,6 @@
     }
 
     html[data-theme="minecraft"] .nav-links {
-      display: flex;
       gap: 6px;
       align-items: center;
       margin-left: auto;
@@ -8954,7 +9034,9 @@
       image-rendering: pixelated;
     }
 
-    html[data-theme="minecraft"] .y-sign i {
+    html[data-theme="minecraft"] .y-sign i,
+    html[data-theme="minecraft"] .y-sign::before,
+    html[data-theme="minecraft"] .y-sign::after {
       display: none !important;
     }
 
@@ -9798,6 +9880,15 @@
         width: auto;
         box-sizing: border-box;
         padding: 8px 12px;
+      }
+
+      html[data-theme="minecraft"] .nav-links {
+        display: none !important;
+      }
+
+      html[data-theme="minecraft"] .nav-burger {
+        display: flex !important;
+        margin-left: auto;
       }
 
       html[data-theme="minecraft"] body {
