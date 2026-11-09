@@ -5894,6 +5894,58 @@
       transform: scale(1.08);
     }
 
+    .photo-star {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 5;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 1px solid rgba(var(--gold-rgb), 0.55);
+      border-radius: 50%;
+      background: rgba(var(--ink-deep-rgb), 0.82);
+      color: var(--gold-soft);
+      font-size: 0.95rem;
+      line-height: 1;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    body.owner .photo-star {
+      display: flex;
+    }
+
+    .photo-star[hidden] {
+      display: none !important;
+    }
+
+    .photo-star:hover {
+      background: var(--gold);
+      color: #1a0d12;
+      transform: scale(1.08);
+    }
+
+    .photo-star.on {
+      background: var(--gold);
+      border-color: #fff3c4;
+      color: #1a0d12;
+      box-shadow: 0 0 14px rgba(var(--gold-rgb), 0.55);
+    }
+
+    .hero-star {
+      top: -4px;
+      right: -4px;
+      left: auto;
+      width: 34px;
+      height: 34px;
+      font-size: 1.05rem;
+    }
+
     .secret-frame {
       position: relative;
     }

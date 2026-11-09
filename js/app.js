@@ -518,7 +518,10 @@
 
           div.appendChild(img);
           div.appendChild(overlay);
-          if (item.id != null) addPhotoDelete(div, item.id);
+          if (item.id != null) {
+            addPhotoStar(div, item.id, 'gallery');
+            addPhotoDelete(div, item.id);
+          }
 
           div.addEventListener('click', () => openLightboxAt(list, list.indexOf(item)));
           grid.appendChild(div);
@@ -592,7 +595,10 @@
       const LOCAL_PHOTOS_KEY = 'rv-photos-local-v1';
 
       let serverPhotos = [];
+      let loadedSecretPhotos = [];
       let secretPhotos = [];
+      let featuredGalleryId = '';
+      let featuredSecretId = '';
       let localPhotos = readLocalPhotos();
       let photoLoading = false;
       let photoTableReady = false;
@@ -649,8 +655,31 @@
 
       function rebuildPhotoData() {
         const rows = allPhotoRows().map(normalizePhoto).filter(p => p.img);
-        GALLERY = STATIC_GALLERY.concat(rows.filter(p => p.scope === 'gallery'));
-        secretPhotos = rows.filter(p => p.scope === 'secret');
+        const galleryRows = rows.filter(p => p.scope === 'gallery');
+
+        galleryRows.forEach(p => {
+          p.featured = !!featuredGalleryId && String(p.id) === featuredGalleryId;
+        });
+        const statics = STATIC_GALLERY.map(g => ({
+          ...g,
+          featured: featuredGalleryId ? false : g.featured
+        }));
+
+        // foto bintang tampil paling atas (sebelum foto statis)
+        let featuredRow = null;
+        if (featuredGalleryId) {
+          const fi = galleryRows.findIndex(p => String(p.id) === featuredGalleryId);
+          if (fi >= 0) featuredRow = galleryRows.splice(fi, 1)[0];
+        }
+        GALLERY = (featuredRow ? [featuredRow] : []).concat(statics, galleryRows);
+        const localSecret = rows.filter(p => p.scope === 'secret');
+        secretPhotos = loadedSecretPhotos.concat(
+          localSecret.filter(l => !loadedSecretPhotos.some(s => String(s.id) === String(l.id)))
+        );
+        if (featuredSecretId) {
+          const si = secretPhotos.findIndex(p => String(p.id) === featuredSecretId);
+          if (si > 0) secretPhotos.unshift(secretPhotos.splice(si, 1)[0]);
+        }
         buildGalleryFilters();
         buildGallery();
         buildHomeShots();
@@ -721,6 +750,86 @@
         parent.appendChild(b);
       }
 
+      /* --- star foto: pilih foto "spesial" (owner only) --- */
+      function isFeatured(scope, id) {
+        if (id == null) return false;
+        const cur = scope === 'secret' ? featuredSecretId : featuredGalleryId;
+        return !!cur && String(cur) === String(id);
+      }
+
+      async function setFeatured(scope, value) {
+        try {
+          const { error } = await db.rpc('admin_set_content', {
+            p_key: 'featured.' + scope,
+            p_value: value || ''
+          });
+          if (error) throw error;
+          return true;
+        } catch (e) {
+          console.warn('set featured photo:', e);
+          return false;
+        }
+      }
+
+      async function toggleFeatured(scope, id, btn) {
+        if (!isOwner() || !btn || btn.disabled) return;
+        const next = isFeatured(scope, id) ? '' : String(id);
+        btn.disabled = true;
+        const ok = await setFeatured(scope, next);
+        btn.disabled = false;
+        if (!ok) {
+          showToast('could not save special photo');
+          return;
+        }
+        if (scope === 'secret') featuredSecretId = next;
+        else featuredGalleryId = next;
+        rebuildPhotoData();
+        showToast(next ? 'special photo updated ★' : 'special photo cleared');
+      }
+
+      function paintStar(btn, on) {
+        btn.classList.toggle('on', !!on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        btn.title = on ? 'Special photo — click to remove' : 'Make this the special photo';
+        btn.setAttribute('aria-label', btn.title);
+      }
+
+      function addPhotoStar(parent, id, scope) {
+        if (id == null || String(id).indexOf('local-') === 0) return;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'photo-star';
+        b.textContent = '★';
+        b.dataset.pid = String(id);
+        paintStar(b, isFeatured(scope, id));
+        b.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          toggleFeatured(scope, b.dataset.pid, b);
+        });
+        parent.appendChild(b);
+      }
+
+      function refreshHeroStar(id) {
+        const b = $('secret-hero-star');
+        if (!b) return;
+        if (id == null || String(id).indexOf('local-') === 0) {
+          b.hidden = true;
+          return;
+        }
+        if (!b.dataset.wired) {
+          b.dataset.wired = '1';
+          b.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            toggleFeatured('secret', b.dataset.pid, b);
+          });
+        }
+        b.hidden = false;
+        b.dataset.pid = String(id);
+        paintStar(b, isFeatured('secret', id));
+      }
+
       async function deletePhoto(id) {
         if (String(id).indexOf('local-') === 0) {
           const list = readLocalPhotos().filter(p => String(p.id) !== String(id));
@@ -735,6 +844,14 @@
             p_id: Number(id)
           });
           if (error) throw error;
+          if (isFeatured('secret', id)) {
+            await setFeatured('secret', '');
+            featuredSecretId = '';
+          }
+          if (isFeatured('gallery', id)) {
+            await setFeatured('gallery', '');
+            featuredGalleryId = '';
+          }
           if (secretPhotos.some(p => String(p.id) === String(id))) {
             await loadSecretPhotos();
           } else {
@@ -1685,14 +1802,18 @@
         try {
           const { data, error } = await db.from('site_content').select('key,value');
           if (error) throw error;
+          let featuredChanged = false;
           (data || []).forEach(row => {
             const val = String(row.value == null ? '' : row.value).trim();
+            if (row.key === 'featured.gallery') { featuredGalleryId = val; featuredChanged = true; }
+            if (row.key === 'featured.secret') { featuredSecretId = val; featuredChanged = true; }
             if (!val) return;
             if (row.key) textOverrides[row.key] = val;
             document.querySelectorAll('[data-edit]').forEach(el => {
               if (el.dataset.edit === row.key) el.textContent = val;
             });
           });
+          if (featuredChanged) rebuildPhotoData();
         } catch (e) { /* tabel belum dibuat — teks asli tetap dipakai */ }
       }
 
@@ -1934,21 +2055,22 @@
       /* ===== SECRET PHOTOS (private rows, only through token RPC) ===== */
       async function loadSecretPhotos() {
         const token = secretToken();
-        if (!token) { secretPhotos = []; buildSecret(); return; }
+        if (!token) { loadedSecretPhotos = []; secretPhotos = []; buildSecret(); return; }
         try {
           const { data, error } = await db.rpc('get_secret_photos', { p_token: token });
           if (error) throw error;
-          secretPhotos = (data || []).map(row => normalizePhoto(row));
-          buildSecret();
+          loadedSecretPhotos = (data || []).map(row => normalizePhoto(row));
+          rebuildPhotoData();
         } catch (e) {
           console.warn('secret photos:', e);
+          loadedSecretPhotos = [];
           secretPhotos = [];
           buildSecret();
           if (/locked|expired|invalid/i.test(String(e && e.message))) {
             secretTokenClear();
             updateLockBtn();
             if (location.hash.indexOf('zx7k9q') !== -1) location.hash = '#/home';
-            showToast('secret session expired — enter the password again');
+            showToast('secret session expired - enter the password again');
           }
         }
       }
@@ -2007,9 +2129,14 @@
           cap.className = 'secret-cap';
           cap.textContent = p.title || 'Photo';
           frame.appendChild(cap);
-          if (p.id != null) addPhotoDelete(frame, p.id);
+          if (p.id != null) {
+            addPhotoStar(frame, p.id, 'secret');
+            addPhotoDelete(frame, p.id);
+          }
           grid.appendChild(frame);
         });
+
+        refreshHeroStar(first ? first.id : null);
 
         const addBtn = $('secret-add-photo');
         if (addBtn) addBtn.hidden = !isOwner();
@@ -3076,6 +3203,16 @@
               const row = payload.new;
               if (!row || !row.key || editingText) return;
               const val = String(row.value == null ? '' : row.value).trim();
+              if (row.key === 'featured.gallery') {
+                featuredGalleryId = val;
+                rebuildPhotoData();
+                return;
+              }
+              if (row.key === 'featured.secret') {
+                featuredSecretId = val;
+                rebuildPhotoData();
+                return;
+              }
               if (!val) return;
               textOverrides[row.key] = val;
               document.querySelectorAll('[data-edit]').forEach(el => {
