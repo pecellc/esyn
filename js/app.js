@@ -1119,8 +1119,6 @@
       contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const nama = $('nama').value.trim();
-        const email = ($('email') && $('email').value.trim()) || '';
-        const subject = ($('subject') && $('subject').value.trim()) || '';
         const pesan = $('pesan').value.trim();
         const hp = $('hp-website').value;
 
@@ -1137,8 +1135,8 @@
           if (hp) throw new Error('bot honeypot');
           const { error } = await db.rpc('send_message', {
             p_name: nama,
-            p_email: email,
-            p_subject: subject,
+            p_email: '',
+            p_subject: '',
             p_message: pesan
           });
           if (error) throw error;
